@@ -1,0 +1,53 @@
+{
+    "id": 3,
+    "name": "Tom",
+    "age": 45,
+    "preference": "",
+    "status": "",
+    "initials": "AA",
+    "savedCategories": ["5","9","12"],
+    "secretLikes": [
+        {
+            "secretId": "2",
+            "answerId": "0",
+            "likeType": "secret"
+        },        
+        {
+            "secretId": "1",
+            "answerId": "0",
+            "likeType": "secret"
+        },        
+        {
+            "secretId": "1",
+            "answerId": "1",
+            "likeType": "answer"
+        },        
+        {
+            "secretId": "1",
+            "answerId": "2",
+            "likeType": "answer"
+        }
+     ],
+    "savedData": [
+        {
+            "id": "1",
+            "type": "article"
+        },
+        {
+            "id": "1",
+            "type": "video"
+        },
+        {
+            "id": "1",
+            "type": "howto"
+        },
+        {
+            "id": "2",
+            "type": "article"
+        },
+        {
+            "id": "2",
+            "type": "video"
+        }
+    ]
+}

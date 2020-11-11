@@ -1,0 +1,77 @@
+/* colors */
+$app-color1: black;
+$app-color2: white;
+$app-color3: #5f5f5f;
+$app-color4: #ae0000;
+$app-color5: #362c2c;
+$app-color6: #7a1317;
+
+$app-text-color: $app-color3;
+$app-text-color2: $app-color1;
+$app-text-color3: $app-color2;
+
+$app-title-color: $app-color2;
+$app-title-color2: $app-color1;
+$app-title-color3: $app-color4;
+$app-title-color4: $app-color3;
+
+$app-bg-color: $app-color2;
+$app-bg-color2: $app-color1;
+
+$app-delete-color: $app-color4;
+
+/* sizes */
+$app-footer-height: 70px;
+$app-header-height: 100px;
+$app-table-line-height: 110px;
+$app-sidebar-width: 360px;
+$app-table-width: 720px;
+$app-btn-height: 2.5rem;
+$app-icon-size: 1.5rem;
+
+/* spacing */
+$app-space-y: 1rem;
+$app-space-x: 1rem;
+$app-space-y2: 2.5rem;
+$app-space-y3: 1.75rem;
+$app-space-side: 2rem;
+$app-space-side-wide: 5rem;
+$app-space-top: 3.5rem;
+$app-space-top-high: 6.5rem;
+$app-space-bottom: 3rem;
+$app-space-icon: 1rem;
+$app-space-bottom-small:0.5rem;
+/* gradiants */
+
+$app-gradiant1: linear-gradient(270deg, $app-color3 0%, $app-color1 100%);
+$app-gradiant2: linear-gradient(270deg, $app-color2 0%, $app-color5 100%);
+$app-gradiant3: linear-gradient(270deg, $app-color4 0%, $app-color6 100%);
+
+/* font  */
+$body-font-family: 'Montserrat', sans-serif;
+$app-text-fs-big: 1.5rem;
+$app-text-fs-mid: 1.25rem;
+$app-text-fs-smaller: 0.875rem;
+$app-title-fs: 2rem;
+$app-title-fs-big: 2.75rem;
+
+$app-line-height-big: 2; 
+
+/*buttons*/
+$app-height-btn: 2.5rem;
+$app-color-btn-text: $app-color2;
+$app-width-btn: 300px;
+/* border radius */
+$app-border-radius: 15px;
+$app-border-radius2: 30px;
+
+/* box shadow */
+$app-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+$app-shadow2: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+$app-shadow-input-outline: 0 0 4px 0 $app-color4;
+
+/* ratio */
+$app-image-ratio: 1.4;
+
+/* transition */
+$app-transition-time: 0.5s;

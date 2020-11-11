@@ -1,0 +1,263 @@
+[
+    {
+        "dataTypeName": "article",
+        "fields": [
+            {
+                "name" :"articleId",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"date",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true
+            },            
+            {
+                "name" :"authorName",
+                "isTable": true,
+                "tableOrder": 3,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "string",
+                "required": true
+            },            
+            {
+                "name" :"title",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "title",
+                "required": true
+            },            
+            {
+                "name" :"thumbUrl",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "image",
+                "required": true               
+            },
+            {
+                "name" :"sections",
+                "isTable": false,
+                "singleOrder": 5,
+                "col": 2,
+                "fieldType": "html",
+                "required": true               
+            }
+        ]
+    },    
+    {
+        "dataTypeName": "howto",
+        "fields": [
+            {
+                "name" :"howToId",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"date",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true
+            },            
+            {
+                "name" :"authorName",
+                "isTable": true,
+                "tableOrder": 3,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "string",
+                "required": true
+            },            
+            {
+                "name" :"title",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "title",
+                "required": true
+            },            
+            {
+                "name" :"thumbUrl",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "image",
+                "required": true               
+            },
+            {
+                "name" :"sections",
+                "isTable": false,
+                "singleOrder": 5,
+                "col": 2,
+                "fieldType": "html",
+                "required": true               
+            }
+        ]
+    },
+    {
+        "dataTypeName": "daily",
+        "fields": [
+            {
+                "name" :"dailyTipId",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"ts",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true
+            },            
+            {
+                "name" :"dailyForYouTitle",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "title",
+                "required": true
+            },            
+            {
+                "name" :"dailyForYoutext",
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "text",
+                "required": true
+            },            
+            {
+                "name" :"dailyForYouImage",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "image",
+                "required": true               
+            },
+            {
+                "name" :"dailyQuestionTitle",
+                "isTable": true,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            },            
+            {
+                "name" :"dailyQuestionText",
+                "isTable": false,
+                "singleOrder": 5,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            },            
+            {
+                "name" :"questions",
+                "isTable": false,
+                "singleOrder": 5,
+                "col": 1,
+                "fieldType": "repeater",
+                "required": true,
+                "fields": [
+                    {
+                        "name": "questionId",
+                        "type": "select"
+                    }
+                ]             
+            }
+        ]
+    },
+    {
+        "dataTypeName": "dailyTip",
+        "fields": [
+            {
+                "name" :"dailyTipId",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"ts",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true
+            },            
+            {
+                "name" :"shopItemId",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true
+            },            
+            {
+                "name" :"date",
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "text",
+                "required": true
+            },            
+            {
+                "name" :"text",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "title",
+                "required": true               
+            },
+            {
+                "name" :"articleId",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            },            
+            {
+                "name" :"lastUpdated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            }            
+         ]
+    }
+]

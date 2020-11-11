@@ -1,0 +1,33 @@
+{
+    "id": "1", 
+    "title": "Everything You Wanted to Know About Orgasm", 
+    "views": "33", 
+    "likes": "64", 
+    "imageURL": "https://app.sexence.com/static/ph/placeholder-21.jpg", 
+    "categories": ["4","5"],
+    "sections": [
+        {
+            "title": "",
+            "content": "<p>A minute before we talk about the types of orgasm women can experience, let's learn what an orgasm is, how you can experience it, and how we can receive stronger sensations during orgasm!</p>"
+        },
+        {
+            "title": "Orgasm",
+            "content": "<p>Orgasm is truly the most famous moment of our sexual intercourse! It's part of our sexual responses cycle, the physical and mental changes our body goes through when we are having sex, just as the level of our arousal begins.  The interesting thing is that we go through 4 phases during sex, yet you have probably only heard of one of them,  the orgasm. The first two phases during this cycle represent the level of our arousal as it gradually rises; the excitement phase changes into the plateau phase, then we feel so aroused we  reach the orgasm phase! Or at least we hope to. The last phase is the resolution, the moment of relaxation after the peak.  To read more about what happens to your body during sex and learn how to increase your desire - click here! To understand what orgasm is, stay with us!</p>"
+        },
+        {
+            "title": "",
+            "content": "",
+			"shopItem": { 
+				"id": 1,
+				"title": "Give It a try",
+				"image": "https://app.sexence.com/static/ph/placeholder-20.jpg",
+				"text": "Explore you body with the new Lelo. for an amazing, a mind blowing experience",
+				"link": "https://www.dameproducts.com/products/eva-ii"
+			}        
+        },
+        {
+            "title": "What Orgam Should Feel Like? ",
+            "content": "<p>I know orgasm  may have been described in a way  you may have never experienced. Yet it doesn't mean you did not orgasm.  It is important to know that each woman may feel it differently.</p><p>From a physical perspective, yes, we all go through the same physical changes, which are a series of involuntary rhythmic muscle contractions that take a place in the vagina, uterus and rectum.</p>"
+        }
+    ]
+}

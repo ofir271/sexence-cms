@@ -1,0 +1,29 @@
+[
+	{
+		"id": "1",
+		"dailyForYouTitle": "Your Daily Sexence",
+		"dailyForYoutext": "Happiness - how to define happiness through healthy sex life?",
+		"dailyForYouImage": "https://app.sexence.com/static/ph/placeholder-20.jpg",
+		"dailyQuestionTitle": "Good sex makes us happy!",
+		"dailyQuestionText": "<p>Good sex is an inseparable part of our well-being and happiness. Those of us who engage in more sex report better quality of life.</p><p> Sexual intercourse is linked to high satisfaction across life domains. In one of my studies on 551 married patients with heart disease, individuals who had a higher frequency of sexual intercourse reported higher marital quality, marital consensus, marital coherence, marital affection expression and overall marital satisfaction. These results are replicated in multiple studies.</p><h3>Sex keeps us alive</h3><p>Although early initiation of sex such as during adolescence is a risk factor for mortality, having a sound sexual life in adulthood is linked to low mortality. In a seven-year follow-up study of men 17 years old or older, erectile dysfunction and having no sexual activity at baseline predicted increased mortality over time. Similar findings were shown in younger men. This is probably because more physically healthy individuals are sexually active</p>",
+		"dailyQuestionImage": "https://app.sexence.com/static/ph/placeholder-20.jpg",
+		"date": "10.8.2020",
+		"questions": ["1","2","3"],
+		"dailyFeedback": {
+			"title": "Good For You!",
+			"subTitle": "Thank’s for sharing with us! go ahead to your insignts to check out what we have for you!"
+		},
+		"dailyTip": {
+			"date": "10.8.2020",
+			"text" : "We’ve got just the thing for you (: Check out this short artical with some tips and insights on feeling confident",
+			"articleId": "1", 
+			"shopItem": { 
+				"id": "1",
+				"title": "Give It a try",
+				"image": "https://app.sexence.com/static/ph/placeholder-20.jpg",
+				"text": "Explore you body with the new Lelo. for an amazing, a mind blowing experience",
+				"link": "@/Sexence/pages/daily-sexence"
+			}
+		}
+	}
+]
