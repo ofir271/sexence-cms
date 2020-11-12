@@ -21,7 +21,8 @@ import {
 	DELETE_DATA_RECORD,
 	UPDATE_DATA_RECORD,
 	ADD_DATA_RECORD,
-	SET_IS_DATA_CONTENT_CHANGED
+	SET_IS_DATA_CONTENT_CHANGED,
+	SET_DATA_TYPE_SELECTS
 	
 } from '@/store/app-mutation-types'
 
@@ -97,6 +98,7 @@ const actions = {
 		if (state.isDataTypes) {
 			if (!state.isLoading && !state.isSending) {
 				commit(SET_DATA_TYPE, dataType);
+				//commit(SET_DATA_TYPE_SELECTS, dataType);
 				commit(SET_CONTENT_STATE, "Add");
 				return "set data item type ok"; 
 			} else {
@@ -104,107 +106,6 @@ const actions = {
 			}
 		} else {
 			return "missing data types";
-		}
-	},
-	async setDataContent({ commit, state, rootState }, recordId){
-		if (rootState.isLog) console.log('setDataContent', recordId);
-		if (!state.getIsDataContentChanged) {
-			if (!state.isLoading && !state.isSending) {
-				commit(SET_DATA_CONTENT, recordId);
-				commit(SET_CONTENT_STATE, "Update");
-				return "set data item ok"; 
-			} else {
-				return "loading or sending data";
-			}
-		} else {
-			return "DataContentChanged";
-		}
-	},
-	async addDataTypeRecord({ commit, state, rootState }, dataTypeRecord){
-		if (rootState.isLog) console.log('addDataTypeRecord', dataTypeRecord);
-		if (state.isDataTypes && state.isDataType) {
-			if (!state.isSending) {
-				commit(SET_IS_SENDING, true);
-				if (rootState.isAxios == false) {
-					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
-					commit(ADD_DATA_RECORD, dataTypeRecord);
-					commit(SET_IS_SENDING, false);
-					return "addDataTypeRecord. no axios. add ok"
-				} else {
-					const result = await axios.post(state.currentDataType.endPointSingle+'add/', dataTypeRecord)
-					.then(res => {
-						if (rootState.isLog) console.log('addDataTypeRecord axios res: ', res);
-						commit(ADD_DATA_RECORD, dataTypeRecord);
-						commit(SET_IS_SENDING, false);
-						return 'axios done ok';
-					}).catch(error => {
-						commit(SET_IS_SENDING, false);
-						return 'add data record. axios error: ' + error;
-					})
-				}
-			} else {
-				return "allready sending data";
-			}
-		} else {
-			return "missing data types or data type";
-		}
-	},
-	async updateDataTypeRecord({ commit, state, rootState }, dataTypeRecord){
-		if (rootState.isLog) console.log('updateDataTypeRecord', dataTypeRecord);
-		if (state.isDataTypes && state.isDataType) {
-			if (!state.isSending) {
-				commit(SET_IS_SENDING, true);
-				if (rootState.isAxios == false) {
-					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
-					commit(UPDATE_DATA_RECORD, dataTypeRecord);
-					commit(SET_IS_SENDING, false);
-					return "UpdateDataTypeRecord. no axios. update ok"
-				} else {
-					const result = await axios.put(state.currentDataType.endPointSingle+'update/', dataTypeRecord)
-					.then(res => {
-						if (rootState.isLog) console.log('updateDataTypeRecord axios res: ', res);
-						commit(UPDATE_DATA_RECORD, dataTypeRecord);
-						commit(SET_IS_SENDING, false);
-						return 'axios done ok';
-					}).catch(error => {
-						commit(SET_IS_SENDING, false);
-						return 'update data record. axios error: ' + error;
-					})
-				}
-			} else {
-				return "allready sending data";
-			}
-		} else {
-			return "missing data types or data type";
-		}
-	},	
-	async deleteDataTypeRecord({ commit, state, rootState }, dataTypeRecordId){
-		if (rootState.isLog) console.log('deleteDataTypeRecord', dataTypeRecordId);
-		if (state.isDataTypes && state.isDataType) {
-			if (!state.isSending) {
-				commit(SET_IS_SENDING, true);
-				if (rootState.isAxios == false) {
-					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
-					commit(DELETE_DATA_RECORD, dataTypeRecordId);
-					commit(SET_IS_SENDING, false);
-					return "deleteDataTypeRecord. no axios. done ok"
-				} else {
-					const result = await axios.delete(state.currentDataType.endPointSingle, dataTypeRecordId)
-					.then(res => {
-						if (rootState.isLog) console.log('deleteDataTypeRecord axios res: ', res);
-						commit(DELETE_DATA_RECORD, dataTypeRecordId);
-						commit(SET_IS_SENDING, false);
-						return 'deleteDataTypeRecord. axios done ok';
-					}).catch(error => {
-						commit(SET_IS_SENDING, false);
-						return 'deleteDataTypeRecord. axios error: ' + error;
-					})
-				}
-			} else {
-				return "allready sending data";
-			}
-		} else {
-			return "missing data types or data type";
 		}
 	},
 	async loadDataTable({ commit, state, rootState }) {
@@ -256,6 +157,162 @@ const actions = {
 		} else	{
 			return "missing data types or data type"
 		}
+	},	
+	async loadDataSelects({ commit, state, rootState }) {
+		if (rootState.isLog) console.log('loadDataTable', state.currentDataType.dataTypeName);
+		if (state.isDataType && state.isDataTypes) {
+			if (!state.isLoading) {
+				commit(SET_IS_LOADING, true);
+				state.currentDataTypeFields.forEach(dataField => {
+					
+					//if (dataField.)
+				})
+				if (rootState.isAxios == false) {
+					let sleep = await new Promise(resolve => setTimeout(resolve, 500));
+					
+					switch (state.currentDataType.dataTypeName) {
+						case "article":
+							commit(SET_DATA_TABLE, dummyArticlesJson);
+							break;
+						case "howto":
+							commit(SET_DATA_TABLE, dummyHowtosJson);
+							break;
+						case "daily":
+							commit(SET_DATA_TABLE, dummyDailiesJson);
+							break;
+						case "secrets":
+							commit(SET_DATA_TABLE, dummySecretsJson);
+							break;
+						default:
+					}
+					commit(SET_IS_LOADING, false);
+					return "dummy data items. load ok"
+				} else {
+					const result = await axios.get(state.currentDataType.endPointPlural, { responseType: "json" })
+					.then(res => {
+						if (rootState.isLog) console.log('loadDataTable axios res: ', res);
+						commit(SET_DATA_TABLE, res.data);
+						commit(SET_IS_LOADING, false);
+						return 'axios done ok';
+					}).catch(error => {
+						switch (state.currentDataType.dataTypeName) {
+							case "article":
+								commit(SET_DATA_TABLE, dummyArticlesJson);
+								break;
+							default:
+
+						}
+						commit(SET_IS_LOADING, false);
+						return 'dummy data. axios error:.' + error;
+					})
+				}
+			} else {
+				return "data allready loading"
+			}
+		} else	{
+			return "missing data types or data type"
+		}
+	},
+	async setDataContent({ commit, state, rootState }, recordId){
+		if (rootState.isLog) console.log('setDataContent', recordId);
+		if (!state.getIsDataContentChanged) {
+			if (!state.isLoading && !state.isSending) {
+				commit(SET_DATA_CONTENT, recordId);
+				commit(SET_CONTENT_STATE, "Update");
+				return "set data item ok"; 
+			} else {
+				return "loading or sending data";
+			}
+		} else {
+			return "DataContentChanged";
+		}
+	},
+	async addDataTypeRecord({ commit, state, rootState }, dataTypeRecord){
+		if (rootState.isLog) console.log('addDataTypeRecord', dataTypeRecord);
+		if (state.isDataTypes && state.isDataType) {
+			if (!state.isSending) {
+				commit(SET_IS_SENDING, true);
+				if (rootState.isAxios == false) {
+					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
+					commit(ADD_DATA_RECORD, dataTypeRecord);
+					commit(SET_IS_SENDING, false);
+					return "addDataTypeRecord. no axios. add ok"
+				} else {
+					const result = await axios.post(state.currentDataType.endPointSingle+'add', dataTypeRecord)
+					.then(res => {
+						if (rootState.isLog) console.log('addDataTypeRecord axios res: ', res);
+						commit(ADD_DATA_RECORD, dataTypeRecord);
+						commit(SET_IS_SENDING, false);
+						return 'axios done ok';
+					}).catch(error => {
+						commit(SET_IS_SENDING, false);
+						return 'add data record. axios error: ' + error;
+					})
+				}
+			} else {
+				return "allready sending data";
+			}
+		} else {
+			return "missing data types or data type";
+		}
+	},
+	async updateDataTypeRecord({ commit, state, rootState }, dataTypeRecord){
+		if (rootState.isLog) console.log('updateDataTypeRecord', dataTypeRecord);
+		if (state.isDataTypes && state.isDataType) {
+			if (!state.isSending) {
+				commit(SET_IS_SENDING, true);
+				if (rootState.isAxios == false) {
+					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
+					commit(UPDATE_DATA_RECORD, dataTypeRecord);
+					commit(SET_IS_SENDING, false);
+					return "UpdateDataTypeRecord. no axios. update ok"
+				} else {
+					const result = await axios.post(state.currentDataType.endPointSingle+'update', dataTypeRecord)
+					.then(res => {
+						if (rootState.isLog) console.log('updateDataTypeRecord axios res: ', res);
+						commit(UPDATE_DATA_RECORD, dataTypeRecord);
+						commit(SET_IS_SENDING, false);
+						return 'axios done ok';
+					}).catch(error => {
+						commit(SET_IS_SENDING, false);
+						return 'update data record. axios error: ' + error;
+					})
+				}
+			} else {
+				return "allready sending data";
+			}
+		} else {
+			return "missing data types or data type";
+		}
+	},	
+	async deleteDataTypeRecord({ commit, state, rootState }, dataTypeRecordId){
+		if (rootState.isLog) console.log('deleteDataTypeRecord', dataTypeRecordId);
+		if (state.isDataTypes && state.isDataType) {
+			if (!state.isSending) {
+				commit(SET_IS_SENDING, true);
+				if (rootState.isAxios == false) {
+					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
+					commit(DELETE_DATA_RECORD, dataTypeRecordId);
+					commit(SET_IS_SENDING, false);
+					return "deleteDataTypeRecord. no axios. done ok"
+				} else {
+					const result = await axios.get(state.currentDataType.endPointSingle+'delete/'+dataTypeRecordId)
+					.then(res => {
+						if (rootState.isLog) console.log('deleteDataTypeRecord axios res: ', res);
+						commit(DELETE_DATA_RECORD, dataTypeRecordId);
+						commit(SET_IS_SENDING, false);
+						return 'deleteDataTypeRecord. axios done ok';
+					}).catch(error => {
+						commit(SET_IS_SENDING, false);
+						return 'deleteDataTypeRecord. axios error: ' + error;
+					})
+				}
+			} else {
+				return "allready sending data";
+			}
+		} else {
+			return "missing data types or data type";
+		}
 	},
 }
 
@@ -277,6 +334,11 @@ const mutations = {
 		state.currentDataContentFieldsCol1 = state.currentDataTypeFields.filter(dataField => dataField.col === 1);
 		state.currentDataContentFieldsCol2 = state.currentDataTypeFields.filter(dataField => dataField.col === 2);
 		state.isDataType = true;
+	},
+	[SET_DATA_TYPE_SELECTS]: (state, dataType) => {
+		state.currentDataTypeFields.forEach(dataField => {
+			//if (dataField.)
+		})
 	},
 	[SET_DATA_CONTENT]: (state, recordId) => {
 		//let fieldName = "howToId";
@@ -314,7 +376,7 @@ const mutations = {
 	},
 	[SET_CONTENT_STATE]: (state, contentState) => {
 		state.contentState = contentState;
-	},
+	}
 }
 
 export default {

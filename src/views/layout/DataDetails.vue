@@ -23,7 +23,17 @@
 							:key="'content-field-'+key"
 							:class="['content-field-'+contentField.fieldType, 'content-field']"
 						>
-							<input :ref="'input-field-'+contentField.name" v-model="contentField.value" :placeholder="contentField.name" type="text"/>
+							<input 
+								v-if="['string','id','title','disabled','html'].includes(contentField.fieldType)"
+								:ref="'input-field-'+contentField.name" 
+								:key="'input-field-'+contentField.name" 
+								v-model="contentField.value" 
+								:disabled="1==0 && contentField.fieldType==='id' || contentField.fieldType==='disabled'"
+								:placeholder="contentField.name" 
+								type="text"
+							/>
+
+							
 						</div>
 					</div>
 					<div 
@@ -36,8 +46,15 @@
 							:key="'content-field-'+key"
 							:class="['content-field-'+contentField.fieldType, 'content-field']"
 						>
-							<input v-model="contentField.value" :placeholder="contentField.name" type="text"/>
-							{{contentField.name}}
+							<input 
+								v-if="['string','id','title','disabled','html'].includes(contentField.fieldType)"
+								:ref="'input-field-'+contentField.name" 
+								:key="'input-field-'+contentField.name" 
+								v-model="contentField.value" 
+								:disabled="1==0 && contentField.fieldType==='id' || contentField.fieldType==='disabled'"
+								:placeholder="contentField.name" 
+								type="text"
+							/>
 						</div> 
 					</div> 
 				</div>
@@ -96,9 +113,16 @@ export default {
 			this.log('addContentRecord');
 			this.log(this.$refs);
 			let dataTypeRecord = {}
-			this.getDataContentFields.forEach(ContentField => {
-				//this.$refs[ContentField.name].values
-				this.log(ContentField.name);
+			let dataTypeIdFieldName = this.getDataType.dataTypeIdField;
+			this.getDataContentFields.forEach(contentField => {
+				try {
+					this.log(this.$refs['input-field-'+contentField.name][0].value);
+					this.log(contentField.name);
+					if (dataTypeIdFieldName !== contentField.name)
+						dataTypeRecord[contentField.name]=this.$refs['input-field-'+contentField.name][0].value;
+				} catch(err) {
+					this.log("construct record. err: ", err);
+				}
 			});
 			try {
 				const addRecordResult = this.addDataTypeRecord(dataTypeRecord)
@@ -114,8 +138,17 @@ export default {
 		},
 		updateContentRecord(){
 			this.log('updateContentRecord');
-			this.log(this.$refs);
 			let dataTypeRecord = {}
+			this.getDataContentFields.forEach(contentField => {
+				try {
+					this.log(this.$refs['input-field-'+contentField.name][0].value);
+					this.log(contentField.name);
+					dataTypeRecord[contentField.name]=this.$refs['input-field-'+contentField.name][0].value;
+				} catch(err) {
+					this.log("construct record. err: ", err);
+				}
+			});
+			this.log('dataTypeRecord', dataTypeRecord);
 			try {
 				const updateRecordResult = this.updateDataTypeRecord(dataTypeRecord)
 					.then((res) => {

@@ -12,7 +12,7 @@
 				@click="setEditRecordDetails(tableDataRecord[getDataType.dataTypeIdField])"
 			>
 				<div @click="deleteRecord(tableDataRecord[getDataType.dataTypeIdField], tableDataRecord[getDataType.dataTypeTitleField] )" class="delete-record-icon">
-					<b-icon icon="arrow-bar-left"></b-icon>
+					<b-icon icon="x-square-fill"></b-icon>
 				</div>
 				<div 
 					v-if="getDataType.dataTypeImageField !== ''"
@@ -87,13 +87,13 @@ export default {
 			try {
 				const dataTypesResult = this.deleteDataTypeRecord(recordId)
 					.then((res) => {
-						this.log("setDataTypes. res: ", res);
+						this.log("deleteDataTypeRecord. res: ", res);
 					})
 					.catch((err) => {
-						this.log("error setDataTypes. err: ", err);
+						this.log("error deleteDataTypeRecord. err: ", err);
 					});
 			} catch (err) {
-				this.log("failed to setDataTypes. err: ", err);
+				this.log("failed to deleteDataTypeRecord. err: ", err);
 			}
 		},
 		setEditRecordDetails(recordId) {
@@ -172,11 +172,13 @@ export default {
 			height: $app-table-line-height;
 			position: relative;
 			margin-bottom: $app-space-y3;
+			cursor: pointer;
 			.delete-record-icon{
 				position: absolute;
 				color:$app-delete-color;
 				left: $app-space-x;
 				bottom: $app-space-bottom-small;
+				cursor: pointer;
 			}
 			.data-line-image{
 				height: $app-table-line-height;

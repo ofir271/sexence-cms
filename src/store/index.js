@@ -14,7 +14,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		isLog: true,
-		isAxios: false,
+		isAxios: true,
 	},
 	getters: {
 		getIsLog: state => state.isLog,

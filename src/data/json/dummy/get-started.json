@@ -1,0 +1,25 @@
+{
+    "version": 1.1,
+    "slides": [
+        { 
+            "title": "You are in a good hands",
+            "src": "./static/bg-full/bg-full-get-started-1.jpg",
+            "text1":
+                "Sexence was made by professionals in human sexuality, technology geeks, and really cool guys.",
+            "text2":
+                "Our app offers is a lifestyle and wellness platform that helps you enhance your sexual pleasure to create a better lifestyle."
+        },
+        {
+            "src": "./static/bg-full/bg-full-get-started-2.jpg",
+            "text1":
+                "Use the daily Sexence button to get your insights and value every day. Then we will offer personalized  content, wellness products and programs."
+        },
+        {
+            "src": "./static/bg-full/bg-full-get-started-3.jpg",
+            "text1":
+                "First, just a few quick questions so we can create a personalized experience just for you."
+        } 
+    ]
+}
+
+

@@ -28,13 +28,21 @@
                 "col": 1,
                 "fieldType": "string",
                 "required": true
+            },             
+            {
+                "name" :"authorDesc",
+                "isTable": false,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "string",
+                "required": false
             },            
             {
                 "name" :"title",
                 "isTable": true,
                 "tableOrder": 2,
                 "singleOrder": 2,
-                "col": 1,
+                "col": 2,
                 "fieldType": "title",
                 "required": true
             },            
@@ -54,7 +62,34 @@
                 "col": 2,
                 "fieldType": "html",
                 "required": true               
-            }
+            },
+            {
+                "name" :"lastUpdated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true               
+            },            
+            {
+                "name" :"ts",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true               
+            },             
+            {
+                "name" :"categories",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "selectTable": "categories",
+                "required": true               
+            } 
         ]
     },    
     {
@@ -68,6 +103,24 @@
                 "col": 1,
                 "fieldType": "id",
                 "required": true
+            }, 
+            {
+                "name" :"ts",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true               
+            },  
+            {
+                "name" :"lastUpdated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true               
             },            
             {
                 "name" :"date",
@@ -105,12 +158,71 @@
                 "fieldType": "image",
                 "required": true               
             },
+                        {
+                "name" :"lastUpdated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true               
+            },            
+            {
+                "name" :"ts",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true               
+            },
             {
                 "name" :"sections",
                 "isTable": false,
                 "singleOrder": 5,
                 "col": 2,
                 "fieldType": "html",
+                "required": true               
+            },
+            {
+                "name" :"categories",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "selectTable": "categories",
+                "required": true               
+            } 
+        ]
+    },
+    {
+        "dataTypeName": "category",
+        "fields": [
+            {
+                "name" :"categoryId",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"title",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "title",
+                "required": true
+            },            
+            {
+                "name" :"thumbUrl",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "image",
                 "required": true               
             }
         ]
@@ -228,7 +340,7 @@
                 "name" :"date",
                 "singleOrder": 2,
                 "col": 1,
-                "fieldType": "text",
+                "fieldType": "string",
                 "required": true
             },            
             {
@@ -258,6 +370,56 @@
                 "fieldType": "string",
                 "required": true               
             }            
+         ]
+    },
+    {
+        "dataTypeName": "secrets",
+        "fields": [
+            {
+                "name" :"secretId",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"ts",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "disabled",
+                "required": true
+            }, 
+            {
+                "name" :"lastUpdated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            },           
+            {
+                "name" :"question",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "title",
+                "required": true
+            },            
+            {
+                "name" :"answer",
+                "isTable": false,
+                "tableOrder": 1,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            }
          ]
     }
 ]

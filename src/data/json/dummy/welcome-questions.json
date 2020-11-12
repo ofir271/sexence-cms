@@ -1,0 +1,84 @@
+{
+    "version": 1.1,
+    "questions": [
+        {  
+            "type": "buttons",
+            "title": "Hey you,",
+            "title2": "you identify as...",
+            "order": 1,
+            "id": 1,
+            "answer": "",
+            "options": 
+            [
+                {
+                    "display": "Man",
+                    "value": "Man"
+                },           
+                {
+                    "display": "Woman",
+                    "value": "Woman"
+                },
+                {
+                    "display": "Other",
+                    "value": "Other"
+                }
+            ]
+        },    
+        {  
+            "type": "buttons",
+            "title": "Who are",
+            "title2": "you interested in?",
+            "order": 2,
+            "id": 2,
+            "answer": "",
+            "options": 
+            [
+                {
+                    "display": "Man",
+                    "value": "Man"
+                },           
+                {
+                    "display": "Woman",
+                    "value": "Woman"
+                },
+                {
+                    "display": "Both",
+                    "value": "Both"
+                }
+            ]
+        },
+        {  
+            "type": "number",
+            "title": "My Age is...",
+            "id": 3,
+            "order": 3,
+            "btnText": "Next",
+            "value": "age",
+            "answer":"",
+            "validation": "age",
+            "placeHolder": "Enter Your Age"
+        },
+        {  
+            "type": "buttons",
+            "title": "What is your status?",
+            "id": 4,
+            "order": 4,
+            "answer": "",
+            "options": 
+            [
+                {
+                    "display": "Single",
+                    "value": "Single"
+                },           
+                {
+                    "display": "Dating",
+                    "value": "Dating"
+                },
+                {
+                    "display": "In a relationships",
+                    "value": "In a relationships"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,134 @@
+[
+    {
+        "pageName": "support",
+        "pageId": 1,
+        "version": 1.1,
+        "display": {
+            "title": "Support",
+            "subTitle": "Got Questions?",
+            "subTitle2": "We've got answers!"
+        }
+    },    
+    {
+        "pageName": "terms",
+        "pageId": 2,
+        "version": 1.1,
+        "display": {
+            "title": "Terms & Conditions"
+        }
+    },    
+    {
+        "pageName": "privacy-policy",
+        "pageId": 3,        
+        "version": 1.1,
+        "display": {
+            "title": "Privacy Policy"
+        }
+    },
+    {
+        "pageName": "article",
+        "pageId": 4,
+        "version": 1.1,
+        "display": {
+            "relatedArticles": "Releted articles",
+            "expandBtn": "Read full article"
+        }
+    },
+    {
+        "pageName": "explore",
+        "pageId": 5,
+        "version": 1.1,
+        "display": {
+            "title": "Explore"
+        }
+    },
+    {
+        "pageName": "intro",
+        "pageId": 6,
+        "version": 1.1,
+        "display": {
+            "title": "Enhance Your Sexual pleasure",
+            "text1": "Reduce Stress.",
+            "text2": "Increase Self-Confidence.",
+            "text3": "Create amazing lifestyle",
+            "btnText": "Get Started"
+        }        
+    },
+    {
+        "pageName": "get-started",
+        "pageId": 7,
+        "version": 1.1,
+        "display": {
+            "btnText": "Let's Do This",
+            "btnContinue": "Continue",
+            "btnLetsGo": "Let's go"
+        }        
+    },
+    {
+        "pageName": "howto-list",
+        "pageId": 8,
+        "version": 1.1,
+        "display": {
+            "title": "How-to"
+        }
+    },
+    {
+        "pageName": "your-interests",
+        "pageId": 9,
+        "version": 1.1,
+        "display": {
+            "titleUser": "Your Interests",
+            "titleLine1NoUser": "Hey You!",
+            "titleLine2NoUser": "What brings you to Sexence?",
+            "btnText": "That's what I like!",
+            "btnText2": "What do you like?"
+        }
+    },
+    {
+        "pageName": "my-sexence",
+        "pageId": 10,
+        "version": 1.1,
+        "display": {
+            "title": "My Sexence",
+            "saveBtnText": "Save Initials",
+            "myCategoriesBtnText": "Your Interests",
+            "SavedArticlesBtnText": "Saved Articles"
+        }
+    },
+    {
+        "pageName": "saved-articles",
+        "pageId": 11,
+        "version": 1.1,
+        "display": {
+            "title": "Saved Articles"
+        }
+    },    
+    {
+        "pageName": "secret-sexence",
+        "pageId": 12,
+        "version": 1.1,
+        "display": {
+            "btnText": "See more daily questions"
+        }
+    },    
+    {
+        "pageName": "secrets-list",
+        "pageId": 13,
+        "version": 1.1,
+        "display": {
+            "title": "Secret Sexence"
+        }
+    },    
+    {
+        "pageName": "login",
+        "pageId": 14,
+        "version": 1.1,
+        "display": {
+            "emailConnect": "Connect With Email",
+            "googleConnect": "Connect With Google",
+            "facebookConnect": "Connect With Facebook",
+            "appleConnect": "Connect With Apple",
+            "footerRemarkHtml": "By continuing, you agree to Sexence's <a href='/terms-of-use'>Terms of Use</a> and confirm that you have read the Sexence's <a href='/privacy-policy'>Privacy Policy</a> "
+        }
+    }
+]

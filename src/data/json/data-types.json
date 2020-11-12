@@ -28,20 +28,65 @@
         "dataTypeIdField": "howToId",
         "endPointPlural": "https://dev2.sexence.com:5020/howtos",
         "endPointSingle": "https://dev2.sexence.com:5020/"
+    },
+    {
+        "dataTypeName": "category",
+        "plural": "categories",
+        "display": "Categories",
+        "type": "multiple",
+        "menuGroup": "content",
+        "menuOrder": 1,
+        "detailsCols": 1,
+        "iconName": "card-list",
+        "dataTypeImageField": "thumbUrl",
+        "dataTypeTitleField": "title",
+        "dataTypeIdField": "categoryId",
+        "endPointPlural": "https://dev2.sexence.com:5031/categories",
+        "endPointSingle": "https://dev2.sexence.com:5031/",
+        "endPointSingleGet": "https://dev2.sexence.com:5031/article/"
+    },      
+    {
+        "dataTypeName": "shopItem",
+        "plural": "shop items",
+        "display": "Shop items",
+        "type": "multiple",
+        "menuGroup": "content",
+        "menuOrder": 4,
+        "detailsCols": 1,
+        "iconName": "bag",
+        "dataTypeImageField": "thumbUrl",
+        "dataTypeTitleField": "title",
+        "dataTypeIdField": "shopItemId",
+        "endPointPlural": "https://dev2.sexence.com:5031/shopItems",
+        "endPointSingle": "https://dev2.sexence.com:5031/"
     },     
     {
-        "dataTypeName": "dailyForYou",
-        "plural": "daily",
-        "display": "Daily ",
+        "dataTypeName": "dailySexence",
+        "plural": "dailySexence",
+        "display": "Daily Sexence",
         "type": "multiple",
         "menuGroup": "main",
         "menuOrder": 3,
-        "iconName": "file-earmark-binary",
+        "iconName": "calendar2-plus",
         "dataTypeImageField": "dailyForYouImage",
         "dataTypeTitleField": "dailyForYouTitle",
         "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5029/dailyTip",
-        "endPointSingle": "https://dev2.sexence.com:5029/add"
+        "endPointPlural": "https://dev2.sexence.com:5029/dailySexence",
+        "endPointSingle": "https://dev2.sexence.com:5029/"
+    },     
+    {
+        "dataTypeName": "dailyForYou",
+        "plural": "dailyForYous",
+        "display": "Daily For You",
+        "type": "multiple",
+        "menuGroup": "main",
+        "menuOrder": 4,
+        "iconName": "calendar3-event",
+        "dataTypeImageField": "dailyForYouImage",
+        "dataTypeTitleField": "dailyForYouTitle",
+        "dataTypeIdField": "dailyTipId",
+        "endPointPlural": "https://dev2.sexence.com:5029/dailyForYous",
+        "endPointSingle": "https://dev2.sexence.com:5029/"
     }, 
     {
         "dataTypeName": "dailyQuestions",
@@ -49,12 +94,12 @@
         "display": "Daily Questions",
         "type": "multiple",
         "menuGroup": "main",
-        "menuOrder": 3,
-        "iconName": "file-earmark-binary",
+        "menuOrder": 5,
+        "iconName": "patch-question",
         "dataTypeImageField": "dailyForYouImage",
         "dataTypeTitleField": "dailyForYouTitle",
         "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5029/dailyTip",
+        "endPointPlural": "https://dev2.sexence.com:5029/dailyQuestions",
         "endPointSingle": "https://dev2.sexence.com:5029/add"
     },   
     {
@@ -63,26 +108,26 @@
         "display": "Daily Tip",
         "type": "multiple",
         "menuGroup": "main",
-        "menuOrder": 3,
-        "iconName": "file-earmark-binary",
+        "menuOrder": 7,
+        "iconName": "calander2-check",
         "dataTypeImageField": "dailyForYouImage",
         "dataTypeTitleField": "dailyForYouTitle",
         "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5029/dailyTip",
-        "endPointSingle": "https://dev2.sexence.com:5029/add"
+        "endPointPlural": "https://dev2.sexence.com:5029/dailyTips",
+        "endPointSingle": "https://dev2.sexence.com:5029/"
     },    
     {
         "dataTypeName": "dailyFeedback",
-        "plural": "daily tips",
-        "display": "Daily Tip",
+        "plural": "daily feedback",
+        "display": "Daily Feedback",
         "type": "multiple",
         "menuGroup": "main",
-        "menuOrder": 3,
-        "iconName": "file-earmark-binary",
+        "menuOrder": 6,
+        "iconName": "calander3",
         "dataTypeImageField": "dailyForYouImage",
         "dataTypeTitleField": "dailyForYouTitle",
         "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5029/dailyTip",
+        "endPointPlural": "https://dev2.sexence.com:5029/dailyFeedbacks",
         "endPointSingle": "https://dev2.sexence.com:5029/add"
     },
     {
@@ -91,10 +136,11 @@
         "display": "Secret Sexence",
         "type": "multiple",
         "menuGroup": "main",
-        "menuOrder": 4,        
+        "menuOrder": 8,        
         "iconName": "key",
-        "endPointPlural": "https://dev2.sexence.com/ws/stubs/secrets",
-        "endPointSingle": "https://dev2.sexence.com/ws/stubs/secret"
+        "dataTypeIdField": "secretId",
+        "endPointPlural": "https://dev2.sexence.com:5036/secretSexence",
+        "endPointSingle": "https://dev2.sexence.com:5036/"
     },
     {
         "dataTypeName": "supportQuestion",
@@ -113,5 +159,14 @@
         "menuGroup": "content",
         "iconName": "file-text",
         "menuOrder": 2
+    },    
+    {
+        "dataTypeName": "Policy",
+        "plural": "Policy",
+        "display": "Privacy Policy",
+        "type": "singular",
+        "menuGroup": "content",
+        "iconName": "file-text",
+        "menuOrder": 3
     }
 ]
