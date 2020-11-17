@@ -7,6 +7,7 @@ const state = {
     appStates: {
         sidebarOpen: true,
         midOpen: true,
+        sidebarMainGroupOpen: true,
     }
 };
 

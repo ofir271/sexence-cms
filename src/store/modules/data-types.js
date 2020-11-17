@@ -1,8 +1,11 @@
 import axios from 'axios';
+import {tsToDateTime} from "@/mixins/helper";
+
 import dataTypesJson from '@/data/json/data-types.json';
 import dataTypesFieldsJson from '@/data/json/data-types-fields.json';
 
 import dummyArticlesJson from '@/data/json/dummy/articles.json';
+import dummyCategoriesJson from '@/data/json/dummy/categories.json';
 import dummyHowtosJson from '@/data/json/dummy/howtos.json';
 import dummyDailiesJson from '@/data/json/dummy/dailies.json';
 import dummyDailyJson from '@/data/json/dummy/daily.json';
@@ -27,6 +30,7 @@ import {
 } from '@/store/app-mutation-types'
 
 const state = {
+	imagePathBase: "https://app.sexence.com/static/ph/",
 	dataTypes: [],
 	dataTypesFields: [],
 	isDataTypes: false,
@@ -37,6 +41,7 @@ const state = {
 	isLoading: false,
 	isSending: false,
 	currentDataType: "",
+	localDataTables: [], //for local cashing
 	currentDataTable: [],
 	currentDataTypeFields: [],
 	currentDataTableFields: [],
@@ -71,7 +76,8 @@ const getters = {
 	getDataContentFields: state => state.currentDataContentFields,
 	getDataContentFieldsCol1: state => state.currentDataContentFieldsCol1,
 	getDataContentFieldsCol2: state => state.currentDataContentFieldsCol2,
-	getContentState: state => state.contentState
+	getContentState: state => state.contentState,
+	getLocalDataTables: state => state.localDataTables
 };
 
 const actions = {
@@ -108,48 +114,63 @@ const actions = {
 			return "missing data types";
 		}
 	},
-	async loadDataTable({ commit, state, rootState }) {
+	async loadDataTable({ commit, state, rootState },reload=false) {
 		if (rootState.isLog) console.log('loadDataTable', state.currentDataType.dataTypeName);
 		if (state.isDataType && state.isDataTypes) {
 			if (!state.isLoading) {
 				commit(SET_IS_LOADING, true);
-				if (rootState.isAxios == false) {
-					let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
-					switch (state.currentDataType.dataTypeName) {
-						case "article":
-							commit(SET_DATA_TABLE, dummyArticlesJson);
-							break;
-						case "howto":
-							commit(SET_DATA_TABLE, dummyHowtosJson);
-							break;
-						case "daily":
-							commit(SET_DATA_TABLE, dummyDailiesJson);
-							break;
-						case "secrets":
-							commit(SET_DATA_TABLE, dummySecretsJson);
-							break;
-						default:
-					}
+				if (reload && typeof state.localDataTables[state.currentDataType.dataTypeName] !== 'undefined' ){
+					state.localDataTables[state.currentDataType.dataTypeName]=null;
+					//if (rootState.isLog) console.log('loadDataTable', 'xx');
+					
+				}
+				if (typeof state.localDataTables[state.currentDataType.dataTypeName] !== 'undefined' && state.localDataTables[state.currentDataType.dataTypeName] !== null){
+					commit(SET_DATA_TABLE, state.localDataTables[state.currentDataType.dataTypeName]);
 					commit(SET_IS_LOADING, false);
-					return "dummy data items. load ok"
+					return "load local table ok"
 				} else {
-					const result = await axios.get(state.currentDataType.endPointPlural, { responseType: "json" })
-					.then(res => {
-						if (rootState.isLog) console.log('loadDataTable axios res: ', res);
-						commit(SET_DATA_TABLE, res.data);
-						commit(SET_IS_LOADING, false);
-						return 'axios done ok';
-					}).catch(error => {
+					if (rootState.isAxios == false) {
+						let sleep = await new Promise(resolve => setTimeout(resolve, 1500));
 						switch (state.currentDataType.dataTypeName) {
 							case "article":
 								commit(SET_DATA_TABLE, dummyArticlesJson);
 								break;
+							case "howto":
+								commit(SET_DATA_TABLE, dummyHowtosJson);
+								break;
+							case "category":
+								commit(SET_DATA_TABLE, dummyCategoriesJson);
+								break;
+							case "daily":
+								commit(SET_DATA_TABLE, dummyDailiesJson);
+								break;
+							case "secrets":
+								commit(SET_DATA_TABLE, dummySecretsJson);
+								break;
 							default:
-
 						}
 						commit(SET_IS_LOADING, false);
-						return 'dummy data. axios error:.' + error;
-					})
+						return "dummy data items. load ok"
+					} else {
+						const result = await axios.get(state.currentDataType.endPointPlural, { responseType: "json" })
+						.then(res => {
+							if (rootState.isLog) console.log('loadDataTable axios res: ', res.data);
+							let dataTableObj = res.data;
+							commit(SET_DATA_TABLE, dataTableObj);
+							commit(SET_IS_LOADING, false);
+							return 'axios done ok';
+						}).catch(error => {
+							switch (state.currentDataType.dataTypeName) {
+								case "article":
+									commit(SET_DATA_TABLE, dummyArticlesJson);
+									break;
+								default:
+	
+							}
+							commit(SET_IS_LOADING, false);
+							return 'dummy data. axios error:.' + error;
+						})
+					}
 				}
 			} else {
 				return "data allready loading"
@@ -353,11 +374,21 @@ const mutations = {
 		});
 	},
 	[SET_DATA_TABLE]: (state, dataTable) => {
+		if (typeof state.localDataTables[state.currentDataType.dataTypeName] == 'undefined' || state.localDataTables[state.currentDataType.dataTypeName]==null){
+			state.localDataTables[state.currentDataType.dataTypeName] = dataTable;
+		}
 		state.currentDataTable = dataTable;
 		state.isDataTable = true;
 	},
+	// [SET_DATA_TABLE_DATES_FROM_TS]: (state, dataTable) => {
+	// 	state.currentDataTable
+	// 	state.currentDataTable.forEach = dataTable;
+	// 	state.isDataTable = true;
+	// },
+	// tsToDateTime
 	[DELETE_DATA_RECORD]: (state, dataTypeRecordId) => {
-		//state.currentDataTable.delete = dataTypeRecordId;
+		state.currentDataTable = state.currentDataTable.filter(dataRecord => dataRecord[state.currentDataType.dataTypeIdField] !== dataTypeRecordId)
+		state.localDataTables[state.currentDataType.dataTypeName] = state.currentDataTable;
 	},
 	[ADD_DATA_RECORD]: (state, dataTypeRecord) => {
 		//state.currentDataTable.add = dataTypeRecordId;

@@ -3,54 +3,87 @@
 		<div @click="toggleAppState('midOpen')" class="close-mid close-panel">
 			<b-icon icon="arrow-bar-left"></b-icon>
 		</div>
-		<h1 class="main-title">{{dataTableTitle}}</h1>
+		<h1 class="main-title">{{ dataTableTitle }}</h1>
 		<div class="data-table-list">
-			<div 
+			<div
 				v-for="tableDataRecord in getDataTable"
-				:key="'data-line-'+ tableDataRecord[getDataType.dataTypeIdField]"
+				:key="'data-line-' + tableDataRecord[getDataType.dataTypeIdField]"
 				class="data-table-item"
-				@click="setEditRecordDetails(tableDataRecord[getDataType.dataTypeIdField])"
+				@click="
+					setEditRecordDetails(tableDataRecord[getDataType.dataTypeIdField])
+				"
 			>
-				<div @click="deleteRecord(tableDataRecord[getDataType.dataTypeIdField], tableDataRecord[getDataType.dataTypeTitleField] )" class="delete-record-icon">
+				<div
+					@click="
+						deleteRecord(
+							tableDataRecord[getDataType.dataTypeIdField],
+							tableDataRecord[getDataType.dataTypeTitleField]
+						)
+					"
+					class="delete-record-icon"
+				>
 					<b-icon icon="x-square-fill"></b-icon>
 				</div>
-				<div 
+				<div
 					v-if="getDataType.dataTypeImageField !== ''"
-					:key="'data-line-'+ tableDataRecord[getDataType.dataTypeIdField] +'-field-image'"
+					:key="
+						'data-line-' +
+						tableDataRecord[getDataType.dataTypeIdField] +
+						'-field-image'
+					"
 					class="data-line-image data-table-field"
 				>
-					<img 
-						:src="tableDataRecord[getDataType.dataTypeImageField]"
-					/>
+					<img :src="tableDataRecord[getDataType.dataTypeImageField]" />
 				</div>
-				<div class="data-line-text-wrap">	
-					<div 
+				<div class="data-line-text-wrap">
+					<div
 						v-if="getDataType.dataTypeTitleField !== ''"
-						:key="'data-line-'+ tableDataRecord[getDataType.dataTypeIdField] +'-field-title'"
+						:key="
+							'data-line-' +
+							tableDataRecord[getDataType.dataTypeIdField] +
+							'-field-title'
+						"
 						class="data-line-title data-table-field"
 					>
 						<h3>
-							{{tableDataRecord[getDataType.dataTypeTitleField]}}
-						</h3>		
+							{{ tableDataRecord[getDataType.dataTypeTitleField] }}
+						</h3>
 					</div>
-					<span 
-						v-if="getDataType.dataTypeIdField!== ''" 
-						:key="'data-line-'+ tableDataRecord[getDataType.dataTypeIdField] +'-field-id'"
+					<span
+						v-if="getDataType.dataTypeIdField !== ''"
+						:key="
+							'data-line-' +
+							tableDataRecord[getDataType.dataTypeIdField] +
+							'-field-id'
+						"
 						class="data-line-id data-table-field"
 					>
-						{{tableDataRecord[getDataType.dataTypeIdField]}}
-					</span>			
-					<div class="data-line-sub-fields-wrap">	
-						<template 
-							v-for="tableDataField in getDataTableFields"
-						>				
-							<span 
-								v-if="tableDataField.fieldType==='string' || tableDataField.fieldType==='disabled'" 
-								:key="'data-line-'+ tableDataRecord[getDataType.dataTypeIdField] +'-field-'+tableDataField.tableOrder+'-span'"
+						{{ tableDataRecord[getDataType.dataTypeIdField] }}
+					</span>
+					<div class="data-line-sub-fields-wrap">
+						<template v-for="tableDataField in getDataTableFields">
+							<span
+								v-if="
+									tableDataField.fieldType === 'string' ||
+									tableDataField.fieldType === 'disabled' ||
+									tableDataField.fieldType === 'ts'
+								"
+								:key="
+									'data-line-' +
+									tableDataRecord[getDataType.dataTypeIdField] +
+									'-field-' +
+									tableDataField.name +
+									'-span'
+								"
 								class="data-line-text"
 							>
-								{{tableDataRecord[tableDataField.name]}}
-							</span>					
+								<template v-if="tableDataField.fieldType === 'ts'">
+									{{ tsToDateTime(tableDataRecord[tableDataField.name]) }}
+								</template>
+								<template v-if="tableDataField.fieldType === 'string'">
+									{{ tableDataRecord[tableDataField.name] }}
+								</template>
+							</span>
 						</template>
 					</div>
 				</div>
@@ -71,38 +104,83 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters(["getDataType", "getDataTable", "getDataTypesFields", "getDataTableFields", "getIsDataContentChanged"]),
+		...mapGetters([
+			"getDataType",
+			"getDataTable",
+			"getDataTypesFields",
+			"getDataTableFields",
+			"getIsDataContentChanged",
+		]),
 		dataTableTitle() {
-			if (this.getDataType.display)
-				return this.getDataType.display;
-			else
-				return "Welcome to Sexence Admin";
-		}
+			if (this.getDataType.pluralDisplay) return this.getDataType.pluralDisplay;
+			else return "Welcome to Sexence Admin";
+		},
 	},
 	methods: {
-		...mapActions(["setDataType", "loadDataTable", "toggleAppState", "deleteDataTypeRecord", "setDataContent"]),
-		deleteRecord(recordId, recordTitle = ''){
-			this.log('deleteRecord', recordId, recordTitle);
-			alert('delete', recordId)
-			try {
-				const dataTypesResult = this.deleteDataTypeRecord(recordId)
-					.then((res) => {
-						this.log("deleteDataTypeRecord. res: ", res);
-					})
-					.catch((err) => {
-						this.log("error deleteDataTypeRecord. err: ", err);
-					});
-			} catch (err) {
-				this.log("failed to deleteDataTypeRecord. err: ", err);
+		...mapActions([
+			"setDataType",
+			"loadDataTable",
+			"toggleAppState",
+			"deleteDataTypeRecord",
+			"setDataContent",
+			"setIsDataContentChanged",
+		]),
+		deleteRecord(recordId, recordTitle = "") {
+			this.log("deleteRecord", recordId, recordTitle);
+			const confirmDelete = confirm("Please confirm dalete");
+			if (confirmDelete) {
+				try {
+					const dataTypesResult = this.deleteDataTypeRecord(recordId)
+						.then((res) => {
+							this.log("deleteDataTypeRecord. res: ", res);
+						})
+						.catch((err) => {
+							this.log("error deleteDataTypeRecord. err: ", err);
+						});
+				} catch (err) {
+					this.log("failed to deleteDataTypeRecord. err: ", err);
+				}
 			}
 		},
+		tsToDateTime(UNIX_timestamp) {
+			var tempDate = new Date(UNIX_timestamp * 1000);
+			var months = [
+				"Jan",
+				"Feb",
+				"Mar",
+				"Apr",
+				"May",
+				"Jun",
+				"Jul",
+				"Aug",
+				"Sep",
+				"Oct",
+				"Nov",
+				"Dec",
+			];
+			var year = tempDate.getFullYear();
+			var month = months[tempDate.getMonth()];
+			var date = tempDate.getDate();
+			var hour = tempDate.getHours();
+			var min = tempDate.getMinutes();
+			var sec = tempDate.getSeconds();
+			var time = date + " " + month + " " + year + " " + hour + ":" + min;
+			return time;
+		},
 		setEditRecordDetails(recordId) {
-			this.log('setEditRecordDetails', recordId);
-			if (!this.getIsDataContentChanged){
+			this.log("setEditRecordDetails", recordId);
+			let confirmContentLoad = false;
+			if (this.getIsDataContentChanged) {
+				confirmContentLoad = confirm("data may be lost. continue anyway?");
+			}
+			if (!this.getIsDataContentChanged || confirmContentLoad) {
+				/* todo: try and make reactive */
+
 				try {
 					const dataTypesResult = this.setDataContent(recordId)
 						.then((res) => {
 							this.log("setDataContent. res: ", res);
+							this.setIsDataContentChanged(true);
 						})
 						.catch((err) => {
 							this.log("error setDataContent. err: ", err);
@@ -111,7 +189,7 @@ export default {
 					this.log("failed to setDataContent. err: ", err);
 				}
 			}
-		}
+		},
 	},
 };
 </script>
@@ -209,6 +287,10 @@ export default {
 						padding-right: $app-space-x;
 						font-weight: 400;
 						color: $app-title-color2;
+						transition: color $app-transition-time-short;
+						&.active{
+							color: $app-active-color;
+						}
 					}
 				}
 				.data-line-sub-fields-wrap{

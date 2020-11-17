@@ -4,41 +4,70 @@
         "fields": [
             {
                 "name" :"articleId",
+                "displayName" :"Article Id",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
                 "col": 1,
                 "fieldType": "id",
-                "required": true
-            },            
+                "required": true,
+                "disabled": true,
+                "hidden": false            
+            },   
             {
-                "name" :"date",
-                "isTable": true,
-                "tableOrder": 4,
-                "singleOrder": 3,
+                "name" :"articleType",
+                "displayName" :"Article type",
+                "isTable": false,
+                "singleOrder": 2,
                 "col": 1,
-                "fieldType": "disabled",
-                "required": true
-            },            
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },         
             {
                 "name" :"authorName",
+                "displayName" :"Author name",
                 "isTable": true,
                 "tableOrder": 3,
                 "singleOrder": 4,
                 "col": 1,
                 "fieldType": "string",
-                "required": true
+                "required": false
             },             
             {
                 "name" :"authorDesc",
+                "displayName" :"Author Description",
                 "isTable": false,
                 "singleOrder": 4,
                 "col": 1,
                 "fieldType": "string",
-                "required": false
+                "required": false, 
+                "hidden": true 
+            },
+            {
+                "name" :"categories",
+                "displayName" :"Categories",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 2,
+                "fieldType": "string",
+                "selectTable": "categories",
+                "required": true               
+            },
+            {
+                "name" :"date",
+                "displayName" :"Date",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "date",
+                "required": true,
+                "disabled": true, 
+                "hidden": true 
             },            
             {
                 "name" :"title",
+                "displayName" :"Title",
                 "isTable": true,
                 "tableOrder": 2,
                 "singleOrder": 2,
@@ -47,49 +76,137 @@
                 "required": true
             },            
             {
-                "name" :"thumbUrl",
+                "name" :"imageUrl",
+                "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 4,
+                "singleOrder": 5,
+                "col": 1,
+                "fieldType": "image",
+                "required": true               
+            },            
+            {
+                "name" :"thumbUrl",
+                "displayName" :"Thumb image",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 6,
                 "col": 1,
                 "fieldType": "image",
                 "required": true               
             },
             {
                 "name" :"sections",
+                "displayName" :"Sections",
                 "isTable": false,
-                "singleOrder": 5,
+                "singleOrder": 2,
                 "col": 2,
                 "fieldType": "html",
                 "required": true               
             },
             {
-                "name" :"lastUpdated",
-                "isTable": false,
+                "name" :"createdTs",
+                "displayName" :"Creation date",
+                "isTable": true,
                 "tableOrder": 3,
                 "singleOrder": 2,
                 "col": 1,
-                "fieldType": "disabled",
-                "required": true               
+                "fieldType": "ts",
+                "required": true,
+                "disabled": true              
+            }, 
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true,
+                "disabled": true            
             },            
             {
-                "name" :"ts",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "disabled",
-                "required": true               
-            },             
-            {
-                "name" :"categories",
+                "name" :"subtitle",
+                "displayName" :"Sub title",
                 "isTable": false,
                 "singleOrder": 2,
                 "col": 1,
                 "fieldType": "string",
-                "selectTable": "categories",
-                "required": true               
-            } 
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"relatedArticles",
+                "displayName" :"Related articles",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"ref",
+                "displayName" :"Ref",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"rank",
+                "displayName" :"Rank",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true,               
+                "hidden": true               
+            },            
+            {
+                "name" :"likes",
+                "displayName" :"Likes",
+                "isTable": false,
+                "singleOrder": 6,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false               
+            },            
+            {
+                "name" :"views",
+                "displayName" :"Views",
+                "isTable": false,
+                "singleOrder": 7,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false               
+            },            
+            {
+                "name" :"tags",
+                "displayName" :"Tags",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"sources",
+                "displayName" :"Sources",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true                 
+            }            
+
         ]
     },    
     {
@@ -105,94 +222,187 @@
                 "required": true
             }, 
             {
-                "name" :"ts",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "disabled",
-                "required": true               
-            },  
-            {
-                "name" :"lastUpdated",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "disabled",
-                "required": true               
-            },            
-            {
-                "name" :"date",
-                "isTable": true,
-                "tableOrder": 4,
-                "singleOrder": 3,
-                "col": 1,
-                "fieldType": "disabled",
-                "required": true
-            },            
-            {
                 "name" :"authorName",
+                "displayName" :"Author name",
                 "isTable": true,
                 "tableOrder": 3,
                 "singleOrder": 4,
                 "col": 1,
                 "fieldType": "string",
-                "required": true
+                "required": false
+            },             
+            {
+                "name" :"authorDesc",
+                "displayName" :"Author Description",
+                "isTable": false,
+                "singleOrder": 4,
+                "col": 1,
+                "fieldType": "string",
+                "required": false, 
+                "hidden": true 
+            },
+            {
+                "name" :"categories",
+                "displayName" :"Categories",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 2,
+                "fieldType": "string",
+                "selectTable": "categories",
+                "required": true               
+            },
+            {
+                "name" :"date",
+                "displayName" :"Date",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "date",
+                "required": true,
+                "disabled": true, 
+                "hidden": true 
             },            
             {
                 "name" :"title",
+                "displayName" :"Title",
                 "isTable": true,
                 "tableOrder": 2,
                 "singleOrder": 2,
-                "col": 1,
+                "col": 2,
                 "fieldType": "title",
                 "required": true
             },            
             {
-                "name" :"thumbUrl",
+                "name" :"imageUrl",
+                "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 4,
+                "singleOrder": 5,
+                "col": 1,
+                "fieldType": "image",
+                "required": true               
+            },            
+            {
+                "name" :"thumbUrl",
+                "displayName" :"Thumb image",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 6,
                 "col": 1,
                 "fieldType": "image",
                 "required": true               
             },
-                        {
-                "name" :"lastUpdated",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "disabled",
-                "required": true               
-            },            
-            {
-                "name" :"ts",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "disabled",
-                "required": true               
-            },
             {
                 "name" :"sections",
+                "displayName" :"Sections",
                 "isTable": false,
-                "singleOrder": 5,
+                "singleOrder": 2,
                 "col": 2,
                 "fieldType": "html",
                 "required": true               
             },
             {
-                "name" :"categories",
+                "name" :"createdTs",
+                "displayName" :"Creation date",
+                "isTable": true,
+                "tableOrder": 3,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true,
+                "disabled": true              
+            }, 
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true,
+                "disabled": true            
+            },            
+            {
+                "name" :"subtitle",
+                "displayName" :"Sub title",
                 "isTable": false,
                 "singleOrder": 2,
                 "col": 1,
                 "fieldType": "string",
-                "selectTable": "categories",
-                "required": true               
-            } 
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"relatedArticles",
+                "displayName" :"Related articles",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"ref",
+                "displayName" :"Ref",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"rank",
+                "displayName" :"Rank",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": true,               
+                "hidden": true               
+            },            
+            {
+                "name" :"likes",
+                "displayName" :"Likes",
+                "isTable": false,
+                "singleOrder": 6,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false               
+            },            
+            {
+                "name" :"views",
+                "displayName" :"Views",
+                "isTable": false,
+                "singleOrder": 7,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false               
+            },            
+            {
+                "name" :"tags",
+                "displayName" :"Tags",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true               
+            },            
+            {
+                "name" :"sources",
+                "displayName" :"Sources",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": true                 
+            }            
         ]
     },
     {
@@ -200,38 +410,229 @@
         "fields": [
             {
                 "name" :"categoryId",
+                "displayName" :"Category id",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
                 "col": 1,
                 "fieldType": "id",
                 "required": true
-            },            
+            }, 
             {
-                "name" :"title",
-                "isTable": true,
-                "tableOrder": 2,
+                "name" :"createdTs",
+                "displayName" :"Created",
+                "isTable": false,
+                "tableOrder": 3,
                 "singleOrder": 2,
                 "col": 1,
+                "fieldType": "string",
+                "required": false               
+            },  
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last Updated",
+                "isTable": false,
+                "tableOrder": 3,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "string",
+                "required": false               
+            },         
+            {
+                "name" :"categoryName",
+                "displayName" :"Category name",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 1,
+                "col": 2,
                 "fieldType": "title",
                 "required": true
+            },             
+            {
+                "name" :"description",
+                "displayName" :"Description",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 2,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false    
+            },             
+            {
+                "name" :"alias",
+                "displayName" :"Alias",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false    
+            },              
+            {
+                "name" :"tags",
+                "displayName" :"Tags",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false    
             },            
             {
-                "name" :"thumbUrl",
+                "name" :"imageUrl",
+                "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
                 "singleOrder": 4,
-                "col": 1,
-                "fieldType": "image",
-                "required": true               
+                "col": 2,
+                "fieldType": "string",
+                "required": true   
             }
         ]
     },
     {
-        "dataTypeName": "daily",
+        "dataTypeName": "dailySexence",
         "fields": [
             {
+                "name" :"dailySexenceId",
+                "displayName" :"Daily sexence id",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true,
+                "disabled": true
+            },            
+            {
+                "name" :"createdTs",
+                "displayName" :"Created",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            },   
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            }, 
+            {
+                "name" :"dailyForYouId",
+                "displayName" :"Daily for you",
+                "isTable": false,
+                "singleOrder": 2,
+                "col": 2,
+                "fieldType": "string",
+                "required": false
+            }, 
+            {
+                "name" :"dailyQuestionId",
+                "displayName" :"Daily question",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 2,
+                "fieldType": "string",
+                "required": false               
+            },            
+            {
                 "name" :"dailyTipId",
+                "displayName" :"Daily tip",
+                "isTable": false,
+                "singleOrder": 4,
+                "col": 2,
+                "fieldType": "string",
+                "required": false               
+            },  
+            {
+                "name" :"dailyFeedbackId",
+                "displayName" :"Daily feedback",
+                "isTable": false,
+                "singleOrder": 5,
+                "col": 2,
+                "fieldType": "string",
+                "required": false               
+            },          
+            {
+                "name" :"date",
+                "displayName" :"Date",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 5,
+                "col": 1,
+                "fieldType": "date",
+                "required": false
+            }            
+        ]
+    },
+    {
+        "dataTypeName": "dailyFeedback",
+        "fields": [
+            {
+                "name" :"dailyFeedbackId",
+                "displayName" :"Daily feedback id",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true,
+                "disabled": true
+            },            
+            {
+                "name" :"createdTs",
+                "displayName" :"Created",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            },   
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            }, 
+            {
+                "name" :"title",
+                "displayName" :"Daily for you",
+                "isTable": true,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "title",
+                "required": true
+            }, 
+            {
+                "name" :"subTitle",
+                "displayName" :"Daily question",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "string",
+                "required": true               
+            }            
+        ]
+    },
+    {
+        "dataTypeName": "dailyForYou",
+        "fields": [
+            {
+                "name" :"dailyForYouId",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
@@ -245,7 +646,7 @@
                 "tableOrder": 4,
                 "singleOrder": 3,
                 "col": 1,
-                "fieldType": "disabled",
+                "fieldType": "string",
                 "required": true
             },            
             {
@@ -311,72 +712,80 @@
         "fields": [
             {
                 "name" :"dailyTipId",
+                "displayName" :"Daily tip id",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
                 "col": 1,
                 "fieldType": "id",
-                "required": true
+                "required": true,
+                "disabled": true
             },            
             {
                 "name" :"ts",
+                "displayName" :"Creation date",
                 "isTable": true,
                 "tableOrder": 4,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            },   
+            {
+                "name" :"lastUpdated",
+                "displayName" :"Last updated",
+                "isTable": false,
                 "singleOrder": 3,
                 "col": 1,
-                "fieldType": "disabled",
-                "required": true
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            }, 
+            {
+                "name" :"text",
+                "displayName" :"Text",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 1,
+                "col": 2,
+                "fieldType": "title",
+                "required": true               
             },            
             {
                 "name" :"shopItemId",
-                "isTable": true,
-                "tableOrder": 2,
+                "displayName" :"Shop item",
+                "isTable": false,
                 "singleOrder": 2,
-                "col": 1,
+                "col": 2,
                 "fieldType": "string",
-                "required": true
+                "required": false
+            }, 
+            {
+                "name" :"articleId",
+                "displayName" :"Article",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 2,
+                "fieldType": "string",
+                "required": false               
             },            
             {
                 "name" :"date",
-                "singleOrder": 2,
+                "displayName" :"Date",
+                "singleOrder": 5,
                 "col": 1,
                 "fieldType": "string",
-                "required": true
-            },            
-            {
-                "name" :"text",
-                "isTable": true,
-                "tableOrder": 1,
-                "singleOrder": 4,
-                "col": 1,
-                "fieldType": "title",
-                "required": true               
-            },
-            {
-                "name" :"articleId",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "string",
-                "required": true               
-            },            
-            {
-                "name" :"lastUpdated",
-                "isTable": false,
-                "tableOrder": 3,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "string",
-                "required": true               
+                "required": false
             }            
-         ]
+        ]
     },
     {
-        "dataTypeName": "secrets",
+        "dataTypeName": "secret",
         "fields": [
             {
                 "name" :"secretId",
+                "displayName" :"Secret id",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
@@ -385,25 +794,26 @@
                 "required": true
             },            
             {
-                "name" :"ts",
+                "name" :"createdTs",
+                "displayName" :"Created",
                 "isTable": true,
-                "tableOrder": 4,
+                "tableOrder": 2,
                 "singleOrder": 3,
                 "col": 1,
-                "fieldType": "disabled",
-                "required": true
+                "fieldType": "ts",
+                "required": false
             }, 
             {
-                "name" :"lastUpdated",
-                "isTable": false,
-                "tableOrder": 3,
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
                 "singleOrder": 2,
                 "col": 1,
-                "fieldType": "string",
-                "required": true               
+                "fieldType": "ts",
+                "required": false               
             },           
             {
                 "name" :"question",
+                "displayName" :"Question",
                 "isTable": true,
                 "tableOrder": 2,
                 "singleOrder": 2,
@@ -413,9 +823,10 @@
             },            
             {
                 "name" :"answer",
+                "displayName" :"Answers",
                 "isTable": false,
                 "tableOrder": 1,
-                "singleOrder": 4,
+                "singleOrder": 3,
                 "col": 1,
                 "fieldType": "string",
                 "required": true               

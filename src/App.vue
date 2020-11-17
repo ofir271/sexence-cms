@@ -69,10 +69,18 @@ button.general-btn{
 	width: 100%;
 	border-radius: 2rem;
 	background: $app-gradiant3;
-	box-shadow: $app-shadow2;
+	box-shadow: $app-shadow-btn-outline;
 	color: $app-color-btn-text;
 	font-size: 1.142rem;
 	line-height: 1;
 	text-align: center;
+	border: none;
+	outline: none;
+}
+button.general-btn:hover{
+	background: $app-gradiant4;
+}
+button.general-btn:disabled{
+	opacity: 0.7;
 }
 </style>

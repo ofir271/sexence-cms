@@ -3,9 +3,15 @@
 		<div @click="toggleAppState('sidebarOpen')" class="close-sidebar close-panel">
 			<b-icon icon="arrow-bar-left"></b-icon>
 		</div>
+		<div 
+			@click="toggleAppState('sidebarMainGroupOpen')" 
+			:class="[getAppStates.sidebarMainGroupOpen ? 'active' : '', 'close-sidebar-group vertical-toggle']"
+		>
+			<b-icon icon="arrow-bar-up"></b-icon>
+		</div>
 		<div class="app-sidebar-wrap">
 			<nav class="sidebar-nav">
-				<ul class="nav">
+				<ul :class="[!getAppStates.sidebarMainGroupOpen ? 'closed' : '', 'nav']">
 					<li class="list-title list-title-top">
 						<div :class="['logo-wrap img-wrap']">
 							<img src="@/assets/sexence-icon.svg" alt="header-logo"/>
@@ -15,11 +21,13 @@
 					<li 
 						v-for="(dataType, key) in getDataTypesGroup('main')"
 						:key="'menu-item-main-' + key"
-						@click="setDataTable(dataType.dataTypeName)" 
-						class="data-type-item"
+						@click="setDataTable(dataType.dataTypeName)"
+						:class="[getDataType.dataTypeName === dataType.dataTypeName ? 'active' : '', 'data-type-item', 'data-type-' + dataType.dataTypeName]"
 					>
-						<b-icon :icon="dataType.iconName"></b-icon><span class="menue-item-text">{{dataType.display}}</span>
+						<b-icon :icon="dataType.iconName"></b-icon><span class="menu-item-text">{{dataType.pluralDisplay}}</span>
 					</li>					
+				</ul>				
+				<ul class="nav">
 					<li class="list-title">Content</li>
 					<li 
 						v-for="(dataType, key) in getDataTypesGroup('content')"
@@ -27,7 +35,7 @@
 						@click="goPage('DataTable',{type: dataType.dataTypeName})" 
 						class="data-type-item"
 					>
-						<b-icon :icon="dataType.iconName"></b-icon><span class="menue-item-text">{{dataType.display}}</span>
+						<b-icon :icon="dataType.iconName"></b-icon><span class="menu-item-text">{{dataType.pluralDisplay}}</span>
 					</li>
 				</ul>
 			</nav>
@@ -51,10 +59,12 @@ export default {
     computed: {
 		...mapGetters([
 			"getDataTypes",
+			"getDataType",
 			"getDataTypesGroup",
 			"getIsLoading",
 			"getIsSending",
-			"getAppStates"
+			"getAppStates",
+			"getLocalDataTables"
 		]),
     },
 	created() {
@@ -129,10 +139,30 @@ export default {
 	.close-sidebar{
 		color: $app-text-color3;
 	}
+	.close-sidebar-group{
+		color: $app-text-color3;
+		position: absolute;
+		right: $app-space-x;
+		bottom: calc(#{$app-footer-height} + #{$app-space-bottom});
+		transition: 0.5s transform;
+		&.active{
+			transform: rotate(180deg);
+		}
+		cursor: pointer;
+		.b-icon{
+			width: $app-icon-size;
+			height: $app-icon-size;
+		}
+	}
 	nav{
 		.nav{
 			display: flex;
 			flex-direction: column;
+			transition: height $app-transition-time;
+			&.closed{
+				max-height: 0;
+				overflow:hidden
+			}
 			.list-title{
 				color: $app-title-color3;
 				font-size: $app-title-fs;
@@ -155,8 +185,12 @@ export default {
 				display: flex;
 				align-items: center;
 				margin-bottom: $app-space-y;
+				transition: color $app-transition-time-short;
 				cursor: pointer;
-				.menue-item-text{
+				&.active{
+					color: $app-active-color;
+				}
+				.menu-item-text{
 					margin-left: $app-space-icon;
 				}
 			}

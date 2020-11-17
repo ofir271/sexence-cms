@@ -5,6 +5,7 @@ $app-color3: #5f5f5f;
 $app-color4: #ae0000;
 $app-color5: #362c2c;
 $app-color6: #7a1317;
+$app-color7: #f2f2f2;
 
 $app-text-color: $app-color3;
 $app-text-color2: $app-color1;
@@ -20,6 +21,10 @@ $app-bg-color2: $app-color1;
 
 $app-delete-color: $app-color4;
 
+$app-active-color: $app-color4;
+$app-input-disabled-bg-color: $app-color7;
+
+
 /* sizes */
 $app-footer-height: 70px;
 $app-header-height: 100px;
@@ -27,6 +32,7 @@ $app-table-line-height: 110px;
 $app-sidebar-width: 360px;
 $app-table-width: 720px;
 $app-btn-height: 2.5rem;
+$app-input-height: 2.5rem;
 $app-icon-size: 1.5rem;
 
 /* spacing */
@@ -41,16 +47,18 @@ $app-space-top-high: 6.5rem;
 $app-space-bottom: 3rem;
 $app-space-icon: 1rem;
 $app-space-bottom-small:0.5rem;
-/* gradiants */
 
+/* gradiants */
 $app-gradiant1: linear-gradient(270deg, $app-color3 0%, $app-color1 100%);
 $app-gradiant2: linear-gradient(270deg, $app-color2 0%, $app-color5 100%);
 $app-gradiant3: linear-gradient(270deg, $app-color4 0%, $app-color6 100%);
+$app-gradiant4: linear-gradient(270deg, $app-color6 0%, $app-color5 100%);
 
 /* font  */
 $body-font-family: 'Montserrat', sans-serif;
 $app-text-fs-big: 1.5rem;
 $app-text-fs-mid: 1.25rem;
+$app-text-fs-base: 1rem;
 $app-text-fs-smaller: 0.875rem;
 $app-title-fs: 2rem;
 $app-title-fs-big: 2.75rem;
@@ -61,6 +69,7 @@ $app-line-height-big: 2;
 $app-height-btn: 2.5rem;
 $app-color-btn-text: $app-color2;
 $app-width-btn: 300px;
+
 /* border radius */
 $app-border-radius: 15px;
 $app-border-radius2: 30px;
@@ -69,9 +78,11 @@ $app-border-radius2: 30px;
 $app-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 $app-shadow2: 0 0 6px 0 rgba(0, 0, 0, 0.2);
 $app-shadow-input-outline: 0 0 4px 0 $app-color4;
+$app-shadow-btn-outline: 0 0 4px 0 $app-color4;
 
 /* ratio */
 $app-image-ratio: 1.4;
 
 /* transition */
 $app-transition-time: 0.5s;
+$app-transition-time-short: 0.3s;
