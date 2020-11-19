@@ -11,8 +11,8 @@
         "dataTypeImageField": "thumbUrl",
         "dataTypeTitleField": "title",
         "dataTypeIdField": "articleId",
-        "endPointPlural": "https://dev2.sexence.com:5031/articles",
-        "endPointSingle": "https://dev2.sexence.com:5031/"
+        "endPointPlural": "https://dev3.sexence.com:5031/articles",
+        "endPointSingle": "https://dev3.sexence.com:5031/"
     },
     {
         "dataTypeName": "howto",
@@ -26,8 +26,8 @@
         "dataTypeImageField": "thumbUrl",
         "dataTypeTitleField": "title",
         "dataTypeIdField": "howToId",
-        "endPointPlural": "https://dev2.sexence.com:5020/howtos",
-        "endPointSingle": "https://dev2.sexence.com:5020/"
+        "endPointPlural": "https://dev3.sexence.com:5020/howtos",
+        "endPointSingle": "https://dev3.sexence.com:5020/"
     },
     {
         "dataTypeName": "category",
@@ -41,20 +41,23 @@
         "dataTypeImageField": "imageUrl",
         "dataTypeTitleField": "categoryName",
         "dataTypeIdField": "categoryId",
-        "endPointPlural": "https://dev2.sexence.com:5025/categories",
-        "endPointSingle": "https://dev2.sexence.com:5025/"
+        "endPointPlural": "https://dev3.sexence.com:5025/categories",
+        "endPointSingle": "https://dev3.sexence.com:5025/"
     },
     {
         "dataTypeName": "secret",
         "singleDisplay": "Secret Sexence",
         "pluralDisplay": "Secret Sexence",
+        "detailsCols": 2,
         "type": "multiple",
         "menuGroup": "main",
         "menuOrder": 4,        
         "iconName": "key",
+        "dataTypeImageField": "imageUrl",
+        "dataTypeTitleField": "question",
         "dataTypeIdField": "secretId",
-        "endPointPlural": "https://dev2.sexence.com:5036/secrets",
-        "endPointSingle": "https://dev2.sexence.com:5036/"
+        "endPointPlural": "https://dev3.sexence.com:5036/secrets",
+        "endPointSingle": "https://dev3.sexence.com:5036/"
     },
     {
         "dataTypeName": "question",
@@ -65,8 +68,8 @@
         "menuOrder": 5,        
         "iconName": "question",
         "dataTypeIdField": "questionId",
-        "endPointPlural": "https://dev2.sexence.com:5026/questions",
-        "endPointSingle": "https://dev2.sexence.com:5026/"
+        "endPointPlural": "https://dev3.sexence.com:5026/questions",
+        "endPointSingle": "https://dev3.sexence.com:5026/"
     },       
     {
         "dataTypeName": "shopItem",
@@ -80,8 +83,8 @@
         "dataTypeImageField": "thumbUrl",
         "dataTypeTitleField": "title",
         "dataTypeIdField": "shopItemId",
-        "endPointPlural": "https://dev2.sexence.com:5031/shopItems",
-        "endPointSingle": "https://dev2.sexence.com:5031/"
+        "endPointPlural": "https://dev3.sexence.com:5031/shopItems",
+        "endPointSingle": "https://dev3.sexence.com:5031/"
     },     
     {
         "dataTypeName": "dailySexence",
@@ -95,36 +98,38 @@
         "dataTypeImageField": "",
         "dataTypeTitleField": "date",
         "dataTypeIdField": "dailySexenceId",
-        "endPointPlural": "https://dev2.sexence.com:5037/dailySexence",
-        "endPointSingle": "https://dev2.sexence.com:5037/"
+        "endPointPlural": "https://dev3.sexence.com:5037/dailySexence",
+        "endPointSingle": "https://dev3.sexence.com:5037/"
     },     
     {
         "dataTypeName": "dailyForYou",
-        "singleDisplay": "dailyForYous",
-        "pluralDisplay": "Daily For You",
+        "singleDisplay": "Daily for you",
+        "pluralDisplay": "Daily for you",
         "type": "multiple",
         "menuGroup": "main",
+        "detailsCols": 2,
         "menuOrder": 8,
         "iconName": "calendar3-event",
-        "dataTypeImageField": "dailyForYouImage",
-        "dataTypeTitleField": "dailyForYouTitle",
-        "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5028/dailyForYou",
-        "endPointSingle": "https://dev2.sexence.com:5028/"
-    }, 
-    {
-        "dataTypeName": "dailyQuestions",
+        "dataTypeImageField": "",
+        "dataTypeTitleField": "forYouQuestion",
+        "dataTypeIdField": "dailyForYouId",
+        "endPointPlural": "https://dev3.sexence.com:5028/dailyForYou",
+        "endPointSingle": "https://dev3.sexence.com:5028/"
+    },     
+    {   
+        "dataTypeName": "dailyQuestion",
         "singleDisplay": "Daily Question",
         "pluralDisplay": "Daily Questions",
+        "detailsCols": 2,
         "type": "multiple",
         "menuGroup": "main",
         "menuOrder": 9,
         "iconName": "patch-question",
-        "dataTypeImageField": "dailyForYouImage",
-        "dataTypeTitleField": "dailyForYouTitle",
-        "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5030/dailyQuestions",
-        "endPointSingle": "https://dev2.sexence.com:5030/add"
+        "dataTypeImageField": "imageUrl",
+        "dataTypeTitleField": "title",
+        "dataTypeIdField": "dailyQuestionId",
+        "endPointPlural": "https://dev3.sexence.com:5030/dailyQuestions",
+        "endPointSingle": "https://dev3.sexence.com:5030/"
     },   
     {
         "dataTypeName": "dailyTip",
@@ -138,8 +143,8 @@
         "dataTypeImageField": "",
         "dataTypeTitleField": "text",
         "dataTypeIdField": "dailyTipId",
-        "endPointPlural": "https://dev2.sexence.com:5029/dailyTips",
-        "endPointSingle": "https://dev2.sexence.com:5029/"
+        "endPointPlural": "https://dev3.sexence.com:5029/dailyTips",
+        "endPointSingle": "https://dev3.sexence.com:5029/"
     },    
     {
         "dataTypeName": "dailyFeedback",
@@ -152,8 +157,8 @@
         "dataTypeImageField": "",
         "dataTypeTitleField": "title",
         "dataTypeIdField": "dailyFeedbackId",
-        "endPointPlural": "https://dev2.sexence.com:5027/dailyFeedbacks",
-        "endPointSingle": "https://dev2.sexence.com:5027/add"
+        "endPointPlural": "https://dev3.sexence.com:5027/dailyFeedbacks",
+        "endPointSingle": "https://dev3.sexence.com:5027/"
     },
     {
         "dataTypeName": "supportQuestion",

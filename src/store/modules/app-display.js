@@ -8,6 +8,8 @@ const state = {
         sidebarOpen: true,
         midOpen: true,
         sidebarMainGroupOpen: true,
+        imageSelectionOpen: false,
+        repeaterManagerOpen: false
     }
 };
 

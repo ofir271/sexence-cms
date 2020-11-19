@@ -17,6 +17,7 @@ $app-title-color3: $app-color4;
 $app-title-color4: $app-color3;
 
 $app-bg-color: $app-color2;
+$app-bg-color3: rgba(0,0,0,0.7);
 $app-bg-color2: $app-color1;
 
 $app-delete-color: $app-color4;
@@ -34,6 +35,8 @@ $app-table-width: 720px;
 $app-btn-height: 2.5rem;
 $app-input-height: 2.5rem;
 $app-icon-size: 1.5rem;
+$app-icon-size-small: 0.75rem;
+
 
 /* spacing */
 $app-space-y: 1rem;
@@ -46,7 +49,9 @@ $app-space-top: 3.5rem;
 $app-space-top-high: 6.5rem;
 $app-space-bottom: 3rem;
 $app-space-icon: 1rem;
-$app-space-bottom-small:0.5rem;
+$app-space-bottom-small: 0.5rem;
+$app-space-y-small: 0.5rem;
+$app-space-x-small: 0.5rem;
 
 /* gradiants */
 $app-gradiant1: linear-gradient(270deg, $app-color3 0%, $app-color1 100%);
@@ -61,6 +66,7 @@ $app-text-fs-mid: 1.25rem;
 $app-text-fs-base: 1rem;
 $app-text-fs-smaller: 0.875rem;
 $app-title-fs: 2rem;
+$app-title-fs-small: 1.5rem;
 $app-title-fs-big: 2.75rem;
 
 $app-line-height-big: 2; 
@@ -69,6 +75,7 @@ $app-line-height-big: 2;
 $app-height-btn: 2.5rem;
 $app-color-btn-text: $app-color2;
 $app-width-btn: 300px;
+$app-width-btn-small: 150px;
 
 /* border radius */
 $app-border-radius: 15px;

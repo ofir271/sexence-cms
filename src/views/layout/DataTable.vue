@@ -3,89 +3,101 @@
 		<div @click="toggleAppState('midOpen')" class="close-mid close-panel">
 			<b-icon icon="arrow-bar-left"></b-icon>
 		</div>
-		<h1 class="main-title">{{ dataTableTitle }}</h1>
-		<div class="data-table-list">
-			<div
-				v-for="tableDataRecord in getDataTable"
-				:key="'data-line-' + tableDataRecord[getDataType.dataTypeIdField]"
-				class="data-table-item"
-				@click="
-					setEditRecordDetails(tableDataRecord[getDataType.dataTypeIdField])
-				"
-			>
+		<div class="data-table-main">
+			<h1 class="main-title">{{ dataTableTitle }}</h1>
+			<div class="table-top-btns">
+				<button 
+					class="general-btn new-btn" 
+					v-show="getContentState==='Update'" 
+					key="content-new-btn"
+					@click="setNewState()"
+				>
+					Add
+				</button>
+			</div>
+			<div class="data-table-list">
 				<div
+					v-for="tableDataRecord in getDataTable"
+					:key="'data-line-' + tableDataRecord[getDataType.dataTypeIdField]"
+					:class="[tableDataRecord[getDataType.dataTypeIdField] === getCurrentDataContent[getDataType.dataTypeIdField] ? 'active' : '', 'data-table-item']"
 					@click="
-						deleteRecord(
-							tableDataRecord[getDataType.dataTypeIdField],
-							tableDataRecord[getDataType.dataTypeTitleField]
-						)
+						setEditRecordDetails(tableDataRecord[getDataType.dataTypeIdField])
 					"
-					class="delete-record-icon"
 				>
-					<b-icon icon="x-square-fill"></b-icon>
-				</div>
-				<div
-					v-if="getDataType.dataTypeImageField !== ''"
-					:key="
-						'data-line-' +
-						tableDataRecord[getDataType.dataTypeIdField] +
-						'-field-image'
-					"
-					class="data-line-image data-table-field"
-				>
-					<img :src="tableDataRecord[getDataType.dataTypeImageField]" />
-				</div>
-				<div class="data-line-text-wrap">
 					<div
-						v-if="getDataType.dataTypeTitleField !== ''"
+						@click="
+							deleteRecord(
+								tableDataRecord[getDataType.dataTypeIdField],
+								tableDataRecord[getDataType.dataTypeTitleField]
+							)
+						"
+						class="delete-record-icon"
+					>
+						<b-icon icon="x-square-fill"></b-icon>
+					</div>
+					<div
+						v-if="getDataType.dataTypeImageField !== ''"
 						:key="
 							'data-line-' +
 							tableDataRecord[getDataType.dataTypeIdField] +
-							'-field-title'
+							'-field-image'
 						"
-						class="data-line-title data-table-field"
+						class="data-line-image data-table-field"
 					>
-						<h3>
-							{{ tableDataRecord[getDataType.dataTypeTitleField] }}
-						</h3>
+						<img :src="tableDataRecord[getDataType.dataTypeImageField]" />
 					</div>
-					<span
-						v-if="getDataType.dataTypeIdField !== ''"
-						:key="
-							'data-line-' +
-							tableDataRecord[getDataType.dataTypeIdField] +
-							'-field-id'
-						"
-						class="data-line-id data-table-field"
-					>
-						{{ tableDataRecord[getDataType.dataTypeIdField] }}
-					</span>
-					<div class="data-line-sub-fields-wrap">
-						<template v-for="tableDataField in getDataTableFields">
-							<span
-								v-if="
-									tableDataField.fieldType === 'string' ||
-									tableDataField.fieldType === 'disabled' ||
-									tableDataField.fieldType === 'ts'
-								"
-								:key="
-									'data-line-' +
-									tableDataRecord[getDataType.dataTypeIdField] +
-									'-field-' +
-									tableDataField.name +
-									'-span'
-								"
-								class="data-line-text"
-							>
-								<template v-if="tableDataField.fieldType === 'ts'">
-									{{ tsToDateTime(tableDataRecord[tableDataField.name]) }}
-								</template>
-								<template v-if="tableDataField.fieldType === 'string'">
-									{{ tableDataRecord[tableDataField.name] }}
-								</template>
-							</span>
-						</template>
-					</div>
+					<div class="data-line-text-wrap">
+						<div
+							v-if="getDataType.dataTypeTitleField !== ''"
+							:key="
+								'data-line-' +
+								tableDataRecord[getDataType.dataTypeIdField] +
+								'-field-title'
+							"
+							class="data-line-title data-table-field"
+						>
+							<h3>
+								{{ tableDataRecord[getDataType.dataTypeTitleField] }}
+							</h3>
+						</div>
+						<span
+							v-if="getDataType.dataTypeIdField !== ''"
+							:key="
+								'data-line-' +
+								tableDataRecord[getDataType.dataTypeIdField] +
+								'-field-id'
+							"
+							class="data-line-id data-table-field"
+						>
+							{{ tableDataRecord[getDataType.dataTypeIdField] }}
+						</span>
+						<div class="data-line-sub-fields-wrap">
+							<template v-for="tableDataField in getDataTableFields">
+								<span
+									v-if="
+										tableDataField.fieldType === 'string' ||
+										tableDataField.fieldType === 'disabled' ||
+										tableDataField.fieldType === 'ts'
+									"
+									:key="
+										'data-line-' +
+										tableDataRecord[getDataType.dataTypeIdField] +
+										'-field-' +
+										tableDataField.name +
+										'-span'
+									"
+									class="data-line-text"
+								>
+									<template v-if="tableDataField.fieldType === 'ts'">
+										{{ tsToDateTime(tableDataRecord[tableDataField.name]) }}
+									</template>
+									<template v-if="tableDataField.fieldType === 'string'">
+										{{ tableDataRecord[tableDataField.name] }}
+									</template>
+								</span>
+							</template>
+						</div>
+					</div>					
 				</div>
 			</div>
 		</div>
@@ -110,11 +122,27 @@ export default {
 			"getDataTypesFields",
 			"getDataTableFields",
 			"getIsDataContentChanged",
+			"getContentState",
+			"getServerImages",
+			"getCurrentDataContent"
 		]),
 		dataTableTitle() {
 			if (this.getDataType.pluralDisplay) return this.getDataType.pluralDisplay;
 			else return "Welcome to Sexence Admin";
 		},
+	},
+	created() {
+		try {
+			const dataTypesResult = this.loadServerImages()
+				.then((res) => {
+					this.log("loadServerImages. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadServerImages. err: ", err);
+				});
+		} catch (err) {
+			this.log("failed to loadServerImages. err: ", err);
+		}		
 	},
 	methods: {
 		...mapActions([
@@ -124,6 +152,9 @@ export default {
 			"deleteDataTypeRecord",
 			"setDataContent",
 			"setIsDataContentChanged",
+			"setIsReloadContent",
+			"setContentState",
+			"loadServerImages"
 		]),
 		deleteRecord(recordId, recordTitle = "") {
 			this.log("deleteRecord", recordId, recordTitle);
@@ -167,6 +198,16 @@ export default {
 			var time = date + " " + month + " " + year + " " + hour + ":" + min;
 			return time;
 		},
+		setNewState(){
+			this.log("setNewState");
+			let confirmContentLoad = false;
+			if (this.getIsDataContentChanged) {
+				confirmContentLoad = confirm("data may be lost. continue anyway?");
+			}
+			if (!this.getIsDataContentChanged || confirmContentLoad) {
+				this.setContentState('Add');
+			}
+		},
 		setEditRecordDetails(recordId) {
 			this.log("setEditRecordDetails", recordId);
 			let confirmContentLoad = false;
@@ -180,7 +221,8 @@ export default {
 					const dataTypesResult = this.setDataContent(recordId)
 						.then((res) => {
 							this.log("setDataContent. res: ", res);
-							this.setIsDataContentChanged(true);
+							this.setIsDataContentChanged(false);
+							this.setIsReloadContent(true);
 						})
 						.catch((err) => {
 							this.log("error setDataContent. err: ", err);
@@ -231,71 +273,84 @@ export default {
 	.close-sidebar{
 		color: $app-text-color2;
 	}
-	.main-title{
-		font-size: $app-title-fs-big;
-		margin-bottom: $app-space-bottom;
-		color: $app-title-color3;
-		font-weight: 500;
-		text-align: center;
-	}
-	.data-table-list{
-		display: flex;
-		flex-direction: column;
-		.data-table-item{
-			background-color: $app-bg-color;
-			border-radius: $app-border-radius;
-			box-shadow: $app-shadow;
+	.data-table-main{
+		position: relative;
+		.table-top-btns{
+			position: absolute;
+			left: 0;
+			top: calc(#{$app-space-top} - #{$app-space-top-high});
+		}
+		.main-title{
+			font-size: $app-title-fs-big;
+			margin-bottom: $app-space-bottom;
+			color: $app-title-color3;
+			font-weight: 500;
+			text-align: center;
+		}
+		.data-table-list{
 			display: flex;
-			min-height: $app-table-line-height;
-			height: $app-table-line-height;
-			position: relative;
-			margin-bottom: $app-space-y3;
-			cursor: pointer;
-			.delete-record-icon{
-				position: absolute;
-				color:$app-delete-color;
-				left: $app-space-x;
-				bottom: $app-space-bottom-small;
-				cursor: pointer;
-			}
-			.data-line-image{
-				height: $app-table-line-height;
-				max-width: calc(#{$app-table-line-height} * #{$app-image-ratio});
-				min-width: calc(#{$app-table-line-height} * #{$app-image-ratio});
-				img{
-					width:100%;
-					height:100%;
-					object-fit: cover;
-					object-position: center;
-					border-radius: $app-border-radius 0 0 $app-border-radius;
-				}
-			}
-			.data-line-text-wrap{
-				padding: $app-space-y $app-space-x $app-space-bottom-small;
+			flex-direction: column;
+			.data-table-item{
+				background-color: $app-bg-color;
+				border-radius: $app-border-radius;
+				box-shadow: $app-shadow;
 				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				width: 100%;
-				.data-line-id{
-					position:absolute;
-					right:$app-space-y;
-					top:$app-space-x;
-				}
-				.data-line-title{
-					h3{
-						font-size: $app-text-fs-mid;
-						padding-right: $app-space-x;
-						font-weight: 400;
-						color: $app-title-color2;
-						transition: color $app-transition-time-short;
-						&.active{
-							color: $app-active-color;
-						}
+				min-height: $app-table-line-height;
+				height: $app-table-line-height;
+				position: relative;
+				margin-bottom: $app-space-y3;
+				cursor: pointer;
+				&.active{
+					.data-line-text-wrap .data-line-title h3{
+						color: $app-active-color;
 					}
 				}
-				.data-line-sub-fields-wrap{
-					display:flex;
+				.delete-record-icon{
+					position: absolute;
+					color:$app-delete-color;
+					left: $app-space-x;
+					bottom: $app-space-bottom-small;
+					cursor: pointer;
+					.b-icon{
+						background-color: $app-bg-color;
+					}
+				}
+				.data-line-image{
+					height: $app-table-line-height;
+					max-width: calc(#{$app-table-line-height} * #{$app-image-ratio});
+					min-width: calc(#{$app-table-line-height} * #{$app-image-ratio});
+					img{
+						width:100%;
+						height:100%;
+						object-fit: cover;
+						object-position: center;
+						border-radius: $app-border-radius 0 0 $app-border-radius;
+					}
+				}
+				.data-line-text-wrap{
+					padding: $app-space-y $app-space-x $app-space-bottom-small;
+					display: flex;
+					flex-direction: column;
 					justify-content: space-between;
+					width: 100%;
+					.data-line-id{
+						position:absolute;
+						right:$app-space-y;
+						top:$app-space-x;
+					}
+					.data-line-title{
+						h3{
+							font-size: $app-text-fs-mid;
+							padding-right: $app-space-x;
+							font-weight: 400;
+							color: $app-title-color2;
+							transition: color $app-transition-time-short;
+						}
+					}
+					.data-line-sub-fields-wrap{
+						display:flex;
+						justify-content: space-between;
+					}
 				}
 			}
 		}

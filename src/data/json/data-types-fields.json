@@ -18,18 +18,18 @@
                 "name" :"articleType",
                 "displayName" :"Article type",
                 "isTable": false,
-                "singleOrder": 2,
+                "singleOrder": 4,
                 "col": 1,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
+                "hidden": false               
             },         
             {
                 "name" :"authorName",
                 "displayName" :"Author name",
                 "isTable": true,
                 "tableOrder": 3,
-                "singleOrder": 4,
+                "singleOrder": 5,
                 "col": 1,
                 "fieldType": "string",
                 "required": false
@@ -38,11 +38,11 @@
                 "name" :"authorDesc",
                 "displayName" :"Author Description",
                 "isTable": false,
-                "singleOrder": 4,
+                "singleOrder": 6,
                 "col": 1,
                 "fieldType": "string",
                 "required": false, 
-                "hidden": true 
+                "hidden": false 
             },
             {
                 "name" :"categories",
@@ -50,20 +50,23 @@
                 "isTable": false,
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
                 "selectTable": "categories",
-                "required": true               
+                "selectValueField": "categoryId",
+                "selectDisplayField": "categoryName",
+                "required": true, 
+                "hidden": false                
             },
             {
                 "name" :"date",
                 "displayName" :"Date",
                 "isTable": false,
-                "singleOrder": 3,
+                "singleOrder": 7,
                 "col": 1,
                 "fieldType": "date",
                 "required": true,
-                "disabled": true, 
-                "hidden": true 
+                "disabled": false, 
+                "hidden": false 
             },            
             {
                 "name" :"title",
@@ -80,7 +83,7 @@
                 "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 5,
+                "singleOrder": 8,
                 "col": 1,
                 "fieldType": "image",
                 "required": true               
@@ -90,7 +93,7 @@
                 "displayName" :"Thumb image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 6,
+                "singleOrder": 9,
                 "col": 1,
                 "fieldType": "image",
                 "required": true               
@@ -128,50 +131,50 @@
             },            
             {
                 "name" :"subtitle",
-                "displayName" :"Sub title",
+                "displayName" :"Subtitle",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 4,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"relatedArticles",
                 "displayName" :"Related articles",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 10,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"ref",
                 "displayName" :"Ref",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 9,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"rank",
                 "displayName" :"Rank",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 8,
+                "col": 2,
                 "fieldType": "string",
                 "required": true,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"likes",
                 "displayName" :"Likes",
                 "isTable": false,
-                "singleOrder": 6,
-                "col": 1,
+                "singleOrder": 11,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
                 "hidden": false               
@@ -180,8 +183,8 @@
                 "name" :"views",
                 "displayName" :"Views",
                 "isTable": false,
-                "singleOrder": 7,
-                "col": 1,
+                "singleOrder": 12,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
                 "hidden": false               
@@ -190,23 +193,22 @@
                 "name" :"tags",
                 "displayName" :"Tags",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 8,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"sources",
                 "displayName" :"Sources",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 9,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true                 
+                "hidden": false                 
             }            
-
         ]
     },    
     {
@@ -214,6 +216,7 @@
         "fields": [
             {
                 "name" :"howToId",
+                "displayName" :"Howto Id",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
@@ -235,7 +238,7 @@
                 "name" :"authorDesc",
                 "displayName" :"Author Description",
                 "isTable": false,
-                "singleOrder": 4,
+                "singleOrder": 5,
                 "col": 1,
                 "fieldType": "string",
                 "required": false, 
@@ -255,12 +258,11 @@
                 "name" :"date",
                 "displayName" :"Date",
                 "isTable": false,
-                "singleOrder": 3,
+                "singleOrder": 6,
                 "col": 1,
                 "fieldType": "date",
                 "required": true,
-                "disabled": true, 
-                "hidden": true 
+                "disabled": false
             },            
             {
                 "name" :"title",
@@ -277,7 +279,7 @@
                 "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 5,
+                "singleOrder": 7,
                 "col": 1,
                 "fieldType": "image",
                 "required": true               
@@ -287,7 +289,7 @@
                 "displayName" :"Thumb image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 6,
+                "singleOrder": 8,
                 "col": 1,
                 "fieldType": "image",
                 "required": true               
@@ -327,48 +329,38 @@
                 "name" :"subtitle",
                 "displayName" :"Sub title",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 5,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
-            },            
-            {
-                "name" :"relatedArticles",
-                "displayName" :"Related articles",
-                "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "string",
-                "required": false,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"ref",
                 "displayName" :"Ref",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 7,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"rank",
                 "displayName" :"Rank",
                 "isTable": false,
-                "singleOrder": 2,
+                "singleOrder": 6,
                 "col": 1,
                 "fieldType": "string",
                 "required": true,               
-                "hidden": true               
+                "hidden": false               
             },            
             {
                 "name" :"likes",
                 "displayName" :"Likes",
                 "isTable": false,
-                "singleOrder": 6,
-                "col": 1,
+                "singleOrder": 8,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
                 "hidden": false               
@@ -377,8 +369,8 @@
                 "name" :"views",
                 "displayName" :"Views",
                 "isTable": false,
-                "singleOrder": 7,
-                "col": 1,
+                "singleOrder": 9,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
                 "hidden": false               
@@ -387,21 +379,11 @@
                 "name" :"tags",
                 "displayName" :"Tags",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 7,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
-                "hidden": true               
-            },            
-            {
-                "name" :"sources",
-                "displayName" :"Sources",
-                "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
-                "fieldType": "string",
-                "required": false,               
-                "hidden": true                 
+                "hidden": false               
             }            
         ]
     },
@@ -416,7 +398,8 @@
                 "singleOrder": 1,
                 "col": 1,
                 "fieldType": "id",
-                "required": true
+                "required": true,
+                "disabled": true
             }, 
             {
                 "name" :"createdTs",
@@ -425,8 +408,9 @@
                 "tableOrder": 3,
                 "singleOrder": 2,
                 "col": 1,
-                "fieldType": "string",
-                "required": false               
+                "fieldType": "ts",
+                "required": false,                
+                "disabled": true               
             },  
             {
                 "name" :"lastUpdatedTs",
@@ -435,8 +419,9 @@
                 "tableOrder": 3,
                 "singleOrder": 3,
                 "col": 1,
-                "fieldType": "string",
-                "required": false               
+                "fieldType": "ts",
+                "required": false,                
+                "disabled": true               
             },         
             {
                 "name" :"categoryName",
@@ -462,8 +447,8 @@
                 "name" :"alias",
                 "displayName" :"Alias",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 4,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
                 "hidden": false    
@@ -472,8 +457,8 @@
                 "name" :"tags",
                 "displayName" :"Tags",
                 "isTable": false,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 5,
+                "col": 2,
                 "fieldType": "string",
                 "required": false,               
                 "hidden": false    
@@ -483,9 +468,9 @@
                 "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
-                "singleOrder": 4,
+                "singleOrder": 6,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "image",
                 "required": true   
             }
         ]
@@ -568,7 +553,7 @@
                 "tableOrder": 5,
                 "singleOrder": 5,
                 "col": 1,
-                "fieldType": "date",
+                "fieldType": "string",
                 "required": false
             }            
         ]
@@ -610,18 +595,19 @@
             }, 
             {
                 "name" :"title",
-                "displayName" :"Daily for you",
+                "displayName" :"Title",
                 "isTable": true,
-                "singleOrder": 2,
+                "singleOrder": 4,
                 "col": 1,
                 "fieldType": "title",
                 "required": true
             }, 
-            {
+            {   
                 "name" :"subTitle",
-                "displayName" :"Daily question",
-                "isTable": false,
-                "singleOrder": 3,
+                "displayName" :"Sub title",
+                "isTable": true,
+                "tableOrder": 3,
+                "singleOrder": 5,
                 "col": 1,
                 "fieldType": "string",
                 "required": true               
@@ -633,6 +619,7 @@
         "fields": [
             {
                 "name" :"dailyForYouId",
+                "displayName" :"Daily for you id",
                 "isTable": true,
                 "tableOrder": 5,
                 "singleOrder": 1,
@@ -641,32 +628,81 @@
                 "required": true
             },            
             {
-                "name" :"ts",
+                "name" :"createdTs",
+                "displayName" :"Created",
                 "isTable": true,
                 "tableOrder": 4,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true
+            }, 
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "isTable": false,
                 "singleOrder": 3,
                 "col": 1,
-                "fieldType": "string",
-                "required": true
-            },            
+                "fieldType": "ts",
+                "required": false,
+                "disabled": true
+            },    
             {
-                "name" :"dailyForYouTitle",
+                "name" :"forYouQuestion",
+                "displayName" :"For you question",
                 "isTable": true,
                 "tableOrder": 2,
                 "singleOrder": 2,
-                "col": 1,
+                "col": 2,
                 "fieldType": "title",
                 "required": true
             },            
             {
-                "name" :"dailyForYoutext",
-                "singleOrder": 2,
+                "name" :"advisor",
+                "displayName" :"Advisor",
+                "singleOrder": 3,
+                "col": 2,
+                "fieldType": "string",
+                "required": true
+            }            
+        ]
+    },
+    {
+        "dataTypeName": "dailyQuestion",
+        "fields": [
+            {
+                "name" :"dailyQuestionId",
+                "displayName" :"Daily question id",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
                 "col": 1,
-                "fieldType": "text",
+                "fieldType": "id",
                 "required": true
             },            
             {
-                "name" :"dailyForYouImage",
+                "name" :"createdTs",
+                "displayName" :"Created",
+                "isTable": true,
+                "tableOrder": 4,
+                "singleOrder": 2,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true
+            }, 
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "isTable": false,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true,
+                "disabled": true
+            },    
+            {
+                "name" :"imageUrl",
+                "displayName" :"Image",
                 "isTable": true,
                 "tableOrder": 1,
                 "singleOrder": 4,
@@ -675,36 +711,31 @@
                 "required": true               
             },
             {
-                "name" :"dailyQuestionTitle",
+                "name" :"title",
+                "displayName" :"Title",
                 "isTable": true,
-                "tableOrder": 3,
+                "tableOrder": 2,
                 "singleOrder": 2,
-                "col": 1,
-                "fieldType": "string",
-                "required": true               
+                "col": 2,
+                "fieldType": "title",
+                "required": true
             },            
             {
-                "name" :"dailyQuestionText",
-                "isTable": false,
-                "singleOrder": 5,
-                "col": 1,
+                "name" :"text",
+                "displayName" :"Text",
+                "singleOrder": 3,
+                "col": 2,
                 "fieldType": "string",
-                "required": true               
+                "required": true
             },            
             {
                 "name" :"questions",
-                "isTable": false,
-                "singleOrder": 5,
-                "col": 1,
-                "fieldType": "repeater",
-                "required": true,
-                "fields": [
-                    {
-                        "name": "questionId",
-                        "type": "select"
-                    }
-                ]             
-            }
+                "displayName" :"Questions",
+                "singleOrder": 4,
+                "col": 2,
+                "fieldType": "string",
+                "required": true
+            }            
         ]
     },
     {
@@ -722,7 +753,7 @@
                 "disabled": true
             },            
             {
-                "name" :"ts",
+                "name" :"createdTs",
                 "displayName" :"Creation date",
                 "isTable": true,
                 "tableOrder": 4,
@@ -733,7 +764,7 @@
                 "disabled": true
             },   
             {
-                "name" :"lastUpdated",
+                "name" :"lastUpdatedTs",
                 "displayName" :"Last updated",
                 "isTable": false,
                 "singleOrder": 3,
@@ -816,21 +847,48 @@
                 "displayName" :"Question",
                 "isTable": true,
                 "tableOrder": 2,
-                "singleOrder": 2,
-                "col": 1,
+                "singleOrder": 1,
+                "col": 2,
                 "fieldType": "title",
                 "required": true
             },            
             {
-                "name" :"answer",
+                "name" :"answers",
                 "displayName" :"Answers",
-                "isTable": false,
-                "tableOrder": 1,
                 "singleOrder": 3,
+                "col": 2,
+                "fieldType": "repeater",
+                "required": true,
+                "repeaterUniqueFieldName": "answerId",
+                "repeaterFields": [
+                    {
+                        "name" :"answerId",
+                        "displayName" :"Answer id"
+                    },                    
+                    {
+                        "name" :"title",
+                        "displayName" :"Title"
+                    },                    
+                    {
+                        "name" :"text",
+                        "displayName" :"Text"
+                    },                    
+                    {
+                        "name" :"publisher",
+                        "displayName" :"Publisher"
+                    }
+                ]     
+            },
+            {
+                "name" :"imageUrl",
+                "displayName" :"Image",
+                "isTable": true,
+                "tableOrder": 1,
+                "singleOrder": 5,
                 "col": 1,
-                "fieldType": "string",
+                "fieldType": "image",
                 "required": true               
-            }
+            } 
          ]
     }
 ]

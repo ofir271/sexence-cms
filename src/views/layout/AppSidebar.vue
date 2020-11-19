@@ -78,7 +78,7 @@ export default {
 				});
 		} catch (err) {
 			this.log("failed to setDataTypes. err: ", err);
-		}	
+		}		
 	},
 	methods: {
 		...mapActions([
@@ -87,7 +87,7 @@ export default {
 			"loadDataTable",
 			"toggleAppState"
 		]),
-		setDataTable(dataType) {
+		async setDataTable(dataType) {
 			this.log("setDataTable", dataType);
 			try {
 				const dataTypeResult = this.setDataType(dataType)
@@ -97,9 +97,10 @@ export default {
 					.catch((err) => {
 						this.log("error setDataType. err: ", err);
 					});			
-				const dataItemsResult = this.loadDataTable()
+				const dataTableResult = this.loadDataTable()
 					.then((res) => {
-						this.log("loadDataTable. res: ", res);
+						//todo find why res empty
+						this.log("loadDataTable from sidebar. res: ", res);
 					})
 					.catch((err) => {
 						this.log("error loadDataTable. err: ", err);
@@ -149,10 +150,6 @@ export default {
 			transform: rotate(180deg);
 		}
 		cursor: pointer;
-		.b-icon{
-			width: $app-icon-size;
-			height: $app-icon-size;
-		}
 	}
 	nav{
 		.nav{

@@ -73,14 +73,40 @@ button.general-btn{
 	color: $app-color-btn-text;
 	font-size: 1.142rem;
 	line-height: 1;
+	padding: 0 $app-space-x;
 	text-align: center;
 	border: none;
 	outline: none;
+	&.small-btn{
+		width: $app-width-btn-small;
+	}
 }
 button.general-btn:hover{
 	background: $app-gradiant4;
 }
 button.general-btn:disabled{
 	opacity: 0.7;
+}
+
+input[type="text"] {
+	width: 100%;
+	height: $app-input-height;
+	box-shadow: $app-shadow2;
+	border-radius: $app-border-radius2;
+	padding: 0 $app-space-x;
+	text-align: left;
+	border: none;
+	color: $app-text-color;
+	&:disabled {
+		background-color: $app-input-disabled-bg-color;
+	}
+	&:focus {
+		outline: 0;
+		box-shadow: $app-shadow-input-outline;
+	}
+}
+.b-icon{
+	width: $app-icon-size;
+	height: $app-icon-size;
 }
 </style>
