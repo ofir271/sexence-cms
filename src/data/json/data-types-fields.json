@@ -232,7 +232,7 @@
                 "singleOrder": 4,
                 "col": 1,
                 "fieldType": "string",
-                "required": false
+                "required": true
             },             
             {
                 "name" :"authorDesc",
@@ -241,8 +241,7 @@
                 "singleOrder": 5,
                 "col": 1,
                 "fieldType": "string",
-                "required": false, 
-                "hidden": true 
+                "required": true
             },
             {
                 "name" :"categories",
@@ -332,7 +331,7 @@
                 "singleOrder": 5,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false               
             },            
             {
@@ -342,7 +341,7 @@
                 "singleOrder": 7,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false               
             },            
             {
@@ -362,7 +361,7 @@
                 "singleOrder": 8,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false               
             },            
             {
@@ -372,7 +371,7 @@
                 "singleOrder": 9,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false               
             },            
             {
@@ -382,7 +381,7 @@
                 "singleOrder": 7,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false               
             }            
         ]
@@ -409,7 +408,7 @@
                 "singleOrder": 2,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false,                
+                "required": true,                
                 "disabled": true               
             },  
             {
@@ -420,7 +419,7 @@
                 "singleOrder": 3,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false,                
+                "required": true,                
                 "disabled": true               
             },         
             {
@@ -440,7 +439,7 @@
                 "singleOrder": 2,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false    
             },             
             {
@@ -450,7 +449,7 @@
                 "singleOrder": 4,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false    
             },              
             {
@@ -460,7 +459,7 @@
                 "singleOrder": 5,
                 "col": 2,
                 "fieldType": "string",
-                "required": false,               
+                "required": true,               
                 "hidden": false    
             },            
             {
@@ -469,7 +468,7 @@
                 "isTable": true,
                 "tableOrder": 1,
                 "singleOrder": 6,
-                "col": 2,
+                "col": 1,
                 "fieldType": "image",
                 "required": true   
             }
@@ -497,7 +496,7 @@
                 "singleOrder": 2,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false,
+                "required": true,
                 "disabled": true
             },   
             {
@@ -507,7 +506,7 @@
                 "singleOrder": 3,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false,
+                "required": true,
                 "disabled": true
             }, 
             {
@@ -517,7 +516,7 @@
                 "singleOrder": 2,
                 "col": 2,
                 "fieldType": "string",
-                "required": false
+                "required": true
             }, 
             {
                 "name" :"dailyQuestionId",
@@ -526,35 +525,35 @@
                 "singleOrder": 3,
                 "col": 2,
                 "fieldType": "string",
-                "required": false               
+                "required": true               
             },            
             {
                 "name" :"dailyTipId",
                 "displayName" :"Daily tip",
                 "isTable": false,
-                "singleOrder": 4,
+                "singleOrder": 5,
                 "col": 2,
                 "fieldType": "string",
-                "required": false               
+                "required": true               
             },  
             {
                 "name" :"dailyFeedbackId",
                 "displayName" :"Daily feedback",
                 "isTable": false,
-                "singleOrder": 5,
+                "singleOrder": 4,
                 "col": 2,
                 "fieldType": "string",
-                "required": false               
+                "required": true               
             },          
             {
                 "name" :"date",
                 "displayName" :"Date",
                 "isTable": true,
                 "tableOrder": 5,
-                "singleOrder": 5,
-                "col": 1,
+                "singleOrder": 6,
+                "col": 2,
                 "fieldType": "string",
-                "required": false
+                "required": true
             }            
         ]
     },
@@ -580,7 +579,7 @@
                 "singleOrder": 2,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false,
+                "required": true,
                 "disabled": true
             },   
             {
@@ -590,7 +589,7 @@
                 "singleOrder": 3,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false,
+                "required": true,
                 "disabled": true
             }, 
             {
@@ -598,7 +597,7 @@
                 "displayName" :"Title",
                 "isTable": true,
                 "singleOrder": 4,
-                "col": 1,
+                "col": 2,
                 "fieldType": "title",
                 "required": true
             }, 
@@ -608,7 +607,7 @@
                 "isTable": true,
                 "tableOrder": 3,
                 "singleOrder": 5,
-                "col": 1,
+                "col": 2,
                 "fieldType": "string",
                 "required": true               
             }            
@@ -790,7 +789,7 @@
                 "singleOrder": 2,
                 "col": 2,
                 "fieldType": "string",
-                "required": false
+                "required": true
             }, 
             {
                 "name" :"articleId",
@@ -799,15 +798,15 @@
                 "singleOrder": 3,
                 "col": 2,
                 "fieldType": "string",
-                "required": false               
+                "required": true               
             },            
             {
                 "name" :"date",
                 "displayName" :"Date",
                 "singleOrder": 5,
-                "col": 1,
+                "col": 2,
                 "fieldType": "string",
-                "required": false
+                "required": true
             }            
         ]
     },
@@ -832,7 +831,7 @@
                 "singleOrder": 3,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false
+                "required": true
             }, 
             {
                 "name" :"lastUpdatedTs",
@@ -840,7 +839,7 @@
                 "singleOrder": 2,
                 "col": 1,
                 "fieldType": "ts",
-                "required": false               
+                "required": true               
             },           
             {
                 "name" :"question",
@@ -889,6 +888,92 @@
                 "fieldType": "image",
                 "required": true               
             } 
+         ]
+    },
+    {
+        "dataTypeName": "shopItem",
+        "fields": [
+            {
+                "name" :"shopItemId",
+                "displayName" :"Shop item id",
+                "isTable": true,
+                "tableOrder": 5,
+                "singleOrder": 1,
+                "col": 1,
+                "fieldType": "id",
+                "required": true
+            },            
+            {
+                "name" :"createdTs",
+                "displayName" :"Created",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true
+            }, 
+            {
+                "name" :"lastUpdatedTs",
+                "displayName" :"Last updated",
+                "singleOrder": 3,
+                "col": 1,
+                "fieldType": "ts",
+                "required": true               
+            },           
+            {
+                "name" :"title",
+                "displayName" :"Title",
+                "isTable": true,
+                "tableOrder": 2,
+                "singleOrder": 1,
+                "col": 2,
+                "fieldType": "title",
+                "required": true
+            },              
+            {
+                "name" :"text",
+                "displayName" :"Text",
+                "singleOrder": 2,
+                "col": 2,
+                "fieldType": "string",
+                "required": true
+            },             
+            {
+                "name" :"affiliatorId",
+                "displayName" :"Affiliator id",
+                "singleOrder": 5,
+                "col": 2,
+                "fieldType": "string",
+                "required": true
+            },            
+            {
+                "name" :"imageUrl",
+                "displayName" :"Image",
+                "isTable": true,
+                "singleOrder": 7,
+                "col": 1,
+                "fieldType": "image",
+                "required": true               
+            },            
+            {
+                "name" :"shopItems",
+                "displayName" :"ShopItems",
+                "isTable": true,
+                "singleOrder": 6,
+                "col": 2,
+                "fieldType": "string",
+                "required": true               
+            },            
+            {
+                "name" :"link",
+                "displayName" :"Link",
+                "isTable": true,
+                "singleOrder": 5,
+                "col": 2,
+                "fieldType": "string",
+                "required": true               
+            }
          ]
     }
 ]

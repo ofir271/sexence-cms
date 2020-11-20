@@ -29,6 +29,7 @@
 				<TheRepeaterManager
 					v-show="getAppStates['repeaterManagerOpen']"
 				/>
+				<!--todo - do generic or component-->
 				<div class="content-fields-cols">
 					<div class="content-fields-col col1">
 						<div
@@ -47,12 +48,13 @@
 						>
 							<input
 								v-if="
-									['string', 'id', 'title', 'html', 'date', 'select'].includes(
+									['string', 'id', 'title', 'html', 'select'].includes(
 										contentField.fieldType
 									)
 								"
 								:ref="'input-field-' + contentField.name"
-								:key="'input-field-input' + contentField.name"
+								:key="'input-field-input-' + contentField.name"
+								:id="'input-field-input-' + contentField.name"
 								:disabled="contentField.disabled || contentField.fieldType === 'id'"
 								:hidden="
 									contentField.hidden ||
@@ -61,15 +63,28 @@
 								:required="contentField.required"
 								@change="setIsDataContentChanged(true)"
 								type="text"
+							/>							
+							<input
+								v-if="contentField.fieldType === 'date'"
+								:ref="'input-field-' + contentField.name"
+								:key="'input-field-date-' + contentField.name"
+								:id="'input-field-date-' + contentField.name"
+								class="input-field-date"
+								:disabled="contentField.disabled"
+								:hidden="contentField.hidden"
+								:required="contentField.required"
+								@change="setIsDataContentChanged(true)"
+								type="date"
 							/>
 							<div
 								v-if="contentField.fieldType === 'image'"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-image-' + contentField.name"
 								:class="'img-wrap'"
 								@click="openImageSelection(contentField.name)"
 							>
 								<input
 									:ref="'input-field-' + contentField.name"
+									:id="'input-field-' + contentField.name"
 									:name="'input-field-' + contentField.name"
 									:hidden="true"
 									@change="
@@ -78,20 +93,30 @@
 									type="text"
 								/>
 								<img
-									:src="contentField.value"
+									:src="getContentState === 'Add' ? getDefaultImageUrl : contentField.value"
 									:ref="'field-image-' + contentField.name"
 								/>
+								<!-- :src="contentField.value" -->
 							</div>
 							<input
 								v-if="contentField.fieldType == 'ts'"
 								:ref="'input-field-' + contentField.name"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-ts-' + contentField.name"
+								:id="'input-field-ts-' + contentField.name"
 								:disabled="true"
 								:hidden="contentField.hidden || getContentState === 'Add'"
 								:required="contentField.required"
 								@change="
 									getIsDataContentChanged ? '' : setIsDataContentChanged(true)
 								"
+								type="text"
+							/>
+							<input
+								v-if="contentField.name == 'createdTs'"
+								:ref="'field-created-ts-hidden'"
+								:id="'field-created-ts-hidden'"
+								:key="'field-created-ts-hidden'"
+								:hidden="true"
 								type="text"
 							/>
 							<label
@@ -124,15 +149,15 @@
 								'content-field',
 							]"
 						>
-							<!-- date YYYY-MM-DD  YYYYMMDD-->
 							<input
 								v-if="
-									['string', 'id', 'title', 'html', 'date', 'select'].includes(
+									['string', 'id', 'title', 'html', 'select'].includes(
 										contentField.fieldType
 									)
 								"
 								:ref="'input-field-' + contentField.name"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-input-' + contentField.name"
+								:id="'input-field-input-' + contentField.name"
 								:name="'input-field-' + contentField.name"
 								:disabled="contentField.disabled || contentField.fieldType === 'id'"
 								:hidden="contentField.hidden"
@@ -143,9 +168,21 @@
 								type="text"
 							/>
 							<input
+								v-if="contentField.fieldType === 'date'"
+								:ref="'input-field-' + contentField.name"
+								:key="'input-field-date-' + contentField.name"
+								:id="'input-field-date-' + contentField.name"
+								:disabled="contentField.disabled"
+								:hidden="contentField.hidden"
+								:required="contentField.required"
+								@change="setIsDataContentChanged(true)"
+								type="date"
+							/>
+							<input
 								v-if="contentField.fieldType == 'ts'"
 								:ref="'input-field-' + contentField.name"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-ts-' + contentField.name"
+								:id="'input-field-ts-' + contentField.name"
 								:disabled="true"
 								:hidden="contentField.hidden || getContentState === 'Add'"
 								:required="contentField.required"
@@ -154,15 +191,24 @@
 								"
 								type="text"
 							/>
+							<input
+								v-if="contentField.name == 'createdTs'"
+								:ref="'field-created-ts-hidden'"
+								:key="'field-created-ts-hidden'"
+								:id="'field-created-ts-hidden'"
+								:hidden="true"
+								type="text"
+							/>
 							<div
 								v-if="contentField.fieldType === 'image'"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-image-' + contentField.name"
 								:class="'img-wrap'"
 								@click="openImageSelection(contentField.name)"
 							>
 								<input
 									:ref="'input-field-' + contentField.name"
 									:name="'input-field-' + contentField.name"
+									:id="'input-field-' + contentField.name"
 									:hidden="true"
 									@change="
 										getIsDataContentChanged ? '' : setIsDataContentChanged(true)
@@ -170,18 +216,19 @@
 									type="text"
 								/>
 								<img
-									:src="contentField.value"
+									:src="getContentState === 'Add' ? getDefaultImageUrl : contentField.value"
 									:ref="'field-image-' + contentField.name"
 								/>
 							</div>
 							<div
 								v-if="contentField.fieldType === 'select'"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-select-' + contentField.name"
 								:class="'select-wrap'"
 							>
 								<select
 									:ref="'input-field-' + contentField.name"
 									:name="'input-field-' + contentField.name"
+									:id="'input-field-' + contentField.name"
 									:hidden="false"
 									:disabled="false"
 									@change="
@@ -194,12 +241,13 @@
 							</div>							
 							<div
 								v-if="contentField.fieldType === 'repeater'"
-								:key="'input-field-' + contentField.name"
+								:key="'input-field-repeater-' + contentField.name"
 								:class="'repeater-wrap'"
 								@click="openRepeaterManager(contentField.name)"
 							>
 								<input
 									:ref="'input-field-' + contentField.name"
+									:id="'input-field-' + contentField.name"
 									:name="'input-field-' + contentField.name"
 									:hidden="false"
 									:disabled="false"
@@ -217,6 +265,7 @@
 								:key="'input-field-label-' + contentField.name"
 								:for="'input-field-' + contentField.name"
 								class="input-field-label"
+								@click="focusInput('input-field-'+contentField.name)"
 							>
 								{{ contentField.displayName }}
 							</label>
@@ -240,6 +289,11 @@
 						:disabled="!getIsDataContentChanged"
 					>
 						{{ getContentState }}
+						<b-icon 
+							icon="check2-circle"
+							v-show="getIsUpdateDone && !getIsDataContentChanged"
+						>
+						</b-icon>
 					</button>
 				</div>
 			</div>
@@ -261,7 +315,8 @@ export default {
 		return {
 			selectedImageFieldName: "",
 			selectedImagePath: "",
-			currentRepeaterFieldName: ""
+			currentRepeaterFieldName: "",
+			doneUpdate: ["x"]
 		};
 	},
 	computed: {
@@ -282,7 +337,9 @@ export default {
 			"getSelectedImagePath",
 			"getRepeaterFields",
 			"getRepeaterRecords",
-			"getRepeaterNewValues"
+			"getRepeaterNewValues",
+			"getDefaultImageUrl",
+			"getIsUpdateDone"
 		]),
 		dataContentTitle() {
 			if (this.getContentState !== "")
@@ -300,9 +357,11 @@ export default {
 			if (this.getAppStates["imageSelectionOpen"]) {
 				this.toggleAppState("imageSelectionOpen");
 			}
+			this.setIsUpdateDone(false);
 		},		
 		getContentState: function (newContent, oldContent) {
 			this.log("watch getContentState");
+			this.setIsUpdateDone(false);
 			if (newContent === "Add" && oldContent !== "") {
 				this.clearContentFields();
 			}
@@ -318,6 +377,12 @@ export default {
 			this.$refs[
 				"field-image-" + this.selectedImageFieldName
 			][0].src = newContent;
+			this.log(
+				"watch getSelectedImagePath. newContent" +
+				this.$refs[
+					"field-image-" + this.selectedImageFieldName
+				][0].src
+			);
 		},		
 		getRepeaterFields: function (newContent, oldContent) {
 			this.log("watch getRepeaterFields.");
@@ -332,14 +397,11 @@ export default {
 			this.log("watch getRepeaterNewValues.",newContent);
 			this.$refs["input-field-" + this.currentRepeaterFieldName][0].value=JSON.stringify(newContent);
 		},
-		getDataContentFieldsCol1: function (newContent, oldContent) {
-			this.log("watch getDataContentFieldsCol1");
-			/* todo - try and make reactive */
-		},		
 		getIsReloadContent: function (newContent, oldContent) {
-			//reactive fix
-			this.log("watch getIsReloadContent");
+			//reactive fix. 
+			this.log("watch getIsReloadContent. loading record to inputs");
 			if (newContent === true) {
+				this.setIsUpdateDone(false);
 				this.setIsReloadContent(false);
 				if (this.getAppStates["repeaterManagerOpen"]) {
 					this.toggleAppState("repeaterManagerOpen");
@@ -349,13 +411,24 @@ export default {
 				}
 				this.getDataContentFields.forEach((contentField) => {
 					try {
-						//this.log(this.$refs["input-field-" + contentField.name][0].value);
-						//this.log(contentField.name);
-						this.$refs[
-							"input-field-" + contentField.name
-						][0].value = this.getCurrentDataContent[contentField.name];
-						if (contentField.fieldType==="image"){
+						this.log(contentField.name,this.$refs["input-field-" + contentField.name][0].value);
+						let fieldValue = "";
+						if (contentField.fieldType === "ts"){
+							try {
+								const localDate = new Date(this.getCurrentDataContent[contentField.name] * 1000);
+								fieldValue = localDate.toLocaleString();
+							}catch {
+								fieldValue = "";
+							}
+						} else {
+							fieldValue = this.getCurrentDataContent[contentField.name];	
+						}
+						this.$refs["input-field-" + contentField.name][0].value = fieldValue;
+						if (contentField.fieldType === "image"){
 							this.$refs["field-image-" + contentField.name][0].src = this.getCurrentDataContent[contentField.name];
+						}
+						if (contentField.name === "createdTs"){
+							this.$refs["field-created-ts-hidden"][0].value = this.getCurrentDataContent[contentField.name];
 						}
 					} catch (err) {
 						this.log("construct record. err: ", err);
@@ -376,7 +449,8 @@ export default {
 			"toggleAppState",
 			"setRepeaterFields",
 			"setRepeaterRecords",
-			"setRepeaterUniqueFieldName"
+			"setRepeaterUniqueFieldName",
+			"setIsUpdateDone"
 		]),
 		openImageSelection(imageFieldName) {
 			this.log("openImageSelection");
@@ -422,14 +496,19 @@ export default {
 			}
 			this.log("openRepeaterManager end");
 		},
+		focusInput(inputRef){
+			this.log("focusInput");
+			this.$refs[inputRef][0].focus();
+		},
 		clearContentFields() {
 			try {
 				this.log("clearContentFields");
+				this.setIsUpdateDone(false);
 				this.getDataContentFields.forEach((contentField) => {
 					try {
 						this.$refs["input-field-" + contentField.name][0].value = "";
 						if (contentField.fieldType==="image"){
-							this.$refs["field-image-" + contentField.name][0].src = ""
+							this.$refs["field-image-" + contentField.name][0].src = this.getDefaultImageUrl;
 						}
 					} catch (err) {
 						this.log(
@@ -451,8 +530,7 @@ export default {
 			let dataTypeIdFieldName = this.getDataType.dataTypeIdField;
 			this.getDataContentFields.forEach((contentField) => {
 				try {
-					this.log(this.$refs["input-field-" + contentField.name][0].value);
-					this.log(contentField.name);
+					this.log(contentField.name,this.$refs["input-field-" + contentField.name][0].value);
 					if (dataTypeIdFieldName !== contentField.name) {
 						if (this.$refs["input-field-" + contentField.name][0].value === "")
 							dataTypeRecord[contentField.name] = " ";
@@ -466,14 +544,15 @@ export default {
 				}
 			});
 			// todo - check if need to make server ts adjustment or creat date on server
-			const localTs = Date.now();
-			dataTypeRecord["createdTs"] = localTs;
-			dataTypeRecord["lastUpdatedTs"] = localTs;
+			const epochTime = Math.floor(new Date().getTime()/1000.0);
+			dataTypeRecord["createdTs"] = epochTime;
+			dataTypeRecord["lastUpdatedTs"] = epochTime;
 			try {
 				const addRecordResult = this.addDataTypeRecord(dataTypeRecord)
 					.then((res) => {
 						this.log("addDataTypeRecord. res: ", res);
 						this.clearContentFields();
+						this.setIsDataContentChanged(false);
 						const dataTableResult = this.loadDataTable(true)
 							.then((res) => {
 								this.log("loadDataTable from details. res: ", res);
@@ -494,30 +573,31 @@ export default {
 			let dataTypeRecord = {};
 			this.getDataContentFields.forEach((contentField) => {
 				try {
-					this.log(this.$refs["input-field-" + contentField.name][0].value);
-					if (this.$refs["input-field-" + contentField.name][0].value === "")
+					this.log(contentField.name,this.$refs['input-field-' + contentField.name][0].value);
+					if (this.$refs['input-field-' + contentField.name][0].value === "")
 						dataTypeRecord[contentField.name] = " ";
-					else if (contentField.fieldType === "repeater")
+					else if (contentField.fieldType === 'repeater')
 						dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
-							"input-field-" + contentField.name
+							'input-field-' + contentField.name
 						][0].value);
-					else 
+					else if (contentField.name === 'createdTs') {
+						dataTypeRecord['createdTs']=this.$refs["field-created-ts-hidden"][0].value;
+					} else 
 						dataTypeRecord[contentField.name] = this.$refs[
 							"input-field-" + contentField.name
 						][0].value;
-					
 				} catch (err) {
 					this.log("construct record. err: ", err);
 				}
 			});
-			const localTs = Date.now();
-			dataTypeRecord["lastUpdatedTs"] = localTs;
+			const epochTime = Math.floor(new Date().getTime()/1000.0);
+			dataTypeRecord["lastUpdatedTs"] = epochTime;
 			this.log("dataTypeRecord", dataTypeRecord);
 			try {
 				const updateRecordResult = this.updateDataTypeRecord(dataTypeRecord)
 					.then((res) => {
 						this.log("updateDataTypeRecord. res: ", res);
-						this.message = "updated sucessfully";
+						this.setIsUpdateDone(true);
 						this.setIsDataContentChanged(false);
 					})
 					.catch((err) => {
@@ -607,10 +687,10 @@ export default {
 			padding-top: $app-space-bottom;
 			.content-fields-col {
 				&.col1 {
-					flex: 1 0 auto;
+					flex: 0 0 auto;
 				}				
 				&.col2 {
-					flex: 3 1 auto;
+					flex: 4 1 auto;
 				}
 				.content-field {
 					margin: 0 $app-space-x $app-space-y3;
@@ -657,11 +737,9 @@ export default {
 					}
 					input:focus ~ label,
 					input:valid ~ label,
-					input:disabled ~ label {
-						font-size: $app-text-fs-smaller;
-						top: calc(-#{$app-text-fs-smaller}* 0.6);
-					}
-					.repeater-wrap ~ label {
+					input:disabled ~ label,
+					.repeater-wrap ~ label,
+					.input-field-date ~ label {
 						font-size: $app-text-fs-smaller;
 						top: calc(-#{$app-text-fs-smaller}* 0.6);
 					}
@@ -685,6 +763,12 @@ export default {
 			margin-top: $app-space-bottom;
 			.content-btn {
 				max-width: $app-width-btn;
+				position: relative;
+				.b-icon{
+					position: absolute;
+					left: $app-space-x;
+					top: calc(#{$app-height-btn}/2 - #{$app-icon-size}/2);
+				}
 			}
 		}
 	}

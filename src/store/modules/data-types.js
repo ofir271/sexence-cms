@@ -35,8 +35,9 @@ import {
 	ADD_REPEATER_RECORD,
 	DELETE_REPEATER_RECORD,
 	SET_REPEATER_UNIQUE_FIELD_NAME,
-	SET_REPEATER_NEW_VALUES
-
+	SET_REPEATER_NEW_VALUES,
+	SET_IS_UPDATE_DONE
+	
 } from '@/store/app-mutation-types'
 
 const state = {
@@ -65,10 +66,12 @@ const state = {
 	serverImagesNames: [],
 	serverImages: [],
 	selectedImagePath: "",
+	defaultImageUrl: "https://dev1.sexence.com/imagesStub/placeholder-15.jpg",
 	currentRepeaterFields: [],
 	currentRepeaterRecords: [],
 	currentRepeaterUniqueFieldName:"",
-	currentRepeaterNewValues:""
+	currentRepeaterNewValues:"",
+	isUpdateDone: false
 };
 
 const getters = {
@@ -102,10 +105,12 @@ const getters = {
 	getServerImagesNames: state => state.serverImagesNames,
 	getServerImages: state => state.serverImages,
 	getSelectedImagePath: state => state.selectedImagePath,
+	getDefaultImageUrl: state => state.defaultImageUrl,
 	getRepeaterFields: state => state.currentRepeaterFields,
 	getRepeaterRecords: state => state.currentRepeaterRecords,
 	getRepeaterUniqueFieldName: state => state.currentRepeaterUniqueFieldName,
 	getRepeaterNewValues: state => state.currentRepeaterNewValues,
+	getIsUpdateDone: state => state.isUpdateDone,
 };
 
 const actions = {
@@ -170,6 +175,10 @@ const actions = {
 	async setIsReloadContent({ commit, rootState }, isReload) {
 		if (rootState.isLog) console.log('setIsReloadContent', isReload);
 		commit(SET_IS_RELOAD_CONTENT, isReload);
+	},	
+	async setIsUpdateDone({ commit, rootState }, isDone) {
+		if (rootState.isLog) console.log('setIsUpdateDone', isDone);
+		commit(SET_IS_UPDATE_DONE, isDone);
 	},
 	async setDataType({ commit, state, rootState }, dataType) {
 		if (rootState.isLog) console.log('setDataType', dataType);
@@ -193,8 +202,10 @@ const actions = {
 				commit(SET_IS_LOADING, true);
 				if (reload && typeof state.localDataTables[state.currentDataType.dataTypeName] !== 'undefined') {
 					state.localDataTables[state.currentDataType.dataTypeName] = null;
+					if (rootState.isLog) console.log('loadDataTable. removeCache');
 				}
 				if (typeof state.localDataTables[state.currentDataType.dataTypeName] !== 'undefined' && state.localDataTables[state.currentDataType.dataTypeName] !== null) {
+					if (rootState.isLog) console.log('loadDataTable. load local table ');
 					commit(SET_DATA_TABLE, state.localDataTables[state.currentDataType.dataTypeName]);
 					commit(SET_IS_LOADING, false);
 					return "load local table ok"
@@ -517,9 +528,15 @@ const mutations = {
 	},
 	[UPDATE_DATA_RECORD]: (state, dataTypeRecord) => {
 		//state.currentDataTable.update = dataTypeRecordId;
-		const index = state.currentDataTable.findIndex(dataTableRecord => dataTableRecord[state.currentDataType.dataTypeIdField] === dataTypeRecord[state.currentDataType.dataTypeIdField]);
+		console.log(UPDATE_DATA_RECORD, dataTypeRecord);
+		console.log(UPDATE_DATA_RECORD, state.currentDataTable);
+		const index = state.currentDataTable.findIndex(dataTableRecord => dataTableRecord[state.currentDataType.dataTypeIdField] == dataTypeRecord[state.currentDataType.dataTypeIdField]);
+		console.log(UPDATE_DATA_RECORD,dataTypeRecord[state.currentDataType.dataTypeIdField]);
+		console.log(UPDATE_DATA_RECORD, state.currentDataType.dataTypeIdField);
+		console.log(UPDATE_DATA_RECORD, index);
 		if (index !== -1) {
 			state.currentDataTable.splice(index, 1, dataTypeRecord);
+			console.log(UPDATE_DATA_RECORD, index);
 			if (typeof state.localDataTables[state.currentDataType.dataTypeName] !== 'undefined' && state.localDataTables[state.currentDataType.dataTypeName] !== null) {
 				state.localDataTables[state.currentDataType.dataTypeName] = state.currentDataTable;
 			}
@@ -570,8 +587,12 @@ const mutations = {
 	},
 	[DELETE_REPEATER_RECORD]: (state, recordUniqueValue) => {
 		state.currentRepeaterRecords = state.currentRepeaterRecords.filter(dataRecord => dataRecord[state.currentRepeaterUniqueFieldName] !== recordUniqueValue)
+	},
+	[SET_IS_UPDATE_DONE]: (state, isDone) => {
+		state.isUpdateDone = isDone;
 	}
 
+	
 }
 
 export default {

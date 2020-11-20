@@ -19,6 +19,7 @@
 				<div
 					v-for="tableDataRecord in getDataTable"
 					:key="'data-line-' + tableDataRecord[getDataType.dataTypeIdField]"
+					:id="'data-line-' + tableDataRecord[getDataType.dataTypeIdField]"
 					:class="[tableDataRecord[getDataType.dataTypeIdField] === getCurrentDataContent[getDataType.dataTypeIdField] ? 'active' : '', 'data-table-item']"
 					@click="
 						setEditRecordDetails(tableDataRecord[getDataType.dataTypeIdField])
@@ -33,7 +34,7 @@
 						"
 						class="delete-record-icon"
 					>
-						<b-icon icon="x-square-fill"></b-icon>
+						<b-icon icon="x-circle-fill"></b-icon>
 					</div>
 					<div
 						v-if="getDataType.dataTypeImageField !== ''"
@@ -158,11 +159,14 @@ export default {
 		]),
 		deleteRecord(recordId, recordTitle = "") {
 			this.log("deleteRecord", recordId, recordTitle);
-			const confirmDelete = confirm("Please confirm dalete");
+			const confirmDelete = confirm("Please confirm dalete "+recordTitle);
 			if (confirmDelete) {
 				try {
 					const dataTypesResult = this.deleteDataTypeRecord(recordId)
 						.then((res) => {
+							this.setIsDataContentChanged(false);
+							if (recordId === this.getCurrentDataContent[this.getDataType.dataTypeIdField])
+								this.setContentState("Add");
 							this.log("deleteDataTypeRecord. res: ", res);
 						})
 						.catch((err) => {
@@ -308,10 +312,11 @@ export default {
 				.delete-record-icon{
 					position: absolute;
 					color:$app-delete-color;
-					left: $app-space-x;
-					bottom: $app-space-bottom-small;
+					left: -$app-space-x-small;
+					bottom: -$app-space-bottom-small;
 					cursor: pointer;
 					.b-icon{
+						border-radius: calc(#{$app-icon-size}/2);
 						background-color: $app-bg-color;
 					}
 				}
