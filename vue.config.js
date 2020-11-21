@@ -1,6 +1,10 @@
 const path = require('path')
 
 module.exports = {
+  devServer: {
+    public: 'admin.sexence.com/'
+  },
+  publicPath: '/',
   chainWebpack: config => {
     config.resolve.alias.set(
       'vue$',
