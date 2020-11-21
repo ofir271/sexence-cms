@@ -41,10 +41,10 @@
 						</div>
 						<div 
 							class="delete-btn-wrap"
-							@click="deleteRepeaterRecord(repeaterRecord[getRepeaterUniqueFieldName])"
+							@click="deleteRepeaterRecordClick(repeaterRecord[getRepeaterUniqueFieldName])"
 						>
 							<b-icon 
-								icon="x-square-fill"
+								icon="x-circle-fill"
 							>
 							</b-icon>
 						</div> 
@@ -53,7 +53,7 @@
 				<div class="add-btn-wrap">
 					<b-icon 
 						icon="plus-square-fill"
-						@click="addRepeaterRecord()"
+						@click="addRepeaterRecordClick()"
 					>
 						Add
 					</b-icon>
@@ -63,7 +63,7 @@
 				<button
 					class="general-btn small-btn"
 					key="repeater-save-btn"
-					@click="saveRepeaterContent()"
+					@click="saveRepeaterAndClose()"
 				>
 					Save
 				</button>
@@ -79,7 +79,7 @@ export default {
 	name: "TheRepeaterManager",
 	mixins: [LogMixin],
 	props: {
-	
+	 
     },
 	data() {
 		return {}
@@ -88,7 +88,8 @@ export default {
 		...mapGetters([
 			"getRepeaterFields",
 			"getRepeaterRecords",
-			"getRepeaterUniqueFieldName"
+			"getRepeaterUniqueFieldName",
+			"getRepeaterNewValues"
 		]),
 	},
 	methods: {
@@ -96,36 +97,82 @@ export default {
 			"toggleAppState",
 			"deleteRepeaterRecord",
 			"addRepeaterRecord",
-			"setRepeaterNewValues"
+			"setRepeaterNewValues",
+			"setRepeaterRecords"
 		]),
-		saveRepeaterContent(){
-			this.log("saveRepeaterContent");
+		async deleteRepeaterRecordClick(recordUniqueValue) {
+			this.log("deleteRepeaterRecordClick");
+			const repeaterRecordsArr = this.getRepeaterManagerRecords();
+			try {
+				const saveRepeaterContent = await this.setRepeaterRecords(repeaterRecordsArr)
+					.then((res) => {
+						this.log("setRepeaterRecords ok. res: ", res);
+						this.deleteRepeaterRecord(recordUniqueValue);
+					})
+					.catch((err) => {
+						this.log("error setRepeaterRecords. err: ", err);
+					});
+			} catch (error) {
+				this.log("deleteRepeaterRecordClick. err: ", error);
+			}
+		},		
+		async addRepeaterRecordClick() {
+			this.log("addRepeaterRecordClick");
+			const repeaterRecordsArr = this.getRepeaterManagerRecords();
+			this.log("repeaterRecordsArr", repeaterRecordsArr);
+			try {
+				const saveRepeaterContent = await this.setRepeaterRecords(repeaterRecordsArr)
+					.then((res) => {
+						this.log("setRepeaterRecords ok. res: ", res);
+						this.addRepeaterRecord();
+					})
+					.catch((err) => {
+						this.log("error setRepeaterRecords. err: ", err);
+					});
+			} catch (error) {
+				this.log("addRepeaterRecordClick. err: ", error);
+			}
+		},
+		async saveRepeaterAndClose() {
+			this.log("saveRepeaterAndClose");
+			const repeaterRecordsArr = this.getRepeaterManagerRecords();
+			//this.setRepeaterNewValues(repeaterRecordsArr);
+			try {
+				const saveRepeaterContent = await this.setRepeaterNewValues(repeaterRecordsArr)
+					.then((res) => {
+						this.log("setRepeaterNewValues ok. res: ", res);
+					})
+					.catch((err) => {
+						this.log("setRepeaterNewValues. err: ", err);
+					});
+			} catch (error) {
+				this.log("saveRepeaterAndClose. err: ", error);
+			} finally {
+				this.toggleAppState('repeaterManagerOpen');
+			}
+		},
+		getRepeaterManagerRecords(){
+			this.log("getRepeaterManagerRecords");
 			let keyCouner=0;
 			let repeaterRecordsArr=[]
 			let recordObj={}
-			while (this.$refs["input-field-" + this.getRepeaterUniqueFieldName + "-" + keyCouner] && keyCouner<100) {
-			
-				this.getRepeaterFields.forEach(field => {
-					recordObj[field.name] = this.$refs["input-field-" + field.name + "-" + keyCouner][0].value;
-					//this.log("input-field-" + field.name + "-" + keyCouner);
-				});
-				keyCouner=keyCouner+1;
-				this.log(recordObj);
-				repeaterRecordsArr.push(recordObj);
-				recordObj={}
+			try {
+				while (this.$refs["input-field-" + this.getRepeaterUniqueFieldName + "-" + keyCouner] && keyCouner < 100) {
+					this.getRepeaterFields.forEach(field => {
+						recordObj[field.name] = this.$refs["input-field-" + field.name + "-" + keyCouner][0].value;
+						this.log("input-field-" + field.name + "-" + keyCouner);
+					});
+					keyCouner=keyCouner+1;
+					this.log(recordObj);
+					repeaterRecordsArr.push(recordObj);
+					recordObj={}
+				}
+			} catch {
+				this.log('keyCouner',keyCouner);
 			}
-			
-			//this.log(keyCouner);
-			this.log(repeaterRecordsArr);
-			//'input-field-' + repeaterField.name + '-'+ recordKey
-			//(repeaterField, fieldKey) in getRepeaterFields
-			
-			//this.$refs[	"input-field-" + this.selectedImageFieldName
-			//][0].value
-
-			this.setRepeaterNewValues(repeaterRecordsArr);
-			this.toggleAppState('repeaterManagerOpen');
-		}
+			this.log('repeaterRecordsArr:', repeaterRecordsArr);
+			return repeaterRecordsArr
+		},
     }
 };
 </script>
@@ -211,6 +258,7 @@ export default {
 						color:$app-delete-color;
 						.b-icon{
 							background-color: $app-bg-color;
+							border-radius: calc(#{$app-icon-size}/2);
 						}
 					}
 					.repeater-table-field{

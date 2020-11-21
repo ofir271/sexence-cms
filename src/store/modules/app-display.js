@@ -10,7 +10,7 @@ const state = {
         sidebarMainGroupOpen: true,
         imageSelectionOpen: false,
         repeaterManagerOpen: false
-    }
+    },
 };
 
 const getters = {

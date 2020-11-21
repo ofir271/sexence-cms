@@ -85,7 +85,8 @@ export default {
 			"setDataTypes",
 			"setDataType",
 			"loadDataTable",
-			"toggleAppState"
+			"toggleAppState",
+			"loadSelectTables"
 		]),
 		async setDataTable(dataType) {
 			this.log("setDataTable", dataType);
@@ -101,12 +102,19 @@ export default {
 					.then((res) => {
 						//todo find why res empty
 						this.log("loadDataTable from sidebar. res: ", res);
-					})
+						const dataTableSelects = this.loadSelectTables()
+							.then((res) => {
+								this.log("loadSelectTables from sidebar. res: ", res);
+							})
+							.catch((err) => {
+								this.log("error loadSelectTables. err: ", err);
+							});
+						})
 					.catch((err) => {
 						this.log("error loadDataTable. err: ", err);
-					});
+					});				
 			} catch (err) {
-				this.log("failed to setDataType or loadDataTable. err: ", err);
+				this.log("failed to setDataType or loadDataTable or loadSelectTables. err: ", err);
 			}	
 		}
 	}

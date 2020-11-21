@@ -131,6 +131,7 @@
 								:key="'input-field-label-' + contentField.name"
 								:for="'input-field-' + contentField.name"
 								class="input-field-label"
+								@click="focusInput('input-field-'+contentField.name)"
 							>
 								{{ contentField.displayName }}
 							</label>
@@ -225,19 +226,68 @@
 								:key="'input-field-select-' + contentField.name"
 								:class="'select-wrap'"
 							>
-								<select
+								<input
+									v-if="contentField.fieldType == 'ts'"
 									:ref="'input-field-' + contentField.name"
-									:name="'input-field-' + contentField.name"
-									:id="'input-field-' + contentField.name"
-									:hidden="false"
-									:disabled="false"
-									@change="
+									:key="'input-field-ts-' + contentField.name"
+									:id="'input-field-ts-' + contentField.name"
+									:disabled="true"
+									:hidden="contentField.hidden || getContentState === 'Add'"
+									:required="contentField.required"
+									@keydown="
 										getIsDataContentChanged ? '' : setIsDataContentChanged(true)
 									"
+									type="text"
+								/>
+								<input
+									v-if="contentField.name == 'createdTs'"
+									:ref="'field-created-ts-hidden'"
+									:key="'field-created-ts-hidden'"
+									:id="'field-created-ts-hidden'"
+									:hidden="true"
+									type="text"
+								/>
+
+							</div>							
+							<div
+								v-if="contentField.fieldType === 'tags'"
+								:key="'input-field-tags-' + contentField.name"
+								:class="'tags-wrap'"
+							>
+								<!-- <div 
+									class="tags-display"
+									:ref="'input-field-tags-display-' + contentField.name"
 								>
 
-								</select>
-
+								</div> -->
+								<!-- <input
+									:ref="'input-field-tag-' + contentField.name"
+									:id="'input-field-tag-' + contentField.name"
+									:name="'input-field-tag-' + contentField.name"
+									:hidden="false"
+									:required="contentField.required"
+									@keydown="
+										getIsDataContentChanged ? '' : setIsDataContentChanged(true)
+									"
+									type="text"
+								/>
+								<div @click="addTag(contentField.name)" class="add-tag-icon">
+									<b-icon icon="plus-circle-fill"></b-icon>
+								</div> -->
+								<TagsLine
+									:tags-line-str-prop="contentField.value"
+									:field-name="contentField.name"
+									:field-display="contentField.displayName"
+									@change = "tagChange"
+								/>
+								<input
+									:ref="'input-field-' + contentField.name"
+									:key="'input-field-' + contentField.name"
+									:id="'input-field-' + contentField.name"
+									:name="'input-field-' + contentField.name"
+									:hidden="false"
+									type="text"
+								/>
 							</div>							
 							<div
 								v-if="contentField.fieldType === 'repeater'"
@@ -250,7 +300,7 @@
 									:id="'input-field-' + contentField.name"
 									:name="'input-field-' + contentField.name"
 									:hidden="false"
-									:disabled="false"
+									:disabled="true"
 									@keydown="
 										getIsDataContentChanged ? '' : setIsDataContentChanged(true)
 									"
@@ -261,7 +311,7 @@
 								</div>
 							</div>
 							<label
-								v-if="!contentField.hidden"
+								v-if="!contentField.hidden && contentField.fieldType!=='tags'"
 								:key="'input-field-label-' + contentField.name"
 								:for="'input-field-' + contentField.name"
 								class="input-field-label"
@@ -305,18 +355,18 @@
 import LogMixin from "@/mixins/LogMixin";
 import TheRepeaterManager from "@/components/TheRepeaterManager";
 import TheImageSelection from "@/components/TheImageSelection";
+import TagsLine from "@/components/TagsLine";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
 	name: "DataDetails",
-	components: { TheImageSelection, TheRepeaterManager },
+	components: { TheImageSelection, TheRepeaterManager, TagsLine },
 	mixins: [LogMixin],
 	data() {
 		return {
 			selectedImageFieldName: "",
 			selectedImagePath: "",
 			currentRepeaterFieldName: "",
-			doneUpdate: ["x"]
 		};
 	},
 	computed: {
@@ -339,7 +389,8 @@ export default {
 			"getRepeaterRecords",
 			"getRepeaterNewValues",
 			"getDefaultImageUrl",
-			"getIsUpdateDone"
+			"getIsUpdateDone",
+			"getLocalDataTables"
 		]),
 		dataContentTitle() {
 			if (this.getContentState !== "")
@@ -358,12 +409,19 @@ export default {
 				this.toggleAppState("imageSelectionOpen");
 			}
 			this.setIsUpdateDone(false);
-		},		
+		},
+		getLocalDataTables:	function (newContent, oldContent) {
+			this.log("watch getLocalDataTables", newContent);
+		},	
 		getContentState: function (newContent, oldContent) {
 			this.log("watch getContentState");
 			this.setIsUpdateDone(false);
 			if (newContent === "Add" && oldContent !== "") {
+				this.setIsDataContentChanged(false);
+				this.clearDataRecordValues();
 				this.clearContentFields();
+				//let emptyErr= []
+				this.setRepeaterRecords([]);
 			}
 		},
 		getSelectedImagePath: function (newContent, oldContent) {
@@ -386,6 +444,7 @@ export default {
 		},		
 		getRepeaterFields: function (newContent, oldContent) {
 			this.log("watch getRepeaterFields.");
+			//this.setRepeaterRecords([]);
 			// this.$refs[
 			// 	"input-field-" + this.selectedImageFieldName
 			// ][0].value = newContent;
@@ -413,22 +472,27 @@ export default {
 					try {
 						this.log(contentField.name,this.$refs["input-field-" + contentField.name][0].value);
 						let fieldValue = "";
-						if (contentField.fieldType === "ts"){
+						if (contentField.fieldType === "ts") {
 							try {
 								const localDate = new Date(this.getCurrentDataContent[contentField.name] * 1000);
 								fieldValue = localDate.toLocaleString();
 							}catch {
-								fieldValue = "";
-							}
+								fieldValue = '';
+							}						
 						} else {
 							fieldValue = this.getCurrentDataContent[contentField.name];	
 						}
-						this.$refs["input-field-" + contentField.name][0].value = fieldValue;
-						if (contentField.fieldType === "image"){
-							this.$refs["field-image-" + contentField.name][0].src = this.getCurrentDataContent[contentField.name];
+						this.$refs['input-field-' + contentField.name][0].value = fieldValue;
+						if (contentField.fieldType === 'image'){
+							this.$refs['field-image-' + contentField.name][0].src = this.getCurrentDataContent[contentField.name];
+						}						
+						if (contentField.fieldType === 'tags'){
+							
+							//this.$refs['input-field-tags-display-' + contentField.name][0].innerText = this.getTagsDisplay(fieldValue);
+							this.log('tags display field', this.$refs['input-field-tags-display-' + contentField.name][0].innerText)
 						}
-						if (contentField.name === "createdTs"){
-							this.$refs["field-created-ts-hidden"][0].value = this.getCurrentDataContent[contentField.name];
+						if (contentField.name === 'createdTs'){
+							this.$refs['field-created-ts-hidden'][0].value = this.getCurrentDataContent[contentField.name];
 						}
 					} catch (err) {
 						this.log("construct record. err: ", err);
@@ -445,13 +509,38 @@ export default {
 			"updateDataTypeRecord",
 			"setIsDataContentChanged",
 			"setIsReloadContent",
-			"setAppState",
+			"setAppState",			
 			"toggleAppState",
 			"setRepeaterFields",
 			"setRepeaterRecords",
 			"setRepeaterUniqueFieldName",
-			"setIsUpdateDone"
+			"setIsUpdateDone",
+			"clearDataRecordValues"
 		]),
+		tagChange(fieldName, fieldValueStr){
+			this.log('tagChange ', fieldName, fieldValueStr);
+			try {
+				this.log('ref: ', this.$refs["input-field-" + fieldName]);
+				this.$refs["input-field-" + fieldName][0].value = fieldValueStr;
+				this.setIsDataContentChanged(true);
+				this.log('tagChange ok');				
+			} catch (error) {
+				this.log('tagChange. err: ', error);	
+			}
+		},
+		getTagsDisplay(tagsFieldValue){
+			//inactive. not reactive. maybe use for display later
+			this.log("getTagsDisplay");
+			let tagsHtml='';
+			try {
+				tagsFieldValue.forEach(tag =>{
+					tagsHtml = tagsHtml + '<span>' + tag + '</span>';
+				})
+			} catch (err) {
+				this.log("getTagsDiplay. err: ", err);
+			}
+			return tagsHtml;
+		},
 		openImageSelection(imageFieldName) {
 			this.log("openImageSelection");
 			try {
@@ -485,6 +574,7 @@ export default {
 				this.log("repeaterRecords",repeaterRecordsObj);
 				this.setRepeaterRecords(repeaterRecordsObj);
 			} catch (err) {
+				this.setRepeaterRecords([]);
 				this.log("error getting repeaterRecords. err: ", err);
 			}
 			try {
@@ -523,7 +613,7 @@ export default {
 				this.log("clearContentFields err: ", err);
 			}
 		},
-		addContentRecord() {
+		async addContentRecord() {
 			this.log("addContentRecord");
 			this.log(this.$refs);
 			let dataTypeRecord = {};
@@ -534,6 +624,14 @@ export default {
 					if (dataTypeIdFieldName !== contentField.name) {
 						if (this.$refs["input-field-" + contentField.name][0].value === "")
 							dataTypeRecord[contentField.name] = " ";
+						else if (contentField.fieldType === 'repeater')
+							dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
+								'input-field-' + contentField.name
+							][0].value);						
+						// else if (contentField.fieldType === 'tags')
+						// 	dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
+						// 		'input-field-' + contentField.name
+						// 	][0].value);
 						else
 							dataTypeRecord[contentField.name] = this.$refs[
 								"input-field-" + contentField.name
@@ -551,6 +649,7 @@ export default {
 				const addRecordResult = this.addDataTypeRecord(dataTypeRecord)
 					.then((res) => {
 						this.log("addDataTypeRecord. res: ", res);
+						//this.clearDataRecordValues();
 						this.clearContentFields();
 						this.setIsDataContentChanged(false);
 						const dataTableResult = this.loadDataTable(true)
@@ -580,6 +679,10 @@ export default {
 						dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
 							'input-field-' + contentField.name
 						][0].value);
+					// else if (contentField.fieldType === 'tags')
+					// 		dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
+					// 			'input-field-' + contentField.name
+					// 		][0].value);
 					else if (contentField.name === 'createdTs') {
 						dataTypeRecord['createdTs']=this.$refs["field-created-ts-hidden"][0].value;
 					} else 
@@ -717,13 +820,34 @@ export default {
 							position: absolute;
 							left: $app-space-x;
 							top: 0;
+							color: $app-text-color2;
+							height: $app-input-height;
+							display: flex;
+							align-items: center;
+							transition: $app-transition-time-short; 
+							:hover{
+								color: $app-hover-color;
+							}
+						}
+						input{
+							padding-left: calc(#{$app-space-x} + #{$app-space-x-small} + #{$app-icon-size})
+						}					
+					}
+					.tags-wrap{
+						position: relative;
+						height: calc(#{$app-input-height}*2 + #{$app-space-y3} );
+						.add-tag-icon{
+							position: absolute;
+							left: $app-space-x;
+							top: 0;
+							color: $app-text-color2;
 							height: $app-input-height;
 							display: flex;
 							align-items: center;
 						}
 						input{
 							padding-left: calc(#{$app-space-x} + #{$app-space-x-small} + #{$app-icon-size})
-						}					
+						}
 					}
 					.input-field-label {
 						position: absolute;
@@ -738,7 +862,8 @@ export default {
 					input:focus ~ label,
 					input:valid ~ label,
 					input:disabled ~ label,
-					.repeater-wrap ~ label,
+					.repeater-wrap ~ label,					
+					.tags-wrap ~ label,
 					.input-field-date ~ label {
 						font-size: $app-text-fs-smaller;
 						top: calc(-#{$app-text-fs-smaller}* 0.6);

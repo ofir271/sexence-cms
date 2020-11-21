@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import dataTypes from "./modules/data-types";
+import dataTypesModel from "./modules/data-types";
 import appDisplay from "./modules/app-display";
 
 Vue.use(Vuex)
@@ -20,7 +20,7 @@ export default new Vuex.Store({
 	mutations: {
 	},
 	modules: {
-		dataTypes,
+		dataTypesModel,
 		appDisplay
 	}
 })

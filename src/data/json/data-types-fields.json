@@ -50,8 +50,8 @@
                 "isTable": false,
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "select",
-                "selectTable": "categories",
+                "fieldType": "string",
+                "selectDataTypeName": "category",
                 "selectValueField": "categoryId",
                 "selectDisplayField": "categoryName",
                 "required": true, 
@@ -195,7 +195,7 @@
                 "isTable": false,
                 "singleOrder": 8,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "tags",
                 "required": false,               
                 "hidden": false               
             },            
@@ -205,7 +205,7 @@
                 "isTable": false,
                 "singleOrder": 9,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "tags",
                 "required": false,               
                 "hidden": false                 
             }            
@@ -380,7 +380,7 @@
                 "isTable": false,
                 "singleOrder": 7,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "tags",
                 "required": true,               
                 "hidden": false               
             }            
@@ -458,7 +458,7 @@
                 "isTable": false,
                 "singleOrder": 5,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "tags",
                 "required": true,               
                 "hidden": false    
             },            
@@ -731,6 +731,14 @@
                 "name" :"questions",
                 "displayName" :"Questions",
                 "singleOrder": 4,
+                "col": 2,
+                "fieldType": "string",
+                "required": true
+            },            
+            {
+                "name" :"answers",
+                "displayName" :"Answers",
+                "singleOrder": 5,
                 "col": 2,
                 "fieldType": "string",
                 "required": true

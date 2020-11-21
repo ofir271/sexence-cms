@@ -64,7 +64,7 @@
         "singleDisplay": "Questions",
         "pluralDisplay": "Questions",
         "type": "multiple",
-        "menuGroup": "main",
+        "menuGroup": "inactive",
         "menuOrder": 5,        
         "iconName": "question",
         "dataTypeIdField": "questionId",
