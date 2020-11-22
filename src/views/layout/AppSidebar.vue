@@ -64,21 +64,120 @@ export default {
 			"getIsLoading",
 			"getIsSending",
 			"getAppStates",
-			"getLocalDataTables"
+			"getLocalDataTables",
+			"getIsSelects"
 		]),
     },
-	created() {
+	async mounted() {
 		try {
-			const dataTypesResult = this.setDataTypes()
+			const dataTypesResult = await this.setDataTypes()
 				.then((res) => {
-					this.log("setDataTypes. res: ", res);
+					// const setSelectsNamesResult = this.setSelectsNames()
+					// 	.then((res2) => {
+					// 		this.log("setSelectsNames. res: ", res2);
+					// 	})
+					// 	.catch((err2) => {
+					// 		this.log("error setDataTypes. err: ", err2);
+					// 	}); 					
+						this.log("setDataTypes. res: ", res);
 				})
 				.catch((err) => {
 					this.log("error setDataTypes. err: ", err);
-				});
+				});  
 		} catch (err) {
 			this.log("failed to setDataTypes. err: ", err);
+		}
+		//todo - make generic, make only nessacery calls.
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('category')
+				.then((res) => {
+						this.log("loadSelectTable category. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable category. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable. err: ", err);
+		}
+		// try {
+		// 	let loadSelectTableResult = await this.loadSelectTable('article')
+		// 		.then((res) => {
+		// 				this.log("loadSelectTable article. res: ", res);
+		// 		})
+		// 		.catch((err) => {
+		// 			this.log("error loadSelectTable article. err: ", err);
+		// 		});  
+		// } catch (err) {
+		// 	this.log("failed to loadSelectTable article. err: ", err);
+		// }
+		// try {
+		// 	let loadSelectTableResult = await this.loadSelectTable('shopItem')
+		// 		.then((res) => {
+		// 				this.log("loadSelectTable article. res: ", res);
+		// 		})
+		// 		.catch((err) => {
+		// 			this.log("error loadSelectTable article. err: ", err);
+		// 		});  
+		// } catch (err) {
+		// 	this.log("failed to loadSelectTable article. err: ", err);
+		// }
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('dailyTip')
+				.then((res) => {
+						this.log("loadSelectTable dailyTip. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable dailyTip. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable dailyTip. err: ", err);
 		}		
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('dailyFeedback')
+				.then((res) => {
+						this.log("loadSelectTable dailyFeedback. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable dailyFeedback. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable dailyTip. err: ", err);
+		}
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('dailyQuestion')
+				.then((res) => {
+						this.log("loadSelectTable dailyQuestion. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable dailyQuestion. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable dailyQuestion. err: ", err);
+		}
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('dailyForYou')
+				.then((res) => {
+						this.log("loadSelectTable dailyForYou. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable dailyForYou. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable dailyForYou. err: ", err);
+		}
+
+
+		// try {
+		// 	const setSelectsNamesResult = this.setSelectsNames()
+		// 		.then((res) => {
+		// 			this.log("setSelectsNames. res: ", res);
+		// 		})
+		// 		.catch((err) => {
+		// 			this.log("error setDataTypes. err: ", err);
+		// 		});  
+		// } catch (err) {
+		// 	this.log("failed to setDataTypes. err: ", err);
+		// }		
 	},
 	methods: {
 		...mapActions([
@@ -86,33 +185,39 @@ export default {
 			"setDataType",
 			"loadDataTable",
 			"toggleAppState",
-			"loadSelectTables"
+			"loadSelectTables",
+			"setSelectsNames",
+			"loadSelectTable"
 		]),
 		async setDataTable(dataType) {
-			this.log("setDataTable", dataType);
+			this.log("sidebar. setDataTable", dataType);
 			try {
-				const dataTypeResult = this.setDataType(dataType)
+				const dataTypeResult = await this.setDataType(dataType)
 					.then((res) => {
 						this.log("setDataType. res: ", res);
 					})
 					.catch((err) => {
 						this.log("error setDataType. err: ", err);
 					});			
-				const dataTableResult = this.loadDataTable()
+				const dataTableResult = await this.loadDataTable()
 					.then((res) => {
 						//todo find why res empty
 						this.log("loadDataTable from sidebar. res: ", res);
-						const dataTableSelects = this.loadSelectTables()
-							.then((res) => {
-								this.log("loadSelectTables from sidebar. res: ", res);
-							})
-							.catch((err) => {
-								this.log("error loadSelectTables. err: ", err);
-							});
+
 						})
 					.catch((err) => {
 						this.log("error loadDataTable. err: ", err);
-					});				
+					});	
+				// if (1==1 || this.getIsSelects===false){ //todo. limit select tables calls
+				// 	this.log('before loadSelectTables', false);
+				// 	const dataTableSelects = await this.loadSelectTables()
+				// 		.then((res) => {
+				// 			this.log("loadSelectTables from sidebar. res: ", res);
+				// 		})
+				// 		.catch((err) => {
+				// 			this.log("error loadSelectTables. err: ", err);
+				// 		});
+				// }				
 			} catch (err) {
 				this.log("failed to setDataType or loadDataTable or loadSelectTables. err: ", err);
 			}	

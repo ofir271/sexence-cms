@@ -38,7 +38,9 @@ import {
 	SET_REPEATER_NEW_VALUES,
 	SET_IS_UPDATE_DONE,
 	SET_CURRENT_TAGS,
-	CLEAR_DATA_RECORD_VALUES
+	CLEAR_DATA_RECORD_VALUES,
+	SET_IS_SELECTS,
+	//SET_SELECT_TABLES
 	
 } from '@/store/app-mutation-types'
 
@@ -53,6 +55,9 @@ const state = {
 	isReloadContent: false, // watch to fix content reactivity
 	isLoading: false,
 	isSending: false,
+	isClearTags: false,
+	isSelects: false,
+	isUpdateDone: false,
 	currentDataType: "",
 	localDataTables: [], //for local cashing
 	currentDataTable: [],
@@ -73,9 +78,8 @@ const state = {
 	currentRepeaterRecords: [],
 	currentRepeaterUniqueFieldName:"",
 	currentRepeaterNewValues:"",
-	isUpdateDone: false,
-	currentTags:[],
-	isClearTags:false
+	currentTags: [],
+	selectTables: {},
 };
 
 const getters = {
@@ -117,7 +121,12 @@ const getters = {
 	getRepeaterUniqueFieldName: state => state.currentRepeaterUniqueFieldName,
 	getRepeaterNewValues: state => state.currentRepeaterNewValues,
 	getIsUpdateDone: state => state.isUpdateDone,
-	getCurrentTags: state => state.currentTags
+	getCurrentTags: state => state.currentTags,
+	getIsSelects: state => state.isSelects,
+	getSelectTables: state => state.selectTables,
+	getSelectTable: (state) => (name) => {
+		return state.selectTables[name];
+	},
 };
 
 const actions = {
@@ -163,6 +172,10 @@ const actions = {
 		if (rootState.isLog) console.log('setRepeaterNewValues', newValues);
 		commit(SET_REPEATER_NEW_VALUES, newValues);
 	},	
+	// async setSelectsNamesTables({ commit, rootState }, selectTables) {
+	// 	if (rootState.isLog) console.log('setSelectsNames', selectTables);
+	// 	commit(SET_SELECT_TABLES, selectTables);
+	// },
 	async addRepeaterRecord({ commit, state, rootState }) {
 		if (rootState.isLog) console.log('addRepeaterRecord');
 		let emptyRepeaterRecordObj={};
@@ -190,6 +203,10 @@ const actions = {
 	async setIsUpdateDone({ commit, rootState }, isDone) {
 		if (rootState.isLog) console.log('setIsUpdateDone', isDone);
 		commit(SET_IS_UPDATE_DONE, isDone);
+	},	
+	async setIsSelects({ commit, rootState }, isSelects) {
+		if (rootState.isLog) console.log('setIsSelect', isSelects);
+		commit(SET_IS_SELECTS, isSelects);
 	},
 	async setDataType({ commit, state, rootState, actions }, dataType) {
 		if (rootState.isLog) console.log('setDataType start', dataType);
@@ -325,106 +342,23 @@ const actions = {
 	async loadSelectTables({ commit, state, rootState }){
 		if (rootState.isLog) console.log('loadSelectTables ');
 		if (state.isDataTypes) {
-			state.currentDataTypeFields.forEach(dataField => {
-			 	if (dataField.fieldType === 'select'){
-			 		if (typeof state.localDataTables[dataField.selectDataTypeName] == 'undefined' || state.localDataTables[dataField.selectDataTypeName] == null) {
-						 let dataTypeName = dataField.selectDataTypeName;
-			 			if (rootState.isLog) console.log('dataTypeName', dataTypeName);
-						 if (!state.isLoading) {
-							commit(SET_IS_LOADING, true);
-							let setSelectTableObj = {dataTypeName : dataTypeName}
-							if (typeof state.localDataTables[dataTypeName] !== 'undefined' && state.localDataTables[dataTypeName] !== null) {
-								if (rootState.isLog) console.log('loadDataSelects. local table');
-								setSelectTableObj.table = state.localDataTables[dataTypeName];
-								commit(SET_SELECT_TABLE, setSelectTableObj);
-								commit(SET_IS_LOADING, false);
-								return "local table exist"
-							} else {
-								if (rootState.isAxios == false) {
-									switch (dataTypeName) {
-										case "article":
-											setSelectTableObj.table = dummyArticlesJson
-											break;
-										case "howto":
-											setSelectTableObj.table = dummyHowtosJson
-											break;
-										case "daily":
-											setSelectTableObj.table = dummyDailiesJson
-											break;
-										case "secrets":
-											setSelectTableObj.table = dummySecretsJson
-											break;
-										default:
-									}
-									commit(SET_SELECT_TABLE, setSelectTableObj);
-									commit(SET_IS_LOADING, false);
-									return "dummy data items. load ok"
-								} else {
-									if (rootState.isLog) console.log('dataTypes: ', state.dataTypes); 
-									let dataTypeIndex = state.dataTypes.findIndex(dataType => dataType.dataTypeName === dataTypeName);
-									//let dataTypeIndex2 = state.dataTypes[0].dataTypeName;
-									let endPointPlural = "";
-									if (dataTypeIndex !== 1) 
-										endPointPlural = state.dataTypes[dataTypeIndex].endPointPlural;
-								 	if (rootState.isLog) console.log('endPointPlural: ', endPointPlural);
-									//todo check why async await not working
-									 axios.get(endPointPlural, { responseType: "json" })
-										.then(res => {
-											if (rootState.isLog) console.log('loadDataSelects axios res: ', res);
-											setSelectTableObj.table = res.data;
-											commit(SET_SELECT_TABLE, setSelectTableObj);
-											commit(SET_IS_LOADING, false);
-											return 'axios done ok';
-										}).catch(error => {
-											switch (dataTypeName) {
-												case "article":
-													setSelectTableObj.table = dummyArticlesJson
-													break;
-												case "howto":
-													setSelectTableObj.table = dummyHowtosJson
-													break;
-												case "daily":
-													setSelectTableObj.table = dummyDailiesJson
-													break;
-												case "secrets":
-													setSelectTableObj.table = dummySecretsJson
-													break;
-												default:
-											}
-											commit(SET_SELECT_TABLE, setSelectTableObj);
-											commit(SET_IS_LOADING, false);
-											return 'dummy data. axios error:.' + error;
-										})
-								}
-							}
-						} else {
-							return "data allready loading"
-						}
-			
-						
-						//rootActions.loadSelectTable(dataField.selectDataTypeName);
-			 		}
-			 	}
-			 })
-			return "loadSelectTables ok";
-		} else {
-			return "missing data types";
-		}
-	},
-	async loadSelectTable({ commit, state, rootState }, dataTypeName) {
-		//not used atm. loadSelectTables is used instead
-		if (rootState.isLog) console.log('loadSelectTable', dataTypeName);
-		if (state.isDataType && state.isDataTypes) {
-			if (!state.isLoading) {
-				commit(SET_IS_LOADING, true);
-				let setSelectTableObj = {dataTypeName : dataTypeName, table:""}
-				if (typeof state.localDataTables[dataTypeName] !== 'undefined' && state.localDataTables[dataTypeName] !== null) {
-					if (rootState.isLog) console.log('loadDataSelects. local table');
-					setSelectTableObj.table = state.localDataTables[dataTypeName];
-					commit(SET_SELECT_TABLE, setSelectTableObj);
-					commit(SET_IS_LOADING, false);
-					return "local table exist"
-				} else {
+			let selectFields = state.currentDataTypeFields.filter(dataField => dataField.fieldType === 'select');
+			if (rootState.isLog) console.log('state.currentDataTypeFields. ',state.currentDataTypeFields);
+			if (rootState.isLog) console.log('selectFields. ',selectFields);
+			selectFields.forEach(dataField => { 
+				let dataTypeName = dataField.selectDataTypeName;
+				if (rootState.isLog) console.log('loadSelectTables. dataTypeName:', dataTypeName);
+				if (!state.isLoading) {
+					commit(SET_IS_LOADING, true);
+					let setSelectTableObj = {}
+					setSelectTableObj.dataTypeName =  dataTypeName
+						// if (typeof state.localDataTables[dataTypeName] !== 'undefined' && state.localDataTables[dataTypeName] !== null) {
+						// 	if (rootState.isLog) console.log('loadDataSelects. local table');
+						// 	setSelectTableObj.table = state.localDataTables[dataTypeName];
+						// 	commit(SET_SELECT_TABLE, setSelectTableObj);
+						// 	commit(SET_IS_LOADING, false);
+						// 	return "local table exist"
+						// } else {
 					if (rootState.isAxios == false) {
 						switch (dataTypeName) {
 							case "article":
@@ -445,16 +379,18 @@ const actions = {
 						commit(SET_IS_LOADING, false);
 						return "dummy data items. load ok"
 					} else {
-						const endPointPlural = state.dataTypes.find(dataType=>{
-							dataType.dataTypeName === dataTypeName
-						}).endPointPlural;
-						if (rootState.isLog) console.log('endPointPlural: ',endPointPlural);
-						const result = await axios.get(endPointPlural, { responseType: "json" })
+						if (rootState.isLog) console.log('dataTypes: ', state.dataTypes); 
+						let dataTypeIndex = state.dataTypes.findIndex(dataType => dataType.dataTypeName === dataTypeName);
+						//let dataTypeIndex2 = state.dataTypes[0].dataTypeName;
+						let endPointPlural = "";
+						if (dataTypeIndex !== 1) 
+							endPointPlural = state.dataTypes[dataTypeIndex].endPointPlural;
+						if (rootState.isLog) console.log('endPointPlural: ', endPointPlural);
+						//todo check why async await not working
+						let selectTableResult = axios.get(endPointPlural, { responseType: "json" })
 							.then(res => {
 								if (rootState.isLog) console.log('loadDataSelects axios res: ', res);
-								//setSelectTableObj.table = res.data
-								setSelectTableObj={dataTypeName : dataTypeName, table: res.data}
-								if (rootState.isLog) console.log('before  SET_SELECT_TABLE ', setSelectTableObj);
+								setSelectTableObj.table = res.data;
 								commit(SET_SELECT_TABLE, setSelectTableObj);
 								commit(SET_IS_LOADING, false);
 								return 'axios done ok';
@@ -479,14 +415,171 @@ const actions = {
 								return 'dummy data. axios error:.' + error;
 							})
 					}
+				} else {
+					return "data allready loading"
+				}
+			})
+		} else {
+			return "missing data types";
+		}
+	},	
+	async loadSelectTable({ commit, state, rootState }, dataTypeName){
+		if (rootState.isLog) console.log('loadSelectTable', dataTypeName);
+		if (state.isDataTypes) {
+			//let selectFields = state.currentDataTypeFields.filter(dataField => dataField.fieldType === 'select');
+			//if (rootState.isLog) console.log('state.currentDataTypeFields. ',state.currentDataTypeFields);
+			//if (rootState.isLog) console.log('selectFields. ',selectFields);
+			//if (rootState.isLog) console.log('loadSelectTable. dataTypeName:', dataTypeName);
+			if (!state.isLoading) {
+				commit(SET_IS_LOADING, true);
+				let setSelectTableObj = {}
+				setSelectTableObj.dataTypeName =  dataTypeName
+					// if (typeof state.localDataTables[dataTypeName] !== 'undefined' && state.localDataTables[dataTypeName] !== null) {
+					// 	if (rootState.isLog) console.log('loadDataSelects. local table');
+					// 	setSelectTableObj.table = state.localDataTables[dataTypeName];
+					// 	commit(SET_SELECT_TABLE, setSelectTableObj);
+					// 	commit(SET_IS_LOADING, false);
+					// 	return "local table exist"
+					// } else {
+				if (rootState.isAxios == false) {
+					switch (dataTypeName) {
+						case "article":
+							setSelectTableObj.table = dummyArticlesJson
+							break;
+						case "howto":
+							setSelectTableObj.table = dummyHowtosJson
+							break;
+						case "daily":
+							setSelectTableObj.table = dummyDailiesJson
+							break;
+						case "secrets":
+							setSelectTableObj.table = dummySecretsJson
+							break;
+						default:
+					}
+					commit(SET_SELECT_TABLE, setSelectTableObj);
+					commit(SET_IS_LOADING, false);
+					return "dummy data items. load ok"
+				} else {
+					if (rootState.isLog) console.log('dataTypes: ', state.dataTypes); 
+					let dataTypeIndex = state.dataTypes.findIndex(dataType => dataType.dataTypeName === dataTypeName);
+					//let dataTypeIndex2 = state.dataTypes[0].dataTypeName;
+					let endPointPlural = "";
+					if (dataTypeIndex !== 1) 
+						endPointPlural = state.dataTypes[dataTypeIndex].endPointPlural;
+					if (rootState.isLog) console.log('endPointPlural: ', endPointPlural);
+					//todo check why async await not working
+					let selectTableResult = await axios.get(endPointPlural, { responseType: "json" })
+						.then(res => {
+							if (rootState.isLog) console.log('loadDataSelects axios res: ', res);
+							setSelectTableObj.table = res.data;
+							commit(SET_SELECT_TABLE, setSelectTableObj);
+							commit(SET_IS_LOADING, false);
+							return 'axios done ok';
+						}).catch(error => {
+							switch (dataTypeName) {
+								case "article":
+									setSelectTableObj.table = dummyArticlesJson
+									break;
+								case "howto":
+									setSelectTableObj.table = dummyHowtosJson
+									break;
+								case "daily":
+									setSelectTableObj.table = dummyDailiesJson
+									break;
+								case "secrets":
+									setSelectTableObj.table = dummySecretsJson
+									break;
+								default:
+							}
+							commit(SET_SELECT_TABLE, setSelectTableObj);
+							commit(SET_IS_LOADING, false);
+							return 'dummy data. axios error:.' + error;
+						})
 				}
 			} else {
 				return "data allready loading"
 			}
 		} else {
-			return "missing data types or data type"
+			return "missing data types";
 		}
 	},
+	// async loadSelectTable({ commit, state, rootState }, dataTypeName) {
+	// 	//not used atm. loadSelectTables is used instead
+	// 	if (rootState.isLog) console.log('loadSelectTable', dataTypeName);
+	// 	if (state.isDataType && state.isDataTypes) {
+	// 		if (!state.isLoading) {
+	// 			commit(SET_IS_LOADING, true);
+	// 			let setSelectTableObj = {dataTypeName : dataTypeName, table:""}
+	// 			if (typeof state.localDataTables[dataTypeName] !== 'undefined' && state.localDataTables[dataTypeName] !== null) {
+	// 				if (rootState.isLog) console.log('loadDataSelects. local table');
+	// 				setSelectTableObj.table = state.localDataTables[dataTypeName];
+	// 				commit(SET_SELECT_TABLE, setSelectTableObj);
+	// 				commit(SET_IS_LOADING, false);
+	// 				return "local table exist"
+	// 			} else {
+	// 				if (rootState.isAxios == false) {
+	// 					switch (dataTypeName) {
+	// 						case "article":
+	// 							setSelectTableObj.table = dummyArticlesJson
+	// 							break;
+	// 						case "howto":
+	// 							setSelectTableObj.table = dummyHowtosJson
+	// 							break;
+	// 						case "daily":
+	// 							setSelectTableObj.table = dummyDailiesJson
+	// 							break;
+	// 						case "secrets":
+	// 							setSelectTableObj.table = dummySecretsJson
+	// 							break;
+	// 						default:
+	// 					}
+	// 					commit(SET_SELECT_TABLE, setSelectTableObj);
+	// 					commit(SET_IS_LOADING, false);
+	// 					return "dummy data items. load ok"
+	// 				} else {
+	// 					const endPointPlural = state.dataTypes.find(dataType=>{
+	// 						dataType.dataTypeName === dataTypeName
+	// 					}).endPointPlural;
+	// 					if (rootState.isLog) console.log('endPointPlural: ',endPointPlural);
+	// 					const result = await axios.get(endPointPlural, { responseType: "json" })
+	// 						.then(res => {
+	// 							if (rootState.isLog) console.log('loadDataSelects axios res: ', res);
+	// 							//setSelectTableObj.table = res.data
+	// 							setSelectTableObj={dataTypeName : dataTypeName, table: res.data}
+	// 							if (rootState.isLog) console.log('before  SET_SELECT_TABLE ', setSelectTableObj);
+	// 							commit(SET_SELECT_TABLE, setSelectTableObj);
+	// 							commit(SET_IS_LOADING, false);
+	// 							return 'axios done ok';
+	// 						}).catch(error => {
+	// 							switch (dataTypeName) {
+	// 								case "article":
+	// 									setSelectTableObj.table = dummyArticlesJson
+	// 									break;
+	// 								case "howto":
+	// 									setSelectTableObj.table = dummyHowtosJson
+	// 									break;
+	// 								case "daily":
+	// 									setSelectTableObj.table = dummyDailiesJson
+	// 									break;
+	// 								case "secrets":
+	// 									setSelectTableObj.table = dummySecretsJson
+	// 									break;
+	// 								default:
+	// 							}
+	// 							commit(SET_SELECT_TABLE, setSelectTableObj);
+	// 							commit(SET_IS_LOADING, false);
+	// 							return 'dummy data. axios error:.' + error;
+	// 						})
+	// 				}
+	// 			}
+	// 		} else {
+	// 			return "data allready loading"
+	// 		}
+	// 	} else {
+	// 		return "missing data types or data type"
+	// 	}
+	// },
 	async setDataContent({ commit, state, rootState }, recordId) {
 		if (rootState.isLog) console.log('setDataContent', recordId);
 		if (!state.getIsDataContentChanged) {
@@ -622,17 +715,19 @@ const mutations = {
 		state.currentDataContentFieldsCol2 = state.currentDataTypeFields.filter(dataField => dataField.col === 2);
 		state.isDataType = true;
 	},
-	[SET_SELECT_TABLE]: (state, SelectTableObj) => {
-		console.log(SET_SELECT_TABLE,SelectTableObj)
-		let tempTables = state.localDataTables;
-		state.localDataTables[SelectTableObj.dataTypeName]
+	[SET_SELECT_TABLE]: (state, selectTableObj) => {
+		console.log(SET_SELECT_TABLE, selectTableObj)
+		let tempTables = selectTableObj.table;
+		//tempTables = state.selectTables[selectTableObj.dataTypeName]
+		state.localDataTables[selectTableObj.dataTypeName] = tempTables;
+		state.selectTables[selectTableObj.dataTypeName] = tempTables;
 		//if (typeof state.localDataTables[SelectTableObj.dataTypeName] == 'undefined' || state.localDataTables[SelectTableObj.dataTypeName] == null) {
 			//console.log(SET_SELECT_TABLE,2)
-			tempTables[SelectTableObj.dataTypeName] = SelectTableObj.table
+			//tempTables[SelectTableObj.dataTypeName] = SelectTableObj.table
 			//state.localDataTables[SelectTableObj.dataTypeName] = SelectTableObj.table;
 		//}
-		state.localDataTables = tempTables;
-		console.log(SET_SELECT_TABLE,state.localDataTables)
+		//state.localDataTables = tempTables;
+		console.log(SET_SELECT_TABLE,state.selectTables[selectTableObj.dataTypeName])
 	},
 	[SET_DATA_CONTENT]: (state, recordId) => {
 		let contentRecord = state.currentDataTable.filter(tableRecord => tableRecord[state.currentDataType.dataTypeIdField] === recordId)
@@ -726,6 +821,9 @@ const mutations = {
 	},
 	[SET_IS_RELOAD_CONTENT]: (state, isReload) => {
 		state.isReloadContent = isReload;
+	},	
+	[SET_IS_SELECTS]: (state, isSelects) => {
+		state.isSelects = isSelects;
 	},
 	[SET_CONTENT_STATE]: (state, contentState) => {
 		state.contentState = contentState;
@@ -763,9 +861,10 @@ const mutations = {
 	},
 	[SET_CURRENT_TAGS]: (state, tagsArr) => {
 		state.currentTags = tagsArr;
-	}
-	
-	
+	},	
+	// [SET_SELECT_TABLES]: (state, selectTables) => {
+	// 	state.selectTables = selectTables;
+	// },
 }
 
 export default {

@@ -88,7 +88,7 @@ button.general-btn:disabled{
 	opacity: 0.7;
 }
 
-input[type="text"] ,input[type="date"] {
+input[type="text"] ,input[type="date"], select, textarea {
 	width: 100%;
 	height: $app-input-height;
 	box-shadow: $app-shadow2;

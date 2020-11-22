@@ -26,7 +26,7 @@
 				:class="['tag-wrap']"
 			>
 				<div class="tag-value">
-					{{tagValue}}
+					{{tagValue.tagName}}
 				</div>
 				<div 
 					class="tag-delete"
@@ -135,26 +135,28 @@ export default {
 			//"deleteTag"
 		]),
 		deleteTagLocal(tagValue){
-			this.log("TagsLIne, deleteTagLocal ", tagValue );
+			this.log("TagsLine, deleteTagLocal ", tagValue );
 			try {
-				this.tagsLineArr = this.tagsLineArr.filter(tag => tag!== tagValue);
+				this.tagsLineArr = this.tagsLineArr.filter(tag => tag.tagName !== tagValue);
 				this.$emit('change', this.fieldName, JSON.stringify(this.tagsLineArr))
-				this.log("TagsLIne, deleteTagLocal. delete ok. ", tagValue );
+				this.log("TagsLine, deleteTagLocal. delete ok. ", tagValue );
 			} catch (error) {
-				this.log("TagsLIne, deleteTagLocal. failed to delete. err: ", error );
+				this.log("TagsLine, deleteTagLocal. failed to delete. err: ", error );
 			}
 		},
 		addTag(){
-			this.log("TagsLIne, addTag ", this.fieldName );
+			this.log("TagsLine, addTag ", this.fieldName );
 			let valueToAdd = "";
 			try {
-				this.log("TagsLIne, addTag. ref: ", this.$refs["input-field-tag-"+this.fieldName].value);
+				this.log("TagsLine, addTag. ref: ", this.$refs["input-field-tag-"+this.fieldName].value);
 				valueToAdd = this.$refs["input-field-tag-"+this.fieldName].value;
+				
 				if (valueToAdd !== "") {
-					this.tagsLineArr.push(valueToAdd);
+					let tagObj = {"tagName": valueToAdd}
+					this.tagsLineArr.push(tagObj);
 					this.$refs["input-field-tag-"+this.fieldName].value = "";
 					this.$emit('change', this.fieldName, JSON.stringify(this.tagsLineArr))
-					this.log("TagsLIne, addTag. add ok. ", valueToAdd );
+					this.log("TagsLIne, addTag. add ok. ", tagObj );
 				}
 			} catch (error) {
 				this.log("TagsLIne, addTag. failed to add. err: ", error );
@@ -168,7 +170,7 @@ export default {
 @import "@/scss/main.scss";
 .tags-line-wrap{
 	position: absolute;
-	z-index: 9;
+	z-index: 7;
 	height: calc(#{$app-input-height}*2 + #{$app-space-y3});
 	max-height: calc(#{$app-input-height}*2 + #{$app-space-y3});
 	width:100%;

@@ -118,7 +118,8 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			"getDataType",
+			"getDataType",			
+			"getIsSelects",
 			"getDataTable",
 			"getDataTypesFields",
 			"getDataTableFields",

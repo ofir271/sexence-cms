@@ -104,8 +104,31 @@
                 "isTable": false,
                 "singleOrder": 2,
                 "col": 2,
-                "fieldType": "html",
-                "required": true               
+                "fieldType": "repeater",
+                "required": true,
+                "repeaterUniqueFieldName": "sectionId",
+                "repeaterFields": [
+                    {
+                        "name" :"sectionId",
+                        "displayName" :"Section id",
+                        "class": "id"
+                    },
+                    {
+                        "name": "shopItemId",
+                        "displayName": "Shop item id",
+                        "class": "id"
+                    },                       
+                    {
+                        "name": "title",
+                        "displayName": "Title",
+                        "class": "title"
+                    },                    
+                    {
+                        "name": "textHtml",
+                        "displayName": "text Html",
+                        "class": "html"
+                    }                   
+                 ]             
             },
             {
                 "name" :"createdTs",
@@ -249,8 +272,11 @@
                 "isTable": false,
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
-                "selectTable": "categories",
+                "fieldType": "select",
+                "selectDataTypeName": "category",
+                "selectValueField": "categoryId",
+                "selectDisplayField": "categoryName",
+                "multiple":true,
                 "required": true               
             },
             {
@@ -299,8 +325,32 @@
                 "isTable": false,
                 "singleOrder": 2,
                 "col": 2,
-                "fieldType": "html",
-                "required": true               
+                "fieldType": "repeater",
+                "required": true,
+                "repeaterUniqueFieldName": "sectionId",
+                "repeaterFields": [
+                    {
+                        "name" :"sectionId",
+                        "displayName" :"Section id",
+                        "class": "id"
+                    },
+                    {
+                        "name": "shopItemId",
+                        "displayName": "Shop item id",
+                        "class": "id"
+                    },                       
+                    {
+                        "name": "title",
+                        "displayName": "Title",
+                        "class": "title"
+                    },                    
+                    {
+                        "name": "textHtml",
+                        "displayName": "text Html",
+                        "class": "html"
+                    }                   
+                 ]     
+             
             },
             {
                 "name" :"createdTs",
@@ -515,7 +565,11 @@
                 "isTable": false,
                 "singleOrder": 2,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
+                "selectDataTypeName": "dailyForYou",
+                "selectValueField": "dailyForYouId",
+                "selectDisplayField": "forYouQuestion",
+                "multiple":false,
                 "required": true
             }, 
             {
@@ -524,7 +578,11 @@
                 "isTable": false,
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
+                "selectDataTypeName": "dailyQuestion",
+                "selectValueField": "dailyQuestionId",
+                "selectDisplayField": "title",
+                "multiple":false,
                 "required": true               
             },            
             {
@@ -533,7 +591,11 @@
                 "isTable": false,
                 "singleOrder": 5,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
+                "selectDataTypeName": "dailyTip",
+                "selectValueField": "dailyTipId",
+                "selectDisplayField": "text",
+                "multiple":false,
                 "required": true               
             },  
             {
@@ -542,7 +604,11 @@
                 "isTable": false,
                 "singleOrder": 4,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
+                "selectDataTypeName": "dailyFeedback",
+                "selectValueField": "dailyFeedbackId",
+                "selectDisplayField": "title",
+                "multiple":false,
                 "required": true               
             },          
             {
@@ -552,7 +618,7 @@
                 "tableOrder": 5,
                 "singleOrder": 6,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "date",
                 "required": true
             }            
         ]
@@ -732,17 +798,51 @@
                 "displayName" :"Questions",
                 "singleOrder": 4,
                 "col": 2,
-                "fieldType": "string",
-                "required": true
-            },            
+                "fieldType": "repeater",
+                "repeaterUniqueFieldName": "questionId",
+                "required": true,
+                "repeaterFields": [
+                    {
+                        "name" :"questionId",
+                        "displayName" :"Question id"
+                    },                    
+                    {
+                        "name" :"answerStructureType",
+                        "displayName" :"Answer structure type"
+                    },                    
+                    {
+                        "name" :"title",
+                        "displayName" :"Title"
+                    },                    
+                    {
+                        "name" :"text",
+                        "displayName" :"Text"
+                    }
+                ]
+            },
             {
                 "name" :"answers",
                 "displayName" :"Answers",
                 "singleOrder": 5,
                 "col": 2,
-                "fieldType": "string",
-                "required": true
-            }            
+                "fieldType": "repeater",
+                "required": true,
+                "repeaterUniqueFieldName": "answerId",
+                "repeaterFields": [
+                    {
+                        "name" :"questionId",
+                        "displayName" :"Answer id"
+                    },                    
+                    {
+                        "name" :"answerId",
+                        "displayName" :"Answer id"
+                    },                    
+                    {
+                        "name" :"answer",
+                        "displayName" :"Answer text"
+                    }                   
+                ]     
+            }
         ]
     },
     {
@@ -965,8 +1065,8 @@
                 "required": true               
             },            
             {
-                "name" :"shopItems",
-                "displayName" :"ShopItems",
+                "name" :"shopItem",
+                "displayName" :"ShopItem",
                 "isTable": true,
                 "singleOrder": 6,
                 "col": 2,

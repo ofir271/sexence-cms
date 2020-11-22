@@ -48,7 +48,7 @@
 						>
 							<input
 								v-if="
-									['string', 'id', 'title', 'html', 'select'].includes(
+									['string', 'id', 'title', 'html'].includes(
 										contentField.fieldType
 									)
 								"
@@ -152,7 +152,7 @@
 						>
 							<input
 								v-if="
-									['string', 'id', 'title', 'html', 'select'].includes(
+									['string', 'id', 'title', 'html'].includes(
 										contentField.fieldType
 									)
 								"
@@ -176,6 +176,7 @@
 								:disabled="contentField.disabled"
 								:hidden="contentField.hidden"
 								:required="contentField.required"
+								class="input-field-date"
 								@change="setIsDataContentChanged(true)"
 								type="date"
 							/>
@@ -226,28 +227,28 @@
 								:key="'input-field-select-' + contentField.name"
 								:class="'select-wrap'"
 							>
-								<input
-									v-if="contentField.fieldType == 'ts'"
+								<select
 									:ref="'input-field-' + contentField.name"
-									:key="'input-field-ts-' + contentField.name"
-									:id="'input-field-ts-' + contentField.name"
-									:disabled="true"
-									:hidden="contentField.hidden || getContentState === 'Add'"
+									:key="'input-field-input-' + contentField.name"
+									:id="'input-field-input-' + contentField.name"
+									:name="'input-field-' + contentField.name"
+									:disabled="contentField.disabled"									
+									:multiple="contentField.multiple"
+									:hidden="contentField.hidden"
 									:required="contentField.required"
-									@keydown="
+									@change="
 										getIsDataContentChanged ? '' : setIsDataContentChanged(true)
 									"
 									type="text"
-								/>
-								<input
-									v-if="contentField.name == 'createdTs'"
-									:ref="'field-created-ts-hidden'"
-									:key="'field-created-ts-hidden'"
-									:id="'field-created-ts-hidden'"
-									:hidden="true"
-									type="text"
-								/>
-
+								>
+									<option 
+										v-for="(tableRecord,keyOption) in getSelectTable(contentField.selectDataTypeName)"
+										:key="'select-option-' + contentField.name + keyOption"
+										:value="tableRecord[contentField.selectValueField]"
+									>
+										{{tableRecord[contentField.selectDisplayField]}}
+									</option>
+								</select>
 							</div>							
 							<div
 								v-if="contentField.fieldType === 'tags'"
@@ -367,6 +368,7 @@ export default {
 			selectedImageFieldName: "",
 			selectedImagePath: "",
 			currentRepeaterFieldName: "",
+			selectArrays:[]
 		};
 	},
 	computed: {
@@ -390,7 +392,9 @@ export default {
 			"getRepeaterNewValues",
 			"getDefaultImageUrl",
 			"getIsUpdateDone",
-			"getLocalDataTables"
+			"getLocalDataTables",
+			"getSelectTables",
+			"getSelectTable"
 		]),
 		dataContentTitle() {
 			if (this.getContentState !== "")
@@ -399,6 +403,10 @@ export default {
 		},
 	},
 	watch: {
+		getSelectTables: function (newContent, oldContent) {
+			this.log("watch getSelectTables");
+			this.selectArrays == newContent
+		},
 		getDataType: function (newContent, oldContent) {
 			this.log("watch getDataType");
 			if (this.getAppStates["repeaterManagerOpen"]) {
@@ -442,16 +450,6 @@ export default {
 				][0].src
 			);
 		},		
-		getRepeaterFields: function (newContent, oldContent) {
-			this.log("watch getRepeaterFields.");
-			//this.setRepeaterRecords([]);
-			// this.$refs[
-			// 	"input-field-" + this.selectedImageFieldName
-			// ][0].value = newContent;
-			// this.$refs[
-			// 	"field-image-" + this.selectedImageFieldName
-			// ][0].src = newContent;
-		},
 		getRepeaterNewValues:function (newContent, oldContent) {
 			this.log("watch getRepeaterNewValues.",newContent);
 			this.$refs["input-field-" + this.currentRepeaterFieldName][0].value=JSON.stringify(newContent);
@@ -478,11 +476,35 @@ export default {
 								fieldValue = localDate.toLocaleString();
 							}catch {
 								fieldValue = '';
-							}						
+							}
+							this.$refs['input-field-' + contentField.name][0].value = fieldValue;
+						} else if (contentField.fieldType === 'select'){
+							let fieldValueArr = [];
+							try {
+								fieldValueArr = JSON.parse(this.getCurrentDataContent[contentField.name]);
+								this.log('fieldValueArr',fieldValueArr);
+								this.$refs[
+								'input-field-' +contentField.name][0].options.forEach(option => {
+									//if (option.selected){
+									//	OptionsObj.push({tagValue : option.value})
+									//}
+								});		
+							} catch (err){
+								this.log('watch getIsReloadContent. err loading select values. err:');
+							}
+							// let OptionsObj = []
+							// allOptions.forEach(option => {
+							// 	if (option.selected){
+							// 		OptionsObj.push({tagValue : option.value})
+							// 	}
+							// });
+							// dataTypeRecord[contentField.name] = OptionsObj;
+							// this.log('OptionsObj', OptionsObj);						
 						} else {
-							fieldValue = this.getCurrentDataContent[contentField.name];	
+							fieldValue = this.getCurrentDataContent[contentField.name];
+							this.$refs['input-field-' + contentField.name][0].value = fieldValue;	
 						}
-						this.$refs['input-field-' + contentField.name][0].value = fieldValue;
+						
 						if (contentField.fieldType === 'image'){
 							this.$refs['field-image-' + contentField.name][0].src = this.getCurrentDataContent[contentField.name];
 						}						
@@ -628,11 +650,25 @@ export default {
 							dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
 								'input-field-' + contentField.name
 							][0].value);						
-						// else if (contentField.fieldType === 'tags')
-						// 	dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
-						// 		'input-field-' + contentField.name
-						// 	][0].value);
-						else
+						else if (contentField.fieldType === 'tags')
+							dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
+								'input-field-' + contentField.name
+							][0].value);
+						else if (contentField.fieldType === 'select'){
+							let allOptions = this.$refs[
+								'input-field-' +contentField.name][0].options
+							//this.log('allOptions',allOptions);
+							//this.log('allOptions',allOptions.length);
+							let OptionsObj = []
+							allOptions.forEach(option => {
+								if (option.selected){
+									OptionsObj.push({tagValue : option.value})
+								}
+							});
+							dataTypeRecord[contentField.name] = OptionsObj;
+							this.log('OptionsObj', OptionsObj);
+
+						} else
 							dataTypeRecord[contentField.name] = this.$refs[
 								"input-field-" + contentField.name
 							][0].value;
@@ -650,6 +686,7 @@ export default {
 					.then((res) => {
 						this.log("addDataTypeRecord. res: ", res);
 						//this.clearDataRecordValues();
+						
 						this.clearContentFields();
 						this.setIsDataContentChanged(false);
 						const dataTableResult = this.loadDataTable(true)
@@ -679,10 +716,23 @@ export default {
 						dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
 							'input-field-' + contentField.name
 						][0].value);
-					// else if (contentField.fieldType === 'tags')
-					// 		dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
-					// 			'input-field-' + contentField.name
-					// 		][0].value);
+					else if (contentField.fieldType === 'select'){
+						let allOptions = this.$refs[
+							'input-field-' +contentField.name][0].options
+						//this.log('allOptions',allOptions);
+						//this.log('allOptions',allOptions.length);
+						let OptionsObj = []
+						allOptions.forEach(option => {
+							if (option.selected){
+								OptionsObj.push({tagValue : option.value})
+							}
+						});
+						dataTypeRecord[contentField.name] = OptionsObj;
+						this.log('OptionsObj', OptionsObj);
+					} else if (contentField.fieldType === 'tags')
+							dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
+								'input-field-' + contentField.name
+							][0].value);
 					else if (contentField.name === 'createdTs') {
 						dataTypeRecord['createdTs']=this.$refs["field-created-ts-hidden"][0].value;
 					} else 
@@ -849,6 +899,11 @@ export default {
 							padding-left: calc(#{$app-space-x} + #{$app-space-x-small} + #{$app-icon-size})
 						}
 					}
+					select[multiple]{
+						height: calc(#{$app-input-height}*2 + #{$app-space-y3});
+						max-height: calc(#{$app-input-height}*2 + #{$app-space-y3});
+						padding: $app-space-y-small $app-space-x;
+					}
 					.input-field-label {
 						position: absolute;
 						top: calc(#{$app-input-height}/ 2 - #{$app-text-fs-base}/ 2);
@@ -859,6 +914,7 @@ export default {
 						transition: top $app-transition-time-short,
 						font-size $app-transition-time-short;
 					}
+					.select-wrap ~ label,
 					input:focus ~ label,
 					input:valid ~ label,
 					input:disabled ~ label,

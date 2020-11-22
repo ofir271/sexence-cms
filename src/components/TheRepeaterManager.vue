@@ -1,63 +1,84 @@
 <template>
 	<div class="repeater-manager-wrap">
-		<div 
-			@click="toggleAppState('repeaterManagerOpen')" 
+		<div
+			@click="toggleAppState('repeaterManagerOpen')"
 			:class="['close-repeater-manager']"
 		>
 			<b-icon icon="x"></b-icon>
 		</div>
-		<div class="bg-layer">
-		</div>		
+		<div class="bg-layer"></div>
 		<div class="repeater-manager-inner">
-			<div class="repeater-table">			
+			<div class="repeater-table">
 				<div class="repeater-table-titles">
-					<div 
-						v-for="(repeaterField,key) in getRepeaterFields"
+					<div
+						v-for="(repeaterField, key) in getRepeaterFields"
 						:key="'repeater-table-title-' + key"
 						:class="['repeater-table-title']"
 					>
-						{{repeaterField.displayName}}
-					</div> 
-				</div>	
+						{{ repeaterField.displayName }}
+					</div>
+				</div>
 				<div class="repeater-table-lines">
-					<div 
+					<div
 						v-for="(repeaterRecord, recordKey) in getRepeaterRecords"
 						:key="'repeater-table-line-' + recordKey"
 						:class="['repeater-table-line']"
 					>
-						<div 
+						<div
 							v-for="(repeaterField, fieldKey) in getRepeaterFields"
-							:key="'repeater-table-field-' + fieldKey + '-'+ recordKey"
-							:class="['repeater-table-field']"
+							:key="'repeater-table-field-' + fieldKey + '-' + recordKey"
+							:class="['repeater-feild-type-'+repeaterField.class,'repeater-table-field']"
 						>
+								<vue-editor 
+									:id="'editor-'+repeaterField.name+ '-' + recordKey" 
+									v-model="repeaterRecord[repeaterField.name]"
+									v-if="repeaterField.class === 'html'"
+									:ref="'input-field-' + repeaterField.name + '-' + recordKey"
+									:key="'input-field-' + repeaterField.name + '-' + recordKey"
+									:name="'input-field-' + repeaterField.name + '-' + recordKey"
+								>
+								</vue-editor>
+ 	
+							<!-- <textarea
+								v-if="repeaterField.class === 'html'"
+								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
+								:key="'input-field-' + repeaterField.name + '-' + recordKey"
+								:name="'input-field-' + repeaterField.name + '-' + recordKey"
+								:value="repeaterRecord[repeaterField.name]"
+								type="text"
+								:placeholder="repeaterRecord[repeaterField.name]"
+							>	
+							</textarea>	 -->
+				
 							<input
-								:ref="'input-field-' + repeaterField.name + '-'+ recordKey"
-								:key="'input-field-' + repeaterField.name + '-'+ recordKey"
-								:name="'input-field-' + repeaterField.name + '-'+ recordKey"
+								v-else
+								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
+								:key="'input-field-' + repeaterField.name + '-' + recordKey"
+								:name="'input-field-' + repeaterField.name + '-' + recordKey"
 								:value="repeaterRecord[repeaterField.name]"
 								type="text"
 								:placeholder="repeaterRecord[repeaterField.name]"
 							/>
+							
+
 						</div>
-						<div 
+						<div
 							class="delete-btn-wrap"
-							@click="deleteRepeaterRecordClick(repeaterRecord[getRepeaterUniqueFieldName])"
+							@click="
+								deleteRepeaterRecordClick(
+									repeaterRecord[getRepeaterUniqueFieldName]
+								)
+							"
 						>
-							<b-icon 
-								icon="x-circle-fill"
-							>
-							</b-icon>
-						</div> 
-					</div> 
+							<b-icon icon="x-circle-fill"> </b-icon>
+						</div>
+					</div>
 				</div>
 				<div class="add-btn-wrap">
-					<b-icon 
-						icon="plus-square-fill"
-						@click="addRepeaterRecordClick()"
-					>
+					<b-icon icon="plus-square-fill" @click="addRepeaterRecordClick()">
 						Add
 					</b-icon>
-				</div> 
+				</div>
 			</div>
 			<div class="save-btn-wrap">
 				<button
@@ -67,29 +88,31 @@
 				>
 					Save
 				</button>
-			</div> 
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
 import LogMixin from "@/mixins/LogMixin";
 import { mapGetters, mapActions } from "vuex";
 export default {
 	name: "TheRepeaterManager",
+	components: {
+		VueEditor
+	},
 	mixins: [LogMixin],
-	props: {
-	 
-    },
+	props: {},
 	data() {
-		return {}
-    },
-    computed: {
+		return {};
+	},
+	computed: {
 		...mapGetters([
 			"getRepeaterFields",
 			"getRepeaterRecords",
 			"getRepeaterUniqueFieldName",
-			"getRepeaterNewValues"
+			"getRepeaterNewValues",
 		]),
 	},
 	methods: {
@@ -98,13 +121,15 @@ export default {
 			"deleteRepeaterRecord",
 			"addRepeaterRecord",
 			"setRepeaterNewValues",
-			"setRepeaterRecords"
+			"setRepeaterRecords",
 		]),
 		async deleteRepeaterRecordClick(recordUniqueValue) {
 			this.log("deleteRepeaterRecordClick");
 			const repeaterRecordsArr = this.getRepeaterManagerRecords();
 			try {
-				const saveRepeaterContent = await this.setRepeaterRecords(repeaterRecordsArr)
+				const saveRepeaterContent = await this.setRepeaterRecords(
+					repeaterRecordsArr
+				)
 					.then((res) => {
 						this.log("setRepeaterRecords ok. res: ", res);
 						this.deleteRepeaterRecord(recordUniqueValue);
@@ -115,13 +140,15 @@ export default {
 			} catch (error) {
 				this.log("deleteRepeaterRecordClick. err: ", error);
 			}
-		},		
+		},
 		async addRepeaterRecordClick() {
 			this.log("addRepeaterRecordClick");
 			const repeaterRecordsArr = this.getRepeaterManagerRecords();
 			this.log("repeaterRecordsArr", repeaterRecordsArr);
 			try {
-				const saveRepeaterContent = await this.setRepeaterRecords(repeaterRecordsArr)
+				const saveRepeaterContent = await this.setRepeaterRecords(
+					repeaterRecordsArr
+				)
 					.then((res) => {
 						this.log("setRepeaterRecords ok. res: ", res);
 						this.addRepeaterRecord();
@@ -138,7 +165,9 @@ export default {
 			const repeaterRecordsArr = this.getRepeaterManagerRecords();
 			//this.setRepeaterNewValues(repeaterRecordsArr);
 			try {
-				const saveRepeaterContent = await this.setRepeaterNewValues(repeaterRecordsArr)
+				const saveRepeaterContent = await this.setRepeaterNewValues(
+					repeaterRecordsArr
+				)
 					.then((res) => {
 						this.log("setRepeaterNewValues ok. res: ", res);
 					})
@@ -148,54 +177,76 @@ export default {
 			} catch (error) {
 				this.log("saveRepeaterAndClose. err: ", error);
 			} finally {
-				this.toggleAppState('repeaterManagerOpen');
+				this.toggleAppState("repeaterManagerOpen");
 			}
 		},
-		getRepeaterManagerRecords(){
+		getRepeaterManagerRecords() {
 			this.log("getRepeaterManagerRecords");
-			let keyCouner=0;
-			let repeaterRecordsArr=[]
-			let recordObj={}
+			let keyCouner = 0;
+			let repeaterRecordsArr = [];
+			let recordObj = {};
 			try {
-				while (this.$refs["input-field-" + this.getRepeaterUniqueFieldName + "-" + keyCouner] && keyCouner < 100) {
-					this.getRepeaterFields.forEach(field => {
-						recordObj[field.name] = this.$refs["input-field-" + field.name + "-" + keyCouner][0].value;
+				while (
+					this.$refs[
+						"input-field-" + this.getRepeaterUniqueFieldName + "-" + keyCouner
+					] &&
+					keyCouner < 100
+				) {
+					this.getRepeaterFields.forEach((field) => {
+						recordObj[field.name] = this.$refs[
+							"input-field-" + field.name + "-" + keyCouner
+						][0].value;
 						this.log("input-field-" + field.name + "-" + keyCouner);
 					});
-					keyCouner=keyCouner+1;
+					keyCouner = keyCouner + 1;
 					this.log(recordObj);
 					repeaterRecordsArr.push(recordObj);
-					recordObj={}
+					recordObj = {};
 				}
 			} catch {
-				this.log('keyCouner',keyCouner);
+				this.log("keyCouner", keyCouner);
 			}
-			this.log('repeaterRecordsArr:', repeaterRecordsArr);
-			return repeaterRecordsArr
+			this.log("repeaterRecordsArr:", repeaterRecordsArr);
+			return repeaterRecordsArr;
 		},
-    }
+	},
 };
 </script>
+<style lang="scss" >
+@import "@/scss/main.scss";
+.ql-toolbar.ql-snow{
+	background-color: $app-input-disabled-bg-color;
+}
+.ql-container {
+    font-family: $body-font-family;
+	font-size: $app-text-fs-smaller;
+	background-color: $app-bg-color;
+	color: $app-text-color;
+}
+</style>
+
 
 <style lang="scss" scoped>
 @import "@/scss/main.scss";
-.repeater-manager-wrap{
+.repeater-manager-wrap {
 	position: absolute;
 	z-index: 9;
-	height: calc(100vh - #{$app-footer-height} - #{$app-header-height} - #{$app-space-top-high});
-	width:100%;
+	height: calc(
+		100vh - #{$app-footer-height} - #{$app-header-height} - #{$app-space-top-high}
+	);
+	width: 100%;
 	top: 0;
-	.bg-layer{
+	.bg-layer {
 		display: flex;
 		position: absolute;
 		border-radius: $app-border-radius2 $app-border-radius2 0 0;
 		background-color: $app-bg-color2;
 		opacity: 0.7;
 		height: 100%;
-		width:100%;
+		width: 100%;
 		z-index: 8;
 	}
-	.close-repeater-manager{
+	.close-repeater-manager {
 		position: absolute;
 		top: $app-space-y;
 		left: $app-space-x;
@@ -205,64 +256,88 @@ export default {
 		// .b-icon{
 		// 	width: $app-icon-size-small;
 		// 	height: $app-icon-size-small;
-		// }	
+		// }
 	}
-	.repeater-manager-inner{
-		display:flex;
+	.repeater-manager-inner {
+		display: flex;
 		z-index: 9;
 		padding: $app-space-bottom $app-space-x;
 		height: 100%;
-    	overflow-y: auto;
-		position:relative;
-		color:$app-text-color3;
+		overflow-y: auto;
+		position: relative;
+		color: $app-text-color3;
 		flex-direction: column;
-		.save-btn-wrap{
-			display:flex;
+		.save-btn-wrap {
+			display: flex;
 			padding-top: $app-space-y;
 			justify-content: center;
 		}
-		.repeater-table{
-			display:flex;
+		.repeater-table {
+			display: flex;
 			justify-content: flex-start;
 			align-content: center;
 			flex-direction: column;
 			flex: 1 1 auto;
-			.add-btn-wrap{
-				display:flex;
+			.add-btn-wrap {
+				display: flex;
 				padding-top: $app-space-y;
 				justify-content: center;
 				cursor: pointer;
 			}
-			.repeater-table-titles{
-				display:flex;
+			.repeater-table-titles {
+				display: flex;
 				justify-content: space-around;
 				align-content: flex-start;
 				padding-bottom: $app-space-x-small;
-				.repeater-table-title{
+				.repeater-table-title {
 					font-size: $app-text-fs-mid;
 				}
 			}
-			.repeater-table-lines{
-				display:flex;
+			.repeater-table-lines {
+				display: flex;
 				justify-content: space-around;
 				align-content: flex-start;
-				flex-direction:column;
-				.repeater-table-line{
-					margin-bottom: $app-space-x-small;
-					display:flex;
+				flex-direction: column;
+				.repeater-table-line {
+					position: relative;
+					margin-bottom: $app-space-y;
+					padding-right: calc(#{$app-icon-size} + #{$app-space-x-small});
+					display: flex;
+					flex-wrap: wrap;
 					justify-content: space-around;
 					align-content: flex-start;
-					.delete-btn-wrap{
-						display:flex;
+					.delete-btn-wrap {
+						position: absolute;
+						top: 0;
+						right: 0;
+						display: flex;
 						align-items: center;
-						color:$app-delete-color;
-						.b-icon{
+						color: $app-delete-color;
+						.b-icon {
 							background-color: $app-bg-color;
-							border-radius: calc(#{$app-icon-size}/2);
+							border-radius: calc(#{$app-icon-size}/ 2);
 						}
 					}
-					.repeater-table-field{
+					.repeater-table-field {
 						padding: 0 $app-space-x-small;
+						margin-bottom: $app-space-y;
+						flex: 3 1 auto;
+						&.repeater-feild-type-id{
+							flex: 1 1 auto;
+							width: $app-input-width-small;
+						}						
+						&.repeater-feild-type-title{
+							flex: 6 1 auto;
+						}						
+						&.repeater-feild-type-html{
+							
+							flex: 6 1 auto;
+							min-width: 100%;
+							textarea{
+								padding-top: $app-space-y-small;
+								height: $app-textarea-height;
+							}
+						}
 					}
 				}
 			}

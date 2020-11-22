@@ -29,15 +29,16 @@ $app-input-disabled-bg-color: $app-color7;
 
 /* sizes */
 $app-footer-height: 70px;
-$app-header-height: 100px;
+$app-header-height: 0px;
 $app-table-line-height: 110px;
 $app-sidebar-width: 360px;
 $app-table-width: 720px;
 $app-btn-height: 2.5rem;
 $app-input-height: 2.5rem;
+$app-input-width-small: 6rem;
 $app-icon-size: 1.5rem;
 $app-icon-size-small: 0.75rem;
-
+$app-textarea-height: 110px;
 
 /* spacing */
 $app-space-y: 1rem;
