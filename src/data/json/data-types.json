@@ -111,7 +111,7 @@
         "menuOrder": 8,
         "iconName": "calendar3-event",
         "dataTypeImageField": "",
-        "dataTypeTitleField": "forYouQuestion",
+        "dataTypeTitleField": "advisor",
         "dataTypeIdField": "dailyForYouId",
         "endPointPlural": "https://dev3.sexence.com:5028/dailyForYou",
         "endPointSingle": "https://dev3.sexence.com:5028/"

@@ -310,33 +310,29 @@ const actions = {
 	},
 	async loadServerImages({ commit, state, rootState }) {
 		if (rootState.isLog) console.log('loadServerImages', location.hostname);
-		if (state.isDataTypes) {
-			if (!state.isLoading) {
-				commit(SET_IS_LOADING, true);
-				if (rootState.isAxios == false || location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-					//let sleep = await new Promise(resolve => setTimeout(resolve, 500));
-					commit(SET_SERVER_IMAGES, dummyServerImagesJson);
-					commit(SET_IS_LOADING, false);
-					return "dummy images names. load ok"
-				} else {
-					const result = await axios.get(state.serverImagesPath, { responseType: "json" })
-						.then(res => {
-							if (rootState.isLog) console.log('loadServerImages axios res: ', res.data);
-							let serverImagesObj = res.data;
-							commit(SET_SERVER_IMAGES, serverImagesObj);
-							commit(SET_IS_LOADING, false);
-							return 'axios done ok';
-						}).catch(error => {
-							commit(SET_SERVER_IMAGES, dummyServerImagesJson);
-							commit(SET_IS_LOADING, false);
-							return 'dummy data. axios error:.' + error;
-						})
-				}
+		if (!state.isLoading) {
+			commit(SET_IS_LOADING, true);
+			if (rootState.isAxios == false || location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+				//let sleep = await new Promise(resolve => setTimeout(resolve, 500));
+				commit(SET_SERVER_IMAGES, dummyServerImagesJson);
+				commit(SET_IS_LOADING, false);
+				return "dummy images names. load ok"
 			} else {
-				return "data allready loading"
+				const result = await axios.get(state.serverImagesPath, { responseType: "json" })
+					.then(res => {
+						if (rootState.isLog) console.log('loadServerImages axios res: ', res.data);
+						let serverImagesObj = res.data;
+						commit(SET_SERVER_IMAGES, serverImagesObj);
+						commit(SET_IS_LOADING, false);
+						return 'axios done ok';
+					}).catch(error => {
+						commit(SET_SERVER_IMAGES, dummyServerImagesJson);
+						commit(SET_IS_LOADING, false);
+						return 'dummy data. axios error:.' + error;
+					})
 			}
 		} else {
-			return "missing data types"
+			return "data allready loading"
 		}
 	},
 	async loadSelectTables({ commit, state, rootState }){
@@ -731,15 +727,54 @@ const mutations = {
 	},
 	[SET_DATA_CONTENT]: (state, recordId) => {
 		let contentRecord = state.currentDataTable.filter(tableRecord => tableRecord[state.currentDataType.dataTypeIdField] === recordId)
-		//console.log(SET_DATA_CONTENT, contentRecord[0]);
+		 //for (let value of Object.values(contentRecord[0])) {
+		 //	console.log(SET_DATA_CONTENT,'value', value); 
+		 // }
+		  //for (key)
+		// map
+		//let contentRecord2 = contentRecord[0];
+		//console.log('contentRecord2',contentRecord2)
+		//console.log('length',contentRecord2.length)
+		// let data = (contentRecord2).map(record => {
+		// 	console.log(SET_DATA_CONTENT,'record', record); 
+		// 	return record
+		// });
+		//console.log(SET_DATA_CONTENT,'data', data);
+		// console.log(SET_DATA_CONTENT,'contentRecord', contentRecord[0], contentRecord.length);
+		// contentRecord.forEach(fieldData => {
+		// 	console.log(fieldData,'fieldData');
+		// 	if (fieldData==" ") fieldData = "";
+		// })
+		// console.log("contentRecord after clear",contentRecord[0]);
+		Object.keys(contentRecord[0]).forEach(fieldName => {
+			if (contentRecord[0][fieldName] == " "  || contentRecord[0][fieldName]=='" "')
+				contentRecord[0][fieldName] ="";
+		  });
 		state.currentDataContent = contentRecord[0];
+		  // state.currentDataContent.forEach(contentField => {
+		// 	if (contentRecord[0][contentField.name]==" " || contentRecord[0][contentField.name]=='" "'){
+		// 		contentField.value = "";
+		// 		console.log('xxx space removed');
+		// 	}else
+		// 		contentField.value = contentRecord[0][contentField.name];
+		// 	console.log(contentRecord[0][contentField.name]);
+		// });		
 		state.currentDataContentFieldsCol1.forEach(contentField => {
-			contentField.value = contentRecord[0][contentField.name];
-			console.log(contentRecord[0][contentField.name]);
+			if (contentRecord[0][contentField.name]==" " || contentRecord[0][contentField.name]=='" "'){
+				contentField.value = "";
+				//console.log('xxx space removed');
+			}else
+				contentField.value = contentRecord[0][contentField.name];
+			//console.log(contentRecord[0][contentField.name]);
 			
 		});
 		state.currentDataContentFieldsCol2.forEach(contentField => {
-			contentField.value = contentRecord[0][contentField.name];
+			if (contentRecord[0][contentField.name]==" " || contentRecord[0][contentField.name]=='" "'){
+				contentField.value = "";
+				//console.log('xxx space removed');
+			}else
+				contentField.value = contentRecord[0][contentField.name];
+			//console.log(contentRecord[0][contentField.name]);		
 		});
 	},
 	[CLEAR_DATA_RECORD_VALUES]: (state, recordId) => {

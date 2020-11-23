@@ -29,26 +29,25 @@
 							:key="'repeater-table-field-' + fieldKey + '-' + recordKey"
 							:class="['repeater-feild-type-'+repeaterField.class,'repeater-table-field']"
 						>
-								<vue-editor 
-									:id="'editor-'+repeaterField.name+ '-' + recordKey" 
-									v-model="repeaterRecord[repeaterField.name]"
-									v-if="repeaterField.class === 'html'"
-									:ref="'input-field-' + repeaterField.name + '-' + recordKey"
-									:key="'input-field-' + repeaterField.name + '-' + recordKey"
-									:name="'input-field-' + repeaterField.name + '-' + recordKey"
-								>
-								</vue-editor>
- 	
-							<!-- <textarea
+							<vue-editor 
+								:id="'editor-'+repeaterField.name+ '-' + recordKey" 
+								v-model="repeaterRecord[repeaterField.name]"
 								v-if="repeaterField.class === 'html'"
 								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
 								:key="'input-field-' + repeaterField.name + '-' + recordKey"
 								:name="'input-field-' + repeaterField.name + '-' + recordKey"
+							>
+							</vue-editor>
+ 	
+							<textarea
+								v-else-if="repeaterField.class === 'textarea'"
+								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
+								:key="'input-field-' + repeaterField.name + '-' + recordKey"
+								:name="'input-field-' + repeaterField.name + '-' + recordKey"
 								:value="repeaterRecord[repeaterField.name]"
-								type="text"
 								:placeholder="repeaterRecord[repeaterField.name]"
 							>	
-							</textarea>	 -->
+							</textarea>	
 				
 							<input
 								v-else
@@ -64,6 +63,7 @@
 						</div>
 						<div
 							class="delete-btn-wrap"
+							v-show="!isSingleRecord"
 							@click="
 								deleteRepeaterRecordClick(
 									repeaterRecord[getRepeaterUniqueFieldName]
@@ -74,7 +74,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="add-btn-wrap">
+				<div
+					class="add-btn-wrap"
+				>
 					<b-icon icon="plus-square-fill" @click="addRepeaterRecordClick()">
 						Add
 					</b-icon>
@@ -103,7 +105,12 @@ export default {
 		VueEditor
 	},
 	mixins: [LogMixin],
-	props: {},
+	props: {
+		isSingleRecord: {
+			type: Boolean,
+			default: false
+		}
+	},
 	data() {
 		return {};
 	},
@@ -144,7 +151,14 @@ export default {
 		async addRepeaterRecordClick() {
 			this.log("addRepeaterRecordClick");
 			const repeaterRecordsArr = this.getRepeaterManagerRecords();
-			this.log("repeaterRecordsArr", repeaterRecordsArr);
+			//singleRepeaterRecord
+			// try {
+			// 	this.log("repeaterRecordsArr.length", repeaterRecordsArr[0].length);
+			// }catch(err){
+			// 	this.log("repeaterRecordsArr", repeaterRecordsArr);
+			// }
+			// this.log("getRepeaterRecords", this.getRepeaterRecords.length);
+			
 			try {
 				const saveRepeaterContent = await this.setRepeaterRecords(
 					repeaterRecordsArr
@@ -329,14 +343,13 @@ export default {
 						&.repeater-feild-type-title{
 							flex: 6 1 auto;
 						}						
-						&.repeater-feild-type-html{
-							
+						&.repeater-feild-type-textarea{
 							flex: 6 1 auto;
 							min-width: 100%;
-							textarea{
-								padding-top: $app-space-y-small;
-								height: $app-textarea-height;
-							}
+						}						
+						&.repeater-feild-type-html{
+							flex: 6 1 auto;
+							min-width: 100%;
 						}
 					}
 				}

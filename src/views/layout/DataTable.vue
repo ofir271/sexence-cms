@@ -133,7 +133,7 @@ export default {
 			else return "Welcome to Sexence Admin";
 		},
 	},
-	created() {
+	mounted() {
 		try {
 			const dataTypesResult = this.loadServerImages()
 				.then((res) => {

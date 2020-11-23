@@ -105,6 +105,10 @@ input[type="text"] ,input[type="date"], select, textarea {
 		box-shadow: $app-shadow-input-outline;
 	}
 }
+textarea{
+	padding-top: $app-space-y-small;
+	height: $app-textarea-height;
+}
 .b-icon{
 	width: $app-icon-size;
 	height: $app-icon-size;

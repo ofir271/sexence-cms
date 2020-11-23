@@ -28,6 +28,7 @@
 				/>				
 				<TheRepeaterManager
 					v-show="getAppStates['repeaterManagerOpen']"
+					:is-single-record="currentRepeaterIsSingle"
 				/>
 				<!--todo - do generic or component-->
 				<div class="content-fields-cols">
@@ -63,7 +64,31 @@
 								:required="contentField.required"
 								@change="setIsDataContentChanged(true)"
 								type="text"
-							/>							
+							/>	
+							<vue-editor 
+								v-if="contentField.fieldType === 'html'"
+								:ref="'input-field-' + contentField.name"
+								:key="'input-field-' + contentField.name"
+								:id="'input-field-' + contentField.name"
+								class="input-field-html"
+								:disabled="contentField.disabled"
+								:hidden="contentField.hidden"
+								:required="contentField.required"
+								@change="setIsDataContentChanged(true)"
+							>
+							</vue-editor>
+ 							<textarea
+								v-else-if="contentField.fieldType === 'textarea'"
+								:ref="'input-field-' + contentField.name"
+								:key="'input-field-' + contentField.name"
+								:id="'input-field-' + contentField.name"
+								class="input-field-textarea"
+								:disabled="contentField.disabled"
+								:hidden="contentField.hidden"
+								:required="contentField.required"
+								@change="setIsDataContentChanged(true)"
+							>	
+							</textarea>							
 							<input
 								v-if="contentField.fieldType === 'date'"
 								:ref="'input-field-' + contentField.name"
@@ -222,6 +247,30 @@
 									:ref="'field-image-' + contentField.name"
 								/>
 							</div>
+							<vue-editor 
+								v-if="contentField.fieldType === 'html'"
+								:ref="'input-field-' + contentField.name"
+								:key="'input-field-' + contentField.name"
+								:id="'input-field-' + contentField.name"
+								class="input-field-html"
+								:disabled="contentField.disabled"
+								:hidden="contentField.hidden"
+								:required="contentField.required"
+								@change="setIsDataContentChanged(true)"
+							>
+							</vue-editor>
+ 							<textarea
+								v-else-if="contentField.fieldType === 'textarea'"
+								:ref="'input-field-' + contentField.name"
+								:key="'input-field-' + contentField.name"
+								:id="'input-field-' + contentField.name"
+								class="input-field-textarea"
+								:disabled="contentField.disabled"
+								:hidden="contentField.hidden"
+								:required="contentField.required"
+								@change="setIsDataContentChanged(true)"
+							>	
+							</textarea>	
 							<div
 								v-if="contentField.fieldType === 'select'"
 								:key="'input-field-select-' + contentField.name"
@@ -241,7 +290,9 @@
 									"
 									type="text"
 								>
+									<!-- todo remove option refs? -->
 									<option 
+										:ref="'select-option-' + contentField.name + keyOption"
 										v-for="(tableRecord,keyOption) in getSelectTable(contentField.selectDataTypeName)"
 										:key="'select-option-' + contentField.name + keyOption"
 										:value="tableRecord[contentField.selectValueField]"
@@ -368,7 +419,8 @@ export default {
 			selectedImageFieldName: "",
 			selectedImagePath: "",
 			currentRepeaterFieldName: "",
-			selectArrays:[]
+			selectArrays:[],
+			currentRepeaterIsSingle: false
 		};
 	},
 	computed: {
@@ -468,30 +520,107 @@ export default {
 				}
 				this.getDataContentFields.forEach((contentField) => {
 					try {
-						this.log(contentField.name,this.$refs["input-field-" + contentField.name][0].value);
+						this.log('field name, value:',contentField.name,this.getCurrentDataContent[contentField.name]);
 						let fieldValue = "";
+						let currentRecordFieldValue = this.getCurrentDataContent[contentField.name];
+						//currentRecordFieldValue
+						if (currentRecordFieldValue===' ' ||currentRecordFieldValue==='" "' || currentRecordFieldValue==='""') {
+							currentRecordFieldValue = '';
+						} 
 						if (contentField.fieldType === "ts") {
 							try {
-								const localDate = new Date(this.getCurrentDataContent[contentField.name] * 1000);
+								const localDate = new Date(currentRecordFieldValue * 1000);
 								fieldValue = localDate.toLocaleString();
 							}catch {
 								fieldValue = '';
 							}
 							this.$refs['input-field-' + contentField.name][0].value = fieldValue;
+						} else if (contentField.fieldType === 'date'){
+							//this.log('date field',this.getCurrentDataContent[contentField.name]);
+							let dateFormatValue = new Date(currentRecordFieldValue);
+							let strFormatValue = JSON.stringify(dateFormatValue);
+							fieldValue = strFormatValue.slice(1,11);
+							//this.log('dateFormatValue',dateFormatValue);
+							//this.log('strFormatValue',strFormatValue);
+							this.log('date fieldValue',fieldValue);
+							this.$refs['input-field-' + contentField.name][0].value = fieldValue;
 						} else if (contentField.fieldType === 'select'){
-							let fieldValueArr = [];
-							try {
-								fieldValueArr = JSON.parse(this.getCurrentDataContent[contentField.name]);
-								this.log('fieldValueArr',fieldValueArr);
-								this.$refs[
-								'input-field-' +contentField.name][0].options.forEach(option => {
-									//if (option.selected){
-									//	OptionsObj.push({tagValue : option.value})
-									//}
-								});		
-							} catch (err){
-								this.log('watch getIsReloadContent. err loading select values. err:');
+							if (contentField.multiple){
+								let fieldValueArr = [];
+								try {
+									fieldValueArr = JSON.parse(currentRecordFieldValue);
+									this.log('fieldValueArr',fieldValueArr);
+									let selectRefObj = this.$refs['input-field-'+contentField.name][0];
+									this.log('selectRefObj',selectRefObj);
+
+									selectRefObj.options.forEach(option => {
+
+										// if (fieldValueArr.includes(option.value)){
+										// 	this.log('selected option1',option.index);
+										// }
+										//this.log('option.value',option.value);
+										// todo make more effective
+										if (option.selected==true){
+											option.selected=false;
+											this.log('clear selected option2',option.index);
+										}
+										fieldValueArr.forEach(selectedValue => {
+
+											if (option.value === selectedValue.id){
+												this.log('selected option2',option.index);
+												option.selected = true
+											}
+										})
+									});		
+								} catch (err){
+									this.log('watch getIsReloadContent. err loading select values. err:');
+								}
+							}else{
+								let selectRefObj = this.$refs[
+									'input-field-' +contentField.name][0]
+								//this.log("selectRefObj",selectRefObj);
+								//selectRefObj.value
+								//this.log('value',selectRefObj.value);
+								//this.log('selectedIndex',selectRefObj.selectedIndex);
+								//this.log('options',selectRefObj.options.length);
+								selectRefObj.options.forEach(option => {
+									if (option.value === currentRecordFieldValue){
+										this.log('selected option',option.index);
+										option.selected = true
+									}
+								});
+								// let optionsToSelect = selectRefObj.options[0].filter(option => {
+								// 	option.value === this.getCurrentDataContent[contentField.name];
+								// });
+								
+								// this.log('optionsToSelect',optionsToSelect);
+								//selectRefObj.selectedIndex = 3;
+
+								//this.log('selectedIndex 3',selectRefObj.selectedIndex);
 							}
+            // if (printerOpts.length) {
+				//'select-option-' + contentField.name + keyOption
+            //     this.printer = printerOpts[0].value;
+            // }
+			// 					fieldValue
+			// 				}
+			// 											let OptionsObj = []
+			// 				let selectValue = '';
+			// 				allOptions.forEach(option => {
+			// 					if (option.selected){
+			// 						if (contentField.multiple )
+			// 							OptionsObj.push({tagValue : option.value})
+			// 						else
+			// 							selectValue = option.value
+			// 					}
+			// 				});
+			// 				if (contentField.multiple ) {
+			// 					dataTypeRecord[contentField.name] = OptionsObj;
+			// 					this.log('OptionsObj', OptionsObj);						
+			// 				}else{
+			// 					dataTypeRecord[contentField.name] = selectValue;
+			// 					this.log('selectValue', selectValue);						
+			// 				}
 							// let OptionsObj = []
 							// allOptions.forEach(option => {
 							// 	if (option.selected){
@@ -501,12 +630,11 @@ export default {
 							// dataTypeRecord[contentField.name] = OptionsObj;
 							// this.log('OptionsObj', OptionsObj);						
 						} else {
-							fieldValue = this.getCurrentDataContent[contentField.name];
+							fieldValue = currentRecordFieldValue;
 							this.$refs['input-field-' + contentField.name][0].value = fieldValue;	
 						}
-						
 						if (contentField.fieldType === 'image'){
-							this.$refs['field-image-' + contentField.name][0].src = this.getCurrentDataContent[contentField.name];
+							this.$refs['field-image-' + contentField.name][0].src = currentRecordFieldValue;
 						}						
 						if (contentField.fieldType === 'tags'){
 							
@@ -514,7 +642,7 @@ export default {
 							this.log('tags display field', this.$refs['input-field-tags-display-' + contentField.name][0].innerText)
 						}
 						if (contentField.name === 'createdTs'){
-							this.$refs['field-created-ts-hidden'][0].value = this.getCurrentDataContent[contentField.name];
+							this.$refs['field-created-ts-hidden'][0].value = currentRecordFieldValue;
 						}
 					} catch (err) {
 						this.log("construct record. err: ", err);
@@ -581,6 +709,7 @@ export default {
 			this.log("openRepeaterManager",repeaterFieldName);
 			try {
 				this.currentRepeaterFieldName = repeaterFieldName;
+				this.currentRepeaterIsSingle = this.getDataContentFields.find(field => field.name === repeaterFieldName).singleRepeaterRecord;
 				const repeaterFields = this.getDataContentFields.find(field => field.name === repeaterFieldName).repeaterFields;
 				const repeaterUniqueFieldName = this.getDataContentFields.find(field => field.name === repeaterFieldName).repeaterUniqueFieldName;
 				this.log("repeaterfields",repeaterFields);
@@ -609,7 +738,7 @@ export default {
 			this.log("openRepeaterManager end");
 		},
 		focusInput(inputRef){
-			this.log("focusInput");
+			this.log("focusInput. inputRef",inputRef);
 			this.$refs[inputRef][0].focus();
 		},
 		clearContentFields() {
@@ -660,14 +789,22 @@ export default {
 							//this.log('allOptions',allOptions);
 							//this.log('allOptions',allOptions.length);
 							let OptionsObj = []
+							let selectValue = '';
 							allOptions.forEach(option => {
 								if (option.selected){
-									OptionsObj.push({tagValue : option.value})
+									if (contentField.multiple )
+										OptionsObj.push({id : option.value})
+									else
+										selectValue = option.value
 								}
 							});
-							dataTypeRecord[contentField.name] = OptionsObj;
-							this.log('OptionsObj', OptionsObj);
-
+							if (contentField.multiple ) {
+								dataTypeRecord[contentField.name] = OptionsObj;
+								this.log('OptionsObj', OptionsObj);						
+							}else{
+								dataTypeRecord[contentField.name] = selectValue;
+								this.log('selectValue', selectValue);						
+							}
 						} else
 							dataTypeRecord[contentField.name] = this.$refs[
 								"input-field-" + contentField.name
@@ -720,20 +857,29 @@ export default {
 						let allOptions = this.$refs[
 							'input-field-' +contentField.name][0].options
 						//this.log('allOptions',allOptions);
-						//this.log('allOptions',allOptions.length);
-						let OptionsObj = []
+						//this.log('allOptions',allOptions.length); multiple
+						let OptionsObj = [];
+						let selectValue = '';
 						allOptions.forEach(option => {
 							if (option.selected){
-								OptionsObj.push({tagValue : option.value})
+								if (contentField.multiple )
+									OptionsObj.push({id : option.value})
+								else
+									selectValue = option.value
 							}
 						});
-						dataTypeRecord[contentField.name] = OptionsObj;
-						this.log('OptionsObj', OptionsObj);
-					} else if (contentField.fieldType === 'tags')
+						if (contentField.multiple ) {
+							dataTypeRecord[contentField.name] = OptionsObj;
+							this.log('OptionsObj', OptionsObj);						
+						}else{
+							dataTypeRecord[contentField.name] = selectValue;
+							this.log('selectValue', selectValue);						
+						}
+					} else if (contentField.fieldType === 'tags'){
 							dataTypeRecord[contentField.name] = JSON.parse(this.$refs[
 								'input-field-' + contentField.name
 							][0].value);
-					else if (contentField.name === 'createdTs') {
+					} else if (contentField.name === 'createdTs') {
 						dataTypeRecord['createdTs']=this.$refs["field-created-ts-hidden"][0].value;
 					} else 
 						dataTypeRecord[contentField.name] = this.$refs[
@@ -752,6 +898,14 @@ export default {
 						this.log("updateDataTypeRecord. res: ", res);
 						this.setIsUpdateDone(true);
 						this.setIsDataContentChanged(false);
+						//todo - dont force table load after update. need to seperate data and parsed data. maybe add field to do it.
+						const dataTableResult = this.loadDataTable(true) //true force table load regardless of localdata
+							.then((res) => {
+								this.log("loadDataTable from details. res: ", res);
+							})
+							.catch((err) => {
+								this.log("error loadDataTable. err: ", err);
+							});
 					})
 					.catch((err) => {
 						this.log("error updateDataTypeRecord. err: ", err);
@@ -915,6 +1069,8 @@ export default {
 						font-size $app-transition-time-short;
 					}
 					.select-wrap ~ label,
+					textarea:focus ~ label,
+					textarea.input-field-textarea ~ label,
 					input:focus ~ label,
 					input:valid ~ label,
 					input:disabled ~ label,

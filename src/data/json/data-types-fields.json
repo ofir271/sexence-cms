@@ -50,11 +50,12 @@
                 "isTable": false,
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
                 "selectDataTypeName": "category",
                 "selectValueField": "categoryId",
                 "selectDisplayField": "categoryName",
-                "required": true, 
+                "required": true,
+                "multiple": true, 
                 "hidden": false                
             },
             {
@@ -207,6 +208,16 @@
                 "displayName" :"Views",
                 "isTable": false,
                 "singleOrder": 12,
+                "col": 2,
+                "fieldType": "string",
+                "required": false,               
+                "hidden": false               
+            },
+            {
+                "name" :"estimatedReadingTime",
+                "displayName" :"Estimated reading time",
+                "isTable": false,
+                "singleOrder": 7,
                 "col": 2,
                 "fieldType": "string",
                 "required": false,               
@@ -568,7 +579,7 @@
                 "fieldType": "select",
                 "selectDataTypeName": "dailyForYou",
                 "selectValueField": "dailyForYouId",
-                "selectDisplayField": "forYouQuestion",
+                "selectDisplayField": "advisor",
                 "multiple":false,
                 "required": true
             }, 
@@ -713,22 +724,30 @@
                 "disabled": true
             },    
             {
-                "name" :"forYouQuestion",
-                "displayName" :"For you question",
-                "isTable": true,
-                "tableOrder": 2,
-                "singleOrder": 2,
-                "col": 2,
-                "fieldType": "title",
-                "required": true
-            },            
-            {
                 "name" :"advisor",
                 "displayName" :"Advisor",
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
-                "required": true
+                "fieldType": "repeater",
+                "required": true,
+                "singleRepeaterRecord" :true,
+                "repeaterUniqueFieldName": "title",
+                "repeaterFields": [
+                    {
+                        "name" :"title",
+                        "displayName" :"Title",
+                        "class": "title"
+                    },                     
+                    {
+                        "name" :"text",
+                        "displayName" :"Text",
+                        "class": "textarea"
+                    }, 
+                    {
+                        "name" :"imageUrl",
+                        "displayName" :"Image Url"
+                    }                   
+                ] 
             }            
         ]
     },
@@ -790,7 +809,7 @@
                 "displayName" :"Text",
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "textarea",
                 "required": true
             },            
             {
@@ -804,7 +823,8 @@
                 "repeaterFields": [
                     {
                         "name" :"questionId",
-                        "displayName" :"Question id"
+                        "displayName" :"Question id",
+                        "class": "id"
                     },                    
                     {
                         "name" :"answerStructureType",
@@ -812,11 +832,13 @@
                     },                    
                     {
                         "name" :"title",
-                        "displayName" :"Title"
+                        "displayName" :"Title",
+                        "class": "title"
                     },                    
                     {
                         "name" :"text",
-                        "displayName" :"Text"
+                        "displayName" :"Text",
+                        "class": "textarea"
                     }
                 ]
             },
@@ -831,15 +853,18 @@
                 "repeaterFields": [
                     {
                         "name" :"questionId",
-                        "displayName" :"Answer id"
+                        "displayName" :"Question id",
+                        "class": "id"
                     },                    
                     {
                         "name" :"answerId",
-                        "displayName" :"Answer id"
+                        "displayName" :"Answer id",
+                        "class": "id"
                     },                    
                     {
                         "name" :"answer",
-                        "displayName" :"Answer text"
+                        "displayName" :"Answer text",
+                        "class": "title"
                     }                   
                 ]     
             }
@@ -887,7 +912,7 @@
                 "tableOrder": 1,
                 "singleOrder": 1,
                 "col": 2,
-                "fieldType": "title",
+                "fieldType": "textarea",
                 "required": true               
             },            
             {
@@ -970,20 +995,23 @@
                 "repeaterFields": [
                     {
                         "name" :"answerId",
-                        "displayName" :"Answer id"
-                    },                    
-                    {
-                        "name" :"title",
-                        "displayName" :"Title"
-                    },                    
-                    {
-                        "name" :"text",
-                        "displayName" :"Text"
-                    },                    
+                        "displayName" :"Answer id",
+                        "class": "id"
+                    }, 
                     {
                         "name" :"publisher",
                         "displayName" :"Publisher"
-                    }
+                    },                   
+                    {
+                        "name" :"title",
+                        "displayName" :"Title",
+                        "class": "title"
+                    },                    
+                    {
+                        "name" :"text",
+                        "displayName" :"Text",
+                        "class": "textarea"
+                    }                   
                 ]     
             },
             {
@@ -1044,7 +1072,7 @@
                 "displayName" :"Text",
                 "singleOrder": 2,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "textarea",
                 "required": true
             },             
             {
