@@ -31,7 +31,7 @@
 						>
 							<vue-editor 
 								:id="'editor-'+repeaterField.name+ '-' + recordKey" 
-								v-model="repeaterRecord[repeaterField.name]"
+								:value="repeaterRecord[repeaterField.name]"
 								v-if="repeaterField.class === 'html'"
 								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
 								:key="'input-field-' + repeaterField.name + '-' + recordKey"
