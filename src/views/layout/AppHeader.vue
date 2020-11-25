@@ -34,6 +34,7 @@ export default {
 		left: $app-space-side;
 	}
 	.logo-wrap{
+		display: none;
 		height: calc(#{$app-header-height} - #{$app-space-y2});
 	}
 }
