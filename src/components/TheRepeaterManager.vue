@@ -31,7 +31,7 @@
 						>
 							<vue-editor 
 								:id="'editor-'+repeaterField.name+ '-' + recordKey" 
-								:value="repeaterRecord[repeaterField.name]"
+								v-model="localEditorsContent[recordKey]"
 								v-if="repeaterField.class === 'html'"
 								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
 								:key="'input-field-' + repeaterField.name + '-' + recordKey"
@@ -45,7 +45,7 @@
 								:key="'input-field-' + repeaterField.name + '-' + recordKey"
 								:name="'input-field-' + repeaterField.name + '-' + recordKey"
 								:value="repeaterRecord[repeaterField.name]"
-								:placeholder="repeaterRecord[repeaterField.name]"
+								
 							>	
 							</textarea>	
 				
@@ -54,9 +54,9 @@
 								:ref="'input-field-' + repeaterField.name + '-' + recordKey"
 								:key="'input-field-' + repeaterField.name + '-' + recordKey"
 								:name="'input-field-' + repeaterField.name + '-' + recordKey"
-								:value="repeaterRecord[repeaterField.name]"
+								v-model="repeaterRecord[repeaterField.name]"
 								type="text"
-								:placeholder="repeaterRecord[repeaterField.name]"
+								
 							/>
 							
 
@@ -66,7 +66,7 @@
 							v-show="!isSingleRecord"
 							@click="
 								deleteRepeaterRecordClick(
-									repeaterRecord[getRepeaterUniqueFieldName]
+									repeaterRecord[getRepeaterUniqueFieldName],recordKey
 								)
 							"
 						>
@@ -112,7 +112,9 @@ export default {
 		}
 	},
 	data() {
-		return {};
+		return {
+			localEditorsContent:[]
+		};
 	},
 	computed: {
 		...mapGetters([
@@ -120,7 +122,48 @@ export default {
 			"getRepeaterRecords",
 			"getRepeaterUniqueFieldName",
 			"getRepeaterNewValues",
+			"getIsReloadRepeaterLocalHtml"
 		]),
+	},
+	watch: {
+		getRepeaterRecords:	function (newContent, oldContent) {
+			this.log("repeater manage. watch getRepeaterRecords", newContent);
+			//this.localEditorsContent
+		},
+		getRepeaterFields: function (newContent, oldContent) {
+			this.log("repeater manage. watch getRepeaterFields", newContent);
+			//this.localEditorsContent = []
+			//this.log("repeater manage. localEditorsContent", this.localEditorsContent);
+		},
+		getIsReloadRepeaterLocalHtml: function (newContent, oldContent) {
+			this.log("repeater manage. watch getIsReloadRepeaterLocalHtml", newContent);
+			this.log("localEditorsContent",this.localEditorsContent)
+			if (newContent===true){
+				this.localEditorsContent.splice(0,this.localEditorsContent.length)
+				this.log("getRepeaterFields", this.getRepeaterFields);
+				let htmlFieldName = this.getRepeaterFields.filter(field => field.class==='html')
+				try {
+					htmlFieldName = htmlFieldName[0].name;
+				} catch {
+					htmlFieldName = 'innerHtml';
+				}
+				this.log("htmlFieldName", htmlFieldName);
+				//this.log("getRepeaterRecords", this.getRepeaterRecords);
+				this.getRepeaterRecords.forEach(record => {
+					//this.log("record['textHtml']", record['textHtml']);
+					this.log("record[htmlFieldName]", record[htmlFieldName]);
+					this.localEditorsContent.push(record[htmlFieldName])
+				});
+				this.setIsReloadRepeaterLocalHtml(false);
+				//let repeaterRecordHtmlValues = this.getRepeaterRecords.map(a => a.htmlFieldName);
+				//this.log("repeaterRecordHtmlValues", repeaterRecordHtmlValues);
+				//this.localEditorsContent = getRepeaterRecords.filter()
+			} else {
+				this.log("localEditorsContent",this.localEditorsContent)
+			}
+			this.log("repeater manage. localEditorsContent", this.localEditorsContent);
+			
+		},
 	},
 	methods: {
 		...mapActions([
@@ -129,8 +172,9 @@ export default {
 			"addRepeaterRecord",
 			"setRepeaterNewValues",
 			"setRepeaterRecords",
+			"setIsReloadRepeaterLocalHtml"
 		]),
-		async deleteRepeaterRecordClick(recordUniqueValue) {
+		async deleteRepeaterRecordClick(recordUniqueValue,recordKey) {
 			this.log("deleteRepeaterRecordClick");
 			const repeaterRecordsArr = this.getRepeaterManagerRecords();
 			try {
@@ -140,6 +184,7 @@ export default {
 					.then((res) => {
 						this.log("setRepeaterRecords ok. res: ", res);
 						this.deleteRepeaterRecord(recordUniqueValue);
+						this.localEditorsContent.splice(recordKey,1)
 					})
 					.catch((err) => {
 						this.log("error setRepeaterRecords. err: ", err);
@@ -166,6 +211,8 @@ export default {
 					.then((res) => {
 						this.log("setRepeaterRecords ok. res: ", res);
 						this.addRepeaterRecord();
+						this.localEditorsContent.push("");
+
 					})
 					.catch((err) => {
 						this.log("error setRepeaterRecords. err: ", err);
@@ -191,6 +238,7 @@ export default {
 			} catch (error) {
 				this.log("saveRepeaterAndClose. err: ", error);
 			} finally {
+				this.setIsReloadRepeaterLocalHtml(false);
 				this.toggleAppState("repeaterManagerOpen");
 			}
 		},
@@ -207,10 +255,45 @@ export default {
 					keyCouner < 100
 				) {
 					this.getRepeaterFields.forEach((field) => {
-						recordObj[field.name] = this.$refs[
-							"input-field-" + field.name + "-" + keyCouner
-						][0].value;
-						this.log("input-field-" + field.name + "-" + keyCouner);
+						this.log("field.class", field.class);
+						if (field.class === 'html'){
+							this.log("xxxx");
+							// this.log("ref", this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0]);							
+							// this.log("baseURI", this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].baseURI);							
+							// this.log("$refs", this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].$refs);							
+							// this.log("$refs.quillContainer", this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].$refs.quillContainer);	
+							
+							
+							// recordObj[field.name] = this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].value;
+							// this.log("ref: input-field-" + field.name + "-" + keyCouner,' value:', this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].value);						
+							// let htmlEditorInnerHtml = this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].$refs.quillContainer.innerHTML;
+							// this.log("$refs.quillContainer.innerHTML", this.$refs[
+							// 	"input-field-" + field.name + "-" + keyCouner
+							// ][0].$refs.quillContainer.innerHTML);
+							this.log('localEditorsContent keyCouner ',this.localEditorsContent);
+							recordObj[field.name] = this.localEditorsContent[keyCouner]
+						} else {
+							recordObj[field.name] = this.$refs[
+								"input-field-" + field.name + "-" + keyCouner
+							][0].value;
+							this.log("ref: input-field-" + field.name + "-" + keyCouner,' value:', this.$refs[
+								"input-field-" + field.name + "-" + keyCouner
+							][0].value);
+						}
 					});
 					keyCouner = keyCouner + 1;
 					this.log(recordObj);

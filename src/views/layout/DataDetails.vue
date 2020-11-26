@@ -65,7 +65,7 @@
 								@change="setIsDataContentChanged(true)"
 								type="text"
 							/>	
-							<vue-editor 
+							<!-- <vue-editor 
 								v-if="contentField.fieldType === 'html'"
 								:ref="'input-field-' + contentField.name"
 								:key="'input-field-' + contentField.name"
@@ -76,7 +76,7 @@
 								:required="contentField.required"
 								@change="setIsDataContentChanged(true)"
 							>
-							</vue-editor>
+							</vue-editor> -->
  							<textarea
 								v-else-if="contentField.fieldType === 'textarea'"
 								:ref="'input-field-' + contentField.name"
@@ -247,7 +247,7 @@
 									:ref="'field-image-' + contentField.name"
 								/>
 							</div>
-							<vue-editor 
+							<!-- <vue-editor 
 								v-if="contentField.fieldType === 'html'"
 								:ref="'input-field-' + contentField.name"
 								:key="'input-field-' + contentField.name"
@@ -258,7 +258,7 @@
 								:required="contentField.required"
 								@change="setIsDataContentChanged(true)"
 							>
-							</vue-editor>
+							</vue-editor> -->
  							<textarea
 								v-else-if="contentField.fieldType === 'textarea'"
 								:ref="'input-field-' + contentField.name"
@@ -482,6 +482,8 @@ export default {
 				this.clearContentFields();
 				//let emptyErr= []
 				this.setRepeaterRecords([]);
+				this.setIsReloadRepeaterLocalHtml(false);
+				this.setIsReloadRepeaterLocalHtml(true);
 			}
 		},
 		getSelectedImagePath: function (newContent, oldContent) {
@@ -665,7 +667,8 @@ export default {
 			"setRepeaterRecords",
 			"setRepeaterUniqueFieldName",
 			"setIsUpdateDone",
-			"clearDataRecordValues"
+			"clearDataRecordValues",
+			"setIsReloadRepeaterLocalHtml"
 		]),
 		tagChange(fieldName, fieldValueStr){
 			this.log('tagChange ', fieldName, fieldValueStr);
@@ -718,7 +721,7 @@ export default {
 				this.setRepeaterUniqueFieldName(repeaterUniqueFieldName);
 			} catch (err) {
 				this.log("error getting repeaterfields. err: ", err);
-			}			
+			}
 			try {
 				const repeaterRecords = this.$refs["input-field-" + repeaterFieldName][0].value;
 				const repeaterRecordsObj = JSON.parse(repeaterRecords);
@@ -728,6 +731,8 @@ export default {
 				this.setRepeaterRecords([]);
 				this.log("error getting repeaterRecords. err: ", err);
 			}
+			this.log("setIsReloadRepeaterLocalHtml true");
+			this.setIsReloadRepeaterLocalHtml(true);
 			try {
 				this.setIsDataContentChanged(true);
 				this.setAppState({name:"repeaterManagerOpen", value: true});

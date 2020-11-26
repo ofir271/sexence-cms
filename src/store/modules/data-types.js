@@ -36,10 +36,12 @@ import {
 	DELETE_REPEATER_RECORD,
 	SET_REPEATER_UNIQUE_FIELD_NAME,
 	SET_REPEATER_NEW_VALUES,
+	SET_IS_RELOAD_REPEATER_LOCAL_HTML,
 	SET_IS_UPDATE_DONE,
 	SET_CURRENT_TAGS,
 	CLEAR_DATA_RECORD_VALUES,
 	SET_IS_SELECTS,
+	
 	//SET_SELECT_TABLES
 	
 } from '@/store/app-mutation-types'
@@ -78,6 +80,7 @@ const state = {
 	currentRepeaterRecords: [],
 	currentRepeaterUniqueFieldName:"",
 	currentRepeaterNewValues:"",
+	isReloadRepeaterLocalHtml: false,	
 	currentTags: [],
 	selectTables: {},
 };
@@ -120,6 +123,7 @@ const getters = {
 	getRepeaterRecords: state => state.currentRepeaterRecords,
 	getRepeaterUniqueFieldName: state => state.currentRepeaterUniqueFieldName,
 	getRepeaterNewValues: state => state.currentRepeaterNewValues,
+	getIsReloadRepeaterLocalHtml: state => state.isReloadRepeaterLocalHtml,
 	getIsUpdateDone: state => state.isUpdateDone,
 	getCurrentTags: state => state.currentTags,
 	getIsSelects: state => state.isSelects,
@@ -195,6 +199,10 @@ const actions = {
 	async deleteRepeaterRecord({ commit, rootState }, recordUniqueValue) {
 		if (rootState.isLog) console.log('deleteRepeaterRecord', recordUniqueValue);
 		commit(DELETE_REPEATER_RECORD, recordUniqueValue);
+	},	
+	async setIsReloadRepeaterLocalHtml({ commit, rootState }, isReload) {
+		if (rootState.isLog) console.log('setIsReloadRepeaterLocalHtml', isReload);
+		commit(SET_IS_RELOAD_REPEATER_LOCAL_HTML, isReload);
 	},	
 	async setIsReloadContent({ commit, rootState }, isReload) {
 		if (rootState.isLog) console.log('setIsReloadContent', isReload);
@@ -890,6 +898,9 @@ const mutations = {
 	},
 	[DELETE_REPEATER_RECORD]: (state, recordUniqueValue) => {
 		state.currentRepeaterRecords = state.currentRepeaterRecords.filter(dataRecord => dataRecord[state.currentRepeaterUniqueFieldName] !== recordUniqueValue)
+	},
+	[SET_IS_RELOAD_REPEATER_LOCAL_HTML]: (state, isReload) => {
+		state.isReloadRepeaterLocalHtml = isReload;
 	},
 	[SET_IS_UPDATE_DONE]: (state, isDone) => {
 		state.isUpdateDone = isDone;
