@@ -99,28 +99,28 @@ export default {
 		} catch (err) {
 			this.log("failed to loadSelectTable. err: ", err);
 		}
-		// try {
-		// 	let loadSelectTableResult = await this.loadSelectTable('article')
-		// 		.then((res) => {
-		// 				this.log("loadSelectTable article. res: ", res);
-		// 		})
-		// 		.catch((err) => {
-		// 			this.log("error loadSelectTable article. err: ", err);
-		// 		});  
-		// } catch (err) {
-		// 	this.log("failed to loadSelectTable article. err: ", err);
-		// }
-		// try {
-		// 	let loadSelectTableResult = await this.loadSelectTable('shopItem')
-		// 		.then((res) => {
-		// 				this.log("loadSelectTable article. res: ", res);
-		// 		})
-		// 		.catch((err) => {
-		// 			this.log("error loadSelectTable article. err: ", err);
-		// 		});  
-		// } catch (err) {
-		// 	this.log("failed to loadSelectTable article. err: ", err);
-		// }
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('article')
+				.then((res) => {
+						this.log("loadSelectTable article. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable article. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable article. err: ", err);
+		}
+		try {
+			let loadSelectTableResult = await this.loadSelectTable('shopItem')
+				.then((res) => {
+						this.log("loadSelectTable article. res: ", res);
+				})
+				.catch((err) => {
+					this.log("error loadSelectTable article. err: ", err);
+				});  
+		} catch (err) {
+			this.log("failed to loadSelectTable article. err: ", err);
+		}
 		try {
 			let loadSelectTableResult = await this.loadSelectTable('dailyTip')
 				.then((res) => {

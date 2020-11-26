@@ -921,8 +921,12 @@
                 "isTable": false,
                 "singleOrder": 2,
                 "col": 2,
-                "fieldType": "string",
-                "required": true
+                "fieldType": "select",
+                "selectDataTypeName": "shopItem",
+                "selectValueField": "shopItemId",
+                "selectDisplayField": "title",
+                "multiple":false,
+                "required": true    
             }, 
             {
                 "name" :"articleId",
@@ -930,7 +934,11 @@
                 "isTable": false,
                 "singleOrder": 3,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "select",
+                "selectDataTypeName": "article",
+                "selectValueField": "articleId",
+                "selectDisplayField": "title",
+                "multiple":false,
                 "required": true               
             },            
             {
@@ -938,7 +946,7 @@
                 "displayName" :"Date",
                 "singleOrder": 5,
                 "col": 2,
-                "fieldType": "string",
+                "fieldType": "date",
                 "required": true
             }            
         ]
